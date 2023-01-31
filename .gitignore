@@ -49,3 +49,10 @@ rebel.xml
 application-my.yaml
 
 /yudao-ui-app/unpackage/
+
+
+####前端#####
+/yudao-ui-admin-uniapp
+/yudao-ui-admin-vue3
+/yudao-ui-admin
+/yudao-ui-app

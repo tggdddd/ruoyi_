@@ -114,7 +114,7 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
                     o.setId(postId);
                     o.setStatus(CommonStatusEnum.ENABLE.getStatus());
                 }));
-        when(postService.getPosts(eq(reqVO.getPostIds()), isNull())).thenReturn(posts);
+        when(postService.getPostList(eq(reqVO.getPostIds()), isNull())).thenReturn(posts);
         // mock passwordEncoder 的方法
         when(passwordEncoder.encode(eq(reqVO.getPassword()))).thenReturn("yudaoyuanma");
 
@@ -168,7 +168,7 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
                     o.setId(postId);
                     o.setStatus(CommonStatusEnum.ENABLE.getStatus());
                 }));
-        when(postService.getPosts(eq(reqVO.getPostIds()), isNull())).thenReturn(posts);
+        when(postService.getPostList(eq(reqVO.getPostIds()), isNull())).thenReturn(posts);
 
         // 调用
         userService.updateUser(reqVO);

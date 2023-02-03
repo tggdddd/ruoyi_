@@ -185,7 +185,7 @@ import {
 
 import Verify from "@/components/Verifition/Verify";
 import { resetUserPwd } from "@/api/system/user";
-
+import { getCaptchaEnable } from "@/utils/ruoyi";
 export default {
   name: "Login",
   components: {

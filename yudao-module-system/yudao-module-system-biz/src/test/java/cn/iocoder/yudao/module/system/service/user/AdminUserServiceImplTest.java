@@ -19,7 +19,6 @@ import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserUpdateRe
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.PostDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.UserPostDO;
-import cn.iocoder.yudao.module.system.dal.dataobject.tenant.TenantDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.user.AdminUserDO;
 import cn.iocoder.yudao.module.system.dal.mysql.dept.UserPostMapper;
 import cn.iocoder.yudao.module.system.dal.mysql.user.AdminUserMapper;
@@ -106,8 +105,6 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
             o.setPostIds(asSet(1L, 2L));
         });
         // mock 账户额度充足
-        TenantDO tenant = randomPojo(TenantDO.class, o -> o.setAccountCount(1));
-
         // mock deptService 的方法
         DeptDO dept = randomPojo(DeptDO.class, o -> {
             o.setId(reqVO.getDeptId());
@@ -141,8 +138,6 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
     public void testCreatUser_max() {
         // 准备参数
         UserCreateReqVO reqVO = randomPojo(UserCreateReqVO.class);
-        // mock 账户额度不足
-        TenantDO tenant = randomPojo(TenantDO.class, o -> o.setAccountCount(-1));
 
         // 调用，并断言异常
         assertServiceException(() -> userService.createUser(reqVO), USER_COUNT_MAX, -1);

@@ -140,6 +140,7 @@ public class PermissionServiceImpl implements PermissionService {
      */
     @VisibleForTesting
     void initLocalCacheForUserRole() {
+
         // 第一步：加载数据
         List<UserRoleDO> userRoles = userRoleMapper.selectList();
         log.info("[initLocalCacheForUserRole][缓存用户与角色，数量为:{}]", userRoles.size());

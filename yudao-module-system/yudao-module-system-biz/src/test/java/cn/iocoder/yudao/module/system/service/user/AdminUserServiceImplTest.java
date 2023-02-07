@@ -10,7 +10,12 @@ import cn.iocoder.yudao.framework.test.core.ut.BaseDbUnitTest;
 import cn.iocoder.yudao.module.infra.api.file.FileApi;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.profile.UserProfileUpdatePasswordReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.profile.UserProfileUpdateReqVO;
-import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.*;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserCreateReqVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserExportReqVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserImportExcelVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserImportRespVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserPageReqVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.PostDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.UserPostDO;
@@ -22,7 +27,6 @@ import cn.iocoder.yudao.module.system.enums.common.SexEnum;
 import cn.iocoder.yudao.module.system.service.dept.DeptService;
 import cn.iocoder.yudao.module.system.service.dept.PostService;
 import cn.iocoder.yudao.module.system.service.permission.PermissionService;
-import cn.iocoder.yudao.module.system.service.tenant.TenantService;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -44,14 +48,32 @@ import static cn.iocoder.yudao.framework.common.util.date.LocalDateTimeUtils.bui
 import static cn.iocoder.yudao.framework.common.util.object.ObjectUtils.cloneIgnoreId;
 import static cn.iocoder.yudao.framework.test.core.util.AssertUtils.assertPojoEquals;
 import static cn.iocoder.yudao.framework.test.core.util.AssertUtils.assertServiceException;
-import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.*;
-import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.*;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomCommonStatus;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomLongId;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomPojo;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomString;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_NOT_FOUND;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_COUNT_MAX;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_EMAIL_EXISTS;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_IS_DISABLE;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_MOBILE_EXISTS;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_NOT_EXISTS;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_PASSWORD_FAILED;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_USERNAME_EXISTS;
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.util.Lists.newArrayList;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @Import(AdminUserServiceImpl.class)
 public class AdminUserServiceImplTest extends BaseDbUnitTest {
@@ -73,8 +95,6 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
     @MockBean
     private PasswordEncoder passwordEncoder;
     @MockBean
-    private TenantService tenantService;
-    @MockBean
     private FileApi fileApi;
 
     @Test
@@ -87,10 +107,7 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
         });
         // mock 账户额度充足
         TenantDO tenant = randomPojo(TenantDO.class, o -> o.setAccountCount(1));
-        doNothing().when(tenantService).handleTenantInfo(argThat(handler -> {
-            handler.handle(tenant);
-            return true;
-        }));
+
         // mock deptService 的方法
         DeptDO dept = randomPojo(DeptDO.class, o -> {
             o.setId(reqVO.getDeptId());
@@ -126,10 +143,6 @@ public class AdminUserServiceImplTest extends BaseDbUnitTest {
         UserCreateReqVO reqVO = randomPojo(UserCreateReqVO.class);
         // mock 账户额度不足
         TenantDO tenant = randomPojo(TenantDO.class, o -> o.setAccountCount(-1));
-        doNothing().when(tenantService).handleTenantInfo(argThat(handler -> {
-            handler.handle(tenant);
-            return true;
-        }));
 
         // 调用，并断言异常
         assertServiceException(() -> userService.createUser(reqVO), USER_COUNT_MAX, -1);

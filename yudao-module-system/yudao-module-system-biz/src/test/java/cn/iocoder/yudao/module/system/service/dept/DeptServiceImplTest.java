@@ -3,7 +3,6 @@ package cn.iocoder.yudao.module.system.service.dept;
 import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.util.collection.ArrayUtils;
 import cn.iocoder.yudao.framework.common.util.object.ObjectUtils;
-import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
 import cn.iocoder.yudao.framework.test.core.ut.BaseDbUnitTest;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.dept.DeptCreateReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.dept.DeptListReqVO;
@@ -27,10 +26,20 @@ import java.util.function.Consumer;
 import static cn.hutool.core.util.RandomUtil.randomEle;
 import static cn.iocoder.yudao.framework.test.core.util.AssertUtils.assertPojoEquals;
 import static cn.iocoder.yudao.framework.test.core.util.AssertUtils.assertServiceException;
-import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.*;
-import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.*;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomCommonStatus;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomLongId;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomPojo;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_EXITS_CHILDREN;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_NAME_DUPLICATE;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_NOT_ENABLE;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_NOT_FOUND;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_PARENT_ERROR;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_PARENT_IS_CHILD;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_PARENT_NOT_EXITS;
 import static java.util.Collections.singletonList;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -50,8 +59,6 @@ public class DeptServiceImplTest extends BaseDbUnitTest {
 
     @BeforeEach
     public void setUp() {
-        // 清理租户上下文
-        TenantContextHolder.clear();
     }
 
     @Test

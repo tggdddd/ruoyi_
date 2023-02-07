@@ -2,8 +2,6 @@ package cn.iocoder.yudao.module.system.service.dept;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
-import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
-import cn.iocoder.yudao.framework.tenant.core.util.TenantUtils;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.dept.DeptCreateReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.dept.DeptListReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.dept.DeptUpdateReqVO;
@@ -22,10 +20,20 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
-import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.*;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_EXITS_CHILDREN;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_NAME_DUPLICATE;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_NOT_ENABLE;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_NOT_FOUND;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_PARENT_ERROR;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_PARENT_IS_CHILD;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_PARENT_NOT_EXITS;
 
 /**
  * 部门 Service 实现类
@@ -40,7 +48,7 @@ public class DeptServiceImpl implements DeptService {
     /**
      * 部门缓存
      * key：部门编号 {@link DeptDO#getId()}
-     *
+     * <p>
      * 这里声明 volatile 修饰的原因是，每次刷新时，直接修改指向
      */
     @Getter
@@ -49,7 +57,7 @@ public class DeptServiceImpl implements DeptService {
      * 父部门缓存
      * key：部门编号 {@link DeptDO#getParentId()}
      * value: 直接子部门列表
-     *
+     * <p>
      * 这里声明 volatile 修饰的原因是，每次刷新时，直接修改指向
      */
     @Getter
@@ -67,22 +75,20 @@ public class DeptServiceImpl implements DeptService {
     @Override
     @PostConstruct
     public synchronized void initLocalCache() {
-        // 注意：忽略自动多租户，因为要全局初始化缓存
-        TenantUtils.executeIgnore(() -> {
-            // 第一步：查询数据
-            List<DeptDO> depts = deptMapper.selectList();
-            log.info("[initLocalCache][缓存部门，数量为:{}]", depts.size());
+        // 第一步：查询数据
+        List<DeptDO> depts = deptMapper.selectList();
+        log.info("[initLocalCache][缓存部门，数量为:{}]", depts.size());
 
-            // 第二步：构建缓存
-            ImmutableMap.Builder<Long, DeptDO> builder = ImmutableMap.builder();
-            ImmutableMultimap.Builder<Long, DeptDO> parentBuilder = ImmutableMultimap.builder();
-            depts.forEach(sysRoleDO -> {
-                builder.put(sysRoleDO.getId(), sysRoleDO);
-                parentBuilder.put(sysRoleDO.getParentId(), sysRoleDO);
-            });
-            deptCache = builder.build();
-            parentDeptCache = parentBuilder.build();
+        // 第二步：构建缓存
+        ImmutableMap.Builder<Long, DeptDO> builder = ImmutableMap.builder();
+        ImmutableMultimap.Builder<Long, DeptDO> parentBuilder = ImmutableMultimap.builder();
+        depts.forEach(sysRoleDO -> {
+            builder.put(sysRoleDO.getId(), sysRoleDO);
+            parentBuilder.put(sysRoleDO.getParentId(), sysRoleDO);
         });
+        deptCache = builder.build();
+        parentDeptCache = parentBuilder.build();
+
     }
 
     @Override
@@ -140,19 +146,19 @@ public class DeptServiceImpl implements DeptService {
         }
         List<DeptDO> result = new ArrayList<>();
         // 递归，简单粗暴
-       getDeptsByParentIdFromCache(result, parentId,
-               recursive ? Integer.MAX_VALUE : 1, // 如果递归获取，则无限；否则，只递归 1 次
-               parentDeptCache);
+        getDeptsByParentIdFromCache(result, parentId,
+                recursive ? Integer.MAX_VALUE : 1, // 如果递归获取，则无限；否则，只递归 1 次
+                parentDeptCache);
         return result;
     }
 
     /**
      * 递归获取所有的子部门，添加到 result 结果
      *
-     * @param result 结果
-     * @param parentId 父编号
+     * @param result         结果
+     * @param parentId       父编号
      * @param recursiveCount 递归次数
-     * @param parentDeptMap 父部门 Map，使用缓存，避免变化
+     * @param parentDeptMap  父部门 Map，使用缓存，避免变化
      */
     private void getDeptsByParentIdFromCache(List<DeptDO> result, Long parentId, int recursiveCount,
                                              Multimap<Long, DeptDO> parentDeptMap) {
@@ -166,11 +172,7 @@ public class DeptServiceImpl implements DeptService {
         if (CollUtil.isEmpty(depts)) {
             return;
         }
-        // 针对多租户，过滤掉非当前租户的部门
-        Long tenantId = TenantContextHolder.getTenantId();
-        if (tenantId != null) {
-            depts = CollUtil.filterNew(depts, dept -> tenantId.equals(dept.getTenantId()));
-        }
+
         result.addAll(depts);
 
         // 继续递归

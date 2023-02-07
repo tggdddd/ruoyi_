@@ -113,11 +113,7 @@
                 <artifactId>yudao-spring-boot-starter-biz-weixin</artifactId>
                 <version>${revision}</version>
             </dependency>
-            <dependency>
-                <groupId>cn.iocoder.boot</groupId>
-                <artifactId>yudao-spring-boot-starter-biz-tenant</artifactId>
-                <version>${revision}</version>
-            </dependency>
+
             <dependency>
                 <groupId>cn.iocoder.boot</groupId>
                 <artifactId>yudao-spring-boot-starter-biz-data-permission</artifactId>

@@ -12,7 +12,12 @@ import cn.iocoder.yudao.framework.datapermission.core.util.DataPermissionUtils;
 import cn.iocoder.yudao.module.infra.api.file.FileApi;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.profile.UserProfileUpdatePasswordReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.profile.UserProfileUpdateReqVO;
-import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.*;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserCreateReqVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserExportReqVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserImportExcelVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserImportRespVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserPageReqVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserUpdateReqVO;
 import cn.iocoder.yudao.module.system.convert.user.UserConvert;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.UserPostDO;
@@ -22,11 +27,9 @@ import cn.iocoder.yudao.module.system.dal.mysql.user.AdminUserMapper;
 import cn.iocoder.yudao.module.system.service.dept.DeptService;
 import cn.iocoder.yudao.module.system.service.dept.PostService;
 import cn.iocoder.yudao.module.system.service.permission.PermissionService;
-import cn.iocoder.yudao.module.system.service.tenant.TenantService;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +37,26 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.iocoder.yudao.framework.common.util.collection.CollectionUtils.convertList;
 import static cn.iocoder.yudao.framework.common.util.collection.CollectionUtils.convertSet;
-import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.*;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_COUNT_MAX;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_EMAIL_EXISTS;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_IMPORT_LIST_IS_EMPTY;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_IS_DISABLE;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_MOBILE_EXISTS;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_NOT_EXISTS;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_PASSWORD_FAILED;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_USERNAME_EXISTS;
 
 /**
  * 后台用户 Service 实现类
@@ -64,9 +81,6 @@ public class AdminUserServiceImpl implements AdminUserService {
     private PermissionService permissionService;
     @Resource
     private PasswordEncoder passwordEncoder;
-    @Resource
-    @Lazy // 延迟，避免循环依赖报错
-    private TenantService tenantService;
 
     @Resource
     private UserPostMapper userPostMapper;
@@ -77,13 +91,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createUser(UserCreateReqVO reqVO) {
-        // 校验账户配合
-        tenantService.handleTenantInfo(tenant -> {
-            long count = userMapper.selectCount();
-            if (count >= tenant.getAccountCount()) {
-                throw exception(USER_COUNT_MAX, tenant.getAccountCount());
-            }
-        });
+
         // 校验正确性
         validateUserForCreateOrUpdate(null, reqVO.getUsername(), reqVO.getMobile(), reqVO.getEmail(),
                 reqVO.getDeptId(), reqVO.getPostIds());

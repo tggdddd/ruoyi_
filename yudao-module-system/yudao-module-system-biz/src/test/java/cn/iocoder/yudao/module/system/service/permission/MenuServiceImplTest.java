@@ -9,7 +9,6 @@ import cn.iocoder.yudao.module.system.dal.dataobject.permission.MenuDO;
 import cn.iocoder.yudao.module.system.dal.mysql.permission.MenuMapper;
 import cn.iocoder.yudao.module.system.enums.permission.MenuTypeEnum;
 import cn.iocoder.yudao.module.system.mq.producer.permission.MenuProducer;
-import cn.iocoder.yudao.module.system.service.tenant.TenantService;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import org.junit.jupiter.api.Test;
@@ -17,21 +16,31 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static cn.iocoder.yudao.framework.common.util.collection.SetUtils.asSet;
 import static cn.iocoder.yudao.framework.common.util.object.ObjectUtils.cloneIgnoreId;
 import static cn.iocoder.yudao.framework.test.core.util.AssertUtils.assertPojoEquals;
 import static cn.iocoder.yudao.framework.test.core.util.AssertUtils.assertServiceException;
-import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.*;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomCommonStatus;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomLongId;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomPojo;
+import static cn.iocoder.yudao.framework.test.core.util.RandomUtils.randomString;
 import static cn.iocoder.yudao.module.system.dal.dataobject.permission.MenuDO.ID_ROOT;
-import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.*;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.MENU_EXISTS_CHILDREN;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.MENU_NAME_DUPLICATE;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.MENU_NOT_EXISTS;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.MENU_PARENT_ERROR;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.MENU_PARENT_NOT_DIR_OR_MENU;
+import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.MENU_PARENT_NOT_EXISTS;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 
 @Import(MenuServiceImpl.class)
@@ -47,8 +56,6 @@ public class MenuServiceImplTest extends BaseDbUnitTest {
     private PermissionService permissionService;
     @MockBean
     private MenuProducer menuProducer;
-    @MockBean
-    private TenantService tenantService;
 
     @Test
     public void testInitLocalCache_success() {
@@ -204,10 +211,7 @@ public class MenuServiceImplTest extends BaseDbUnitTest {
         menuMapper.insert(menu102);
         // mock 过滤菜单
         Set<Long> menuIds = asSet(100L, 101L);
-        doNothing().when(tenantService).handleTenantMenu(argThat(handler -> {
-            handler.handle(menuIds);
-            return true;
-        }));
+
         // 准备参数
         MenuListReqVO reqVO = new MenuListReqVO().setStatus(CommonStatusEnum.ENABLE.getStatus());
 

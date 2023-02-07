@@ -98,7 +98,8 @@ public interface ErrorCodeConstants {
     ErrorCode SMS_CODE_IS_EXISTS = new ErrorCode(1002014006, "手机号已被使用");
     ErrorCode SMS_CODE_IS_UNUSED = new ErrorCode(1002014007, "验证码未被使用");
 
-   // ========== 错误码模块 1002017000 ==========
+
+    // ========== 错误码模块 1002017000 ==========
     ErrorCode ERROR_CODE_NOT_EXISTS = new ErrorCode(1002017000, "错误码不存在");
     ErrorCode ERROR_CODE_DUPLICATE = new ErrorCode(1002017001, "已经存在编码为【{}】的错误码");
 

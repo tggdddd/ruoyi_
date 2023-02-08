@@ -55,7 +55,7 @@ import type { UploadProps } from 'element-plus'
 
 import { generateUUID } from '@/utils'
 import { propTypes } from '@/utils/propTypes'
-import { getAccessToken, getTenantId } from '@/utils/auth'
+import { getAccessToken } from '@/utils/auth'
 
 type FileTypes =
   | 'image/apng'
@@ -95,8 +95,7 @@ const deleteImg = () => {
 }
 
 const uploadHeaders = ref({
-  Authorization: 'Bearer ' + getAccessToken(),
-  'tenant-id': getTenantId()
+  Authorization: 'Bearer ' + getAccessToken()
 })
 
 const editImg = () => {

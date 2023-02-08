@@ -18,7 +18,7 @@ export function parseTime(time, pattern) {
     if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
       time = parseInt(time)
     } else if (typeof time === 'string') {
-      time = time.replace(new RegExp(/-/gm), '/').replace('T', ' ').replace(new RegExp(/\.\d{3}/gm),'');
+      time = time.replace(new RegExp(/-/gm), '/').replace('T', ' ').replace(new RegExp(/\.\d{3}/gm), '');
     }
     if ((typeof time === 'number') && (time.toString().length === 10)) {
       time = time * 1000
@@ -174,20 +174,6 @@ export function getNowDateTime(timeStr) {
 }
 
 /**
- * 获得租户功能是否开启
- */
-export function getTenantEnable() {
-  // console.log("enable: " + process.env.VUE_APP_TENANT_ENABLE)
-  if (process.env.VUE_APP_TENANT_ENABLE === "true") {
-    return true;
-  }
-  if (process.env.VUE_APP_TENANT_ENABLE === "false") {
-    return false;
-  }
-  return process.env.VUE_APP_TENANT_ENABLE || true;
-}
-
-/**
  * 获得验证码功能是否开启
  */
 export function getCaptchaEnable() {
@@ -245,9 +231,9 @@ export function getPath(path) {
  * @param {*} dividend 被除数
  * @returns
  */
- export function divide(divisor, dividend) {
-  if(divisor == null || dividend == null || dividend === 0){
+export function divide(divisor, dividend) {
+  if (divisor == null || dividend == null || dividend === 0) {
     return null;
   }
-  return Math.floor(divisor/dividend*100)/100;
+  return Math.floor(divisor / dividend * 100) / 100;
 }

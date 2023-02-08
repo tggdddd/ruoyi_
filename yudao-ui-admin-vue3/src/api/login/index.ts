@@ -26,11 +26,6 @@ export const refreshToken = () => {
   return request.post({ url: '/system/auth/refresh-token?refreshToken=' + getRefreshToken() })
 }
 
-// 使用租户名，获得租户编号
-export const getTenantIdByNameApi = (name: string) => {
-  return request.get({ url: '/system/tenant/get-id-by-name?name=' + name })
-}
-
 // 登出
 export const loginOutApi = () => {
   return request.post({ url: '/system/auth/logout' })

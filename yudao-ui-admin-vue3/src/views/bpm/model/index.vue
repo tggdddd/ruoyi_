@@ -318,7 +318,7 @@ import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import { FormInstance, UploadInstance } from 'element-plus'
 
 // 业务相关的 import
-import { getAccessToken, getTenantId } from '@/utils/auth'
+import { getAccessToken } from '@/utils/auth'
 import * as FormApi from '@/api/bpm/form'
 import * as ModelApi from '@/api/bpm/model'
 import { allSchemas, rules } from './model.data'
@@ -542,8 +542,7 @@ const excelUploadError = (): void => {
 // 提交文件上传
 const submitFileForm = () => {
   uploadHeaders.value = {
-    Authorization: 'Bearer ' + getAccessToken(),
-    'tenant-id': getTenantId()
+    Authorization: 'Bearer ' + getAccessToken()
   }
   uploadDisabled.value = true
   uploadRef.value!.submit()

@@ -39,7 +39,6 @@ export const formatToken = (token: string): string => {
 const LoginFormKey = 'LOGINFORM'
 
 export type LoginFormType = {
-  tenantName: string
   username: string
   password: string
   rememberMe: boolean
@@ -60,33 +59,4 @@ export const setLoginForm = (loginForm: LoginFormType) => {
 
 export const removeLoginForm = () => {
   wsCache.delete(LoginFormKey)
-}
-
-// ========== 租户相关 ==========
-
-const TenantIdKey = 'TENANT_ID'
-const TenantNameKey = 'TENANT_NAME'
-
-export const getTenantName = () => {
-  return wsCache.get(TenantNameKey)
-}
-
-export const setTenantName = (username: string) => {
-  wsCache.set(TenantNameKey, username, { exp: 30 * 24 * 60 * 60 })
-}
-
-export const removeTenantName = () => {
-  wsCache.delete(TenantNameKey)
-}
-
-export const getTenantId = () => {
-  return wsCache.get(TenantIdKey)
-}
-
-export const setTenantId = (username: string) => {
-  wsCache.set(TenantIdKey, username)
-}
-
-export const removeTenantId = () => {
-  wsCache.delete(TenantIdKey)
 }

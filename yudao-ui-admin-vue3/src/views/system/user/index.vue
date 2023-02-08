@@ -267,7 +267,7 @@ import type { ElTree, UploadRawFile, UploadInstance } from 'element-plus'
 import { handleTree, defaultProps } from '@/utils/tree'
 import download from '@/utils/download'
 import { CommonStatusEnum } from '@/utils/constants'
-import { getAccessToken, getTenantId } from '@/utils/auth'
+import { getAccessToken } from '@/utils/auth'
 import type { FormExpose } from '@/components/Form'
 import { rules, allSchemas } from './user.data'
 import * as UserApi from '@/api/system/user'
@@ -489,8 +489,7 @@ const beforeExcelUpload = (file: UploadRawFile) => {
 const uploadRef = ref<UploadInstance>()
 const submitFileForm = () => {
   uploadHeaders.value = {
-    Authorization: 'Bearer ' + getAccessToken(),
-    'tenant-id': getTenantId()
+    Authorization: 'Bearer ' + getAccessToken()
   }
   uploadDisabled.value = true
   uploadRef.value!.submit()

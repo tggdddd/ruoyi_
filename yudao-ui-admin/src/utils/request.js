@@ -1,10 +1,10 @@
 import axios from 'axios'
-import {Message, MessageBox, Notification} from 'element-ui'
+import { Message, MessageBox, Notification } from 'element-ui'
 import store from '@/store'
-import {getAccessToken, getRefreshToken, getTenantId, setToken} from '@/utils/auth'
+import { getAccessToken, getRefreshToken, setToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
-import {getPath, getTenantEnable} from "@/utils/ruoyi";
-import {refreshToken} from "@/api/login";
+import { getPath } from "@/utils/ruoyi";
+import { refreshToken } from "@/api/login";
 
 // 需要忽略的提示。忽略后，自动 Promise.reject('error')
 const ignoreMsgs = [
@@ -37,20 +37,13 @@ service.interceptors.request.use(config => {
   if (getAccessToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getAccessToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
-  // 设置租户
-  if (getTenantEnable()) {
-    const tenantId = getTenantId();
-    if (tenantId) {
-      config.headers['tenant-id'] = tenantId;
-    }
-  }
   // get请求映射params参数
   if (config.method === 'get' && config.params) {
     let url = config.url + '?';
     for (const propName of Object.keys(config.params)) {
       const value = config.params[propName];
       const part = encodeURIComponent(propName) + '='
-      if (value !== null && typeof(value) !== "undefined") {
+      if (value !== null && typeof (value) !== "undefined") {
         if (typeof value === 'object') {
           for (const key of Object.keys(value)) {
             let params = propName + '[' + key + ']';
@@ -68,8 +61,8 @@ service.interceptors.request.use(config => {
   }
   return config
 }, error => {
-    console.log(error)
-    Promise.reject(error)
+  console.log(error)
+  Promise.reject(error)
 })
 
 // 响应拦截器
@@ -151,28 +144,27 @@ service.interceptors.response.use(async res => {
     return res.data
   }
 }, error => {
-    console.log('err' + error)
-    let {message} = error;
-    if (message === "Network Error") {
-      message = "后端接口连接异常";
-    } else if (message.includes("timeout")) {
-      message = "系统接口请求超时";
-    } else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substr(message.length - 3) + "异常";
-    }
-    Message({
-      message: message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject(error)
+  console.log('err' + error)
+  let { message } = error;
+  if (message === "Network Error") {
+    message = "后端接口连接异常";
+  } else if (message.includes("timeout")) {
+    message = "系统接口请求超时";
+  } else if (message.includes("Request failed with status code")) {
+    message = "系统接口" + message.substr(message.length - 3) + "异常";
   }
+  Message({
+    message: message,
+    type: 'error',
+    duration: 5 * 1000
+  })
+  return Promise.reject(error)
+}
 )
 
 export function getBaseHeader() {
   return {
-    'Authorization': "Bearer " + getAccessToken(),
-    'tenant-id': getTenantId(),
+    'Authorization': "Bearer " + getAccessToken()
   }
 }
 
@@ -180,10 +172,10 @@ function handleAuthorized() {
   if (!isRelogin.show) {
     isRelogin.show = true;
     MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
-        confirmButtonText: '重新登录',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }
+      confirmButtonText: '重新登录',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
     ).then(() => {
       isRelogin.show = false;
       store.dispatch('LogOut').then(() => {

@@ -51,7 +51,7 @@ import { ElUpload, ElNotification, ElImageViewer } from 'element-plus'
 import type { UploadProps, UploadFile, UploadUserFile } from 'element-plus'
 
 import { propTypes } from '@/utils/propTypes'
-import { getAccessToken, getTenantId } from '@/utils/auth'
+import { getAccessToken } from '@/utils/auth'
 
 const message = useMessage() // 消息弹窗
 
@@ -84,8 +84,7 @@ const props = defineProps({
 })
 
 const uploadHeaders = ref({
-  Authorization: 'Bearer ' + getAccessToken(),
-  'tenant-id': getTenantId()
+  Authorization: 'Bearer ' + getAccessToken()
 })
 
 const fileList = ref<UploadUserFile[]>(props.modelValue)

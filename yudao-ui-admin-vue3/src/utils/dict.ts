@@ -73,7 +73,6 @@ export const getDictObj = (dictType: string, value: any) => {
 export enum DICT_TYPE {
   USER_TYPE = 'user_type',
   COMMON_STATUS = 'common_status',
-  SYSTEM_TENANT_PACKAGE_ID = 'system_tenant_package_id',
 
   // ========== SYSTEM 模块 ==========
   SYSTEM_USER_SEX = 'system_user_sex',

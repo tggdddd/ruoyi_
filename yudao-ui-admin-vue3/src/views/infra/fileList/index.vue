@@ -86,7 +86,7 @@ import type { UploadInstance, UploadRawFile } from 'element-plus'
 // 业务相关的 import
 import { allSchemas } from './fileList.data'
 import * as FileApi from '@/api/infra/fileList'
-import { getAccessToken, getTenantId } from '@/utils/auth'
+import { getAccessToken } from '@/utils/auth'
 import { useClipboard } from '@vueuse/core'
 
 const { t } = useI18n() // 国际化
@@ -124,8 +124,7 @@ const beforeUpload = (file: UploadRawFile) => {
 // 文件上传
 const submitFileForm = () => {
   uploadHeaders.value = {
-    Authorization: 'Bearer ' + getAccessToken(),
-    'tenant-id': getTenantId()
+    Authorization: 'Bearer ' + getAccessToken()
   }
   uploadDisabled.value = true
   uploadRef.value!.submit()

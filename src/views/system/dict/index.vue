@@ -91,7 +91,9 @@
           <template v-if="actionType == 'typeUpdate'">
             <el-tag>{{ dictTypeValue }}</el-tag>
           </template>
-          <template v-else><el-input v-model="dictTypeValue" /> </template>
+          <template v-else
+            ><el-input v-model="dictTypeValue" @change="handleTypeInputValue" />
+          </template>
         </template>
       </Form>
       <Form
@@ -155,6 +157,11 @@ const handleTypeCreate = () => {
   dictTypeValue.value = ''
   setDialogTile('typeCreate')
 }
+const handleTypeInputValue = () => {
+  const res = unref(typeFormRef)?.formModel || ref<Recordable>({})
+  res.type = dictTypeValue.value
+  unref(typeFormRef)?.setValues(res)
+}
 const handleTypeUpdate = async (rowId: number) => {
   setDialogTile('typeUpdate')
   // 设置数据
@@ -202,6 +209,8 @@ const submitTypeForm = async () => {
   const elForm = unref(typeFormRef)?.getElFormRef()
   if (!elForm) return
   elForm.validate(async (valid) => {
+    console.log(valid)
+    console.log(dictTypeValue.value)
     if (valid && dictTypeValue.value != '') {
       actionLoading.value = true
       // 提交请求

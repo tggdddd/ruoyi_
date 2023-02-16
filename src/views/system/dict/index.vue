@@ -215,6 +215,8 @@ const submitTypeForm = async () => {
   const elForm = unref(typeFormRef)?.getElFormRef()
   if (!elForm) return
   elForm.validate(async (valid) => {
+    console.log(valid)
+    console.log(dictTypeValue.value)
     if (valid && dictTypeValue.value != '') {
       actionLoading.value = true
       // 提交请求

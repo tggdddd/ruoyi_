@@ -77,11 +77,11 @@ public class BpmTaskServiceImpl implements BpmTaskService {
         if (StrUtil.isNotBlank(pageVO.getName())) {
             taskQuery.taskNameLike("%" + pageVO.getName() + "%");
         }
-        if (ArrayUtil.get(pageVO.getCreateTime(), 0) != null) {
-            taskQuery.taskCreatedAfter(DateUtils.of(pageVO.getCreateTime()[0]));
+        if (pageVO.getBeginCreateTime()!= null) {
+            taskQuery.taskCreatedAfter(DateUtils.of(pageVO.getBeginCreateTime()));
         }
-        if (ArrayUtil.get(pageVO.getCreateTime(), 1) != null) {
-            taskQuery.taskCreatedBefore(DateUtils.of(pageVO.getCreateTime()[1]));
+        if (pageVO.getEndCreateTime() != null) {
+            taskQuery.taskCreatedBefore(DateUtils.of(pageVO.getEndCreateTime()));
         }
         // 执行查询
         List<Task> tasks = taskQuery.listPage(PageUtils.getStart(pageVO), pageVO.getPageSize());

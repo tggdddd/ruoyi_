@@ -27,7 +27,7 @@ import static cn.hutool.core.exceptions.ExceptionUtil.getRootCauseMessage;
 @DisallowConcurrentExecution
 @PersistJobDataAfterExecution
 @Slf4j
-public class JobHandlerInvoker extends QuartzJobBean {
+public class   JobHandlerInvoker extends QuartzJobBean {
 
     @Resource
     private ApplicationContext applicationContext;

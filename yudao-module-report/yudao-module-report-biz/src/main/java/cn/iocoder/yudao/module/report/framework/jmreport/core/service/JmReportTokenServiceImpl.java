@@ -7,7 +7,6 @@ import cn.iocoder.yudao.framework.common.util.servlet.ServletUtils;
 import cn.iocoder.yudao.framework.security.config.SecurityProperties;
 import cn.iocoder.yudao.framework.security.core.LoginUser;
 import cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils;
-import cn.iocoder.yudao.framework.tenant.core.context.TenantContextHolder;
 import cn.iocoder.yudao.framework.web.core.util.WebFrameworkUtils;
 import cn.iocoder.yudao.module.system.api.oauth2.OAuth2TokenApi;
 import cn.iocoder.yudao.module.system.api.oauth2.dto.OAuth2AccessTokenCheckRespDTO;
@@ -104,8 +103,7 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
 
         // ① 参考 TokenAuthenticationFilter 的认证逻辑（Security 的上下文清理，交给 Spring Security 完成）
         // 目的：实现基于 JmReport 前端传递的 token，实现认证
-        TenantContextHolder.setIgnore(true); // 忽略租户，保证可查询到 token 信息
-        LoginUser user = null;
+            LoginUser user = null;
         try {
             OAuth2AccessTokenCheckRespDTO accessToken = oauth2TokenApi.checkAccessToken(token);
             if (accessToken == null) {
@@ -121,10 +119,6 @@ public class JmReportTokenServiceImpl implements JmReportTokenServiceI {
         }
         SecurityFrameworkUtils.setLoginUser(user, WebFrameworkUtils.getRequest());
 
-        // ② 参考 TenantContextWebFilter 实现（Tenant 的上下文清理，交给 TenantContextWebFilter 完成）
-        // 目的：基于 LoginUser 获得到的租户编号，设置到 Tenant 上下文，避免查询数据库时的报错
-        TenantContextHolder.setIgnore(false);
-        TenantContextHolder.setTenantId(user.getTenantId());
         return user;
     }
 

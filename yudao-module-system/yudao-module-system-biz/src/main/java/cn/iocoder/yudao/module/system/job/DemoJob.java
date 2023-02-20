@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Component
+@Component("demoJob")
 public class DemoJob implements JobHandler {
 
     @Resource

@@ -85,6 +85,11 @@
             <!-- 业务组件 -->
             <dependency>
                 <groupId>cn.iocoder.boot</groupId>
+                <artifactId>yudao-spring-boot-starter-biz-c</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.iocoder.boot</groupId>
                 <artifactId>yudao-spring-boot-starter-banner</artifactId>
                 <version>${revision}</version>
             </dependency>

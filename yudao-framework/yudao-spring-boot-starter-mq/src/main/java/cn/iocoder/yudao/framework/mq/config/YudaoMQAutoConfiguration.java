@@ -56,7 +56,7 @@ public class YudaoMQAutoConfiguration {
     /**
      * 创建 Redis Pub/Sub 广播消费的容器
      */
-    @Bean(initMethod = "start", destroyMethod = "stop")
+    @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(
             RedisMQTemplate redisMQTemplate, List<AbstractChannelMessageListener<?>> listeners) {
         // 创建 RedisMessageListenerContainer 对象

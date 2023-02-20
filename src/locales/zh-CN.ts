@@ -1,5 +1,6 @@
 export default {
   common: {
+    preview: '预览',
     inputText: '请输入',
     selectText: '请选择',
     startTimeText: '开始时间',

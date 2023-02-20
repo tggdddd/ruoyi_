@@ -21,7 +21,10 @@ export interface PostExportReqVO {
   name?: string
   status?: number
 }
-
+export interface SimplePostVO {
+  id?: string
+  name?: string
+}
 // 查询岗位列表
 export const getPostPageApi = async (params: PostPageReqVO) => {
   return await request.get({ url: '/system/post/page', params })

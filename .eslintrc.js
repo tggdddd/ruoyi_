@@ -25,7 +25,7 @@ module.exports = defineConfig({
     './.eslintrc-auto-import.json'
   ],
   rules: {
-    'vue/script-setup-uses-vars': 'error',
+    'vue/script-setup-uses-vars': 'off',
     'vue/no-reserved-component-names': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
@@ -39,8 +39,8 @@ module.exports = defineConfig({
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-unused-vars': 'error',
-    'no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': 'off',
+    'no-unused-vars': 'off',
     'space-before-function-paren': 'off',
 
     'vue/attributes-order': 'off',

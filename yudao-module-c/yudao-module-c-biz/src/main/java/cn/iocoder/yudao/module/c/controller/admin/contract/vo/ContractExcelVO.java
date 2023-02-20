@@ -50,7 +50,7 @@ public class ContractExcelVO {
 
     @ExcelProperty(value = "合同状态 0未签订 1签订 2到期 3终止", converter = DictConvert.class)
     @DictFormat("contract_status") // TODO 代码优化：建议设置到对应的 XXXDictTypeConstants 枚举类中
-    private Byte status;
+    private Integer status;
 
     @ExcelProperty("甲方")
     private String firstParty;

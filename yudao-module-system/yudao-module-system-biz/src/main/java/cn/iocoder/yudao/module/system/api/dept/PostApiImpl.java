@@ -1,10 +1,12 @@
 package cn.iocoder.yudao.module.system.api.dept;
 
+import cn.iocoder.yudao.module.system.dal.dataobject.dept.PostDO;
 import cn.iocoder.yudao.module.system.service.dept.PostService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 岗位 API 实现类
@@ -21,5 +23,7 @@ public class PostApiImpl implements PostApi {
     public void validPostList(Collection<Long> ids) {
         postService.validatePostList(ids);
     }
-
+    public String getPostName(Long id){
+        return postService.getPost(id).getName();
+    }
 }

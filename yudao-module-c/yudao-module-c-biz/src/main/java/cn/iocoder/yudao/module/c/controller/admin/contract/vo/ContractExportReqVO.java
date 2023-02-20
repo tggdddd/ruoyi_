@@ -38,7 +38,7 @@ public class ContractExportReqVO {
     private String defaultClause;
 
     @Schema(description = "合同状态 0未签订 1签订 2到期 3终止", example = "0")
-    private Byte status;
+    private Integer status;
 
     @Schema(description = "甲方")
     private String firstParty;

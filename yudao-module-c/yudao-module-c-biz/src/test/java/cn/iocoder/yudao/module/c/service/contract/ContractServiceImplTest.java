@@ -79,7 +79,7 @@ public class ContractServiceImplTest extends BaseDbUnitTest {
         ContractUpdateReqVO reqVO = randomPojo(ContractUpdateReqVO.class);
 
         // 调用, 并断言异常
-        assertServiceException(() -> ontractService.updateontract(reqVO), ONTRACT_NOT_EXISTS);
+        assertServiceException(() -> ontractService.updateontract(reqVO), CONTRACT_NOT_EXISTS);
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ContractServiceImplTest extends BaseDbUnitTest {
         Long id = randomLongId();
 
         // 调用, 并断言异常
-        assertServiceException(() -> ontractService.deleteontract(id), ONTRACT_NOT_EXISTS);
+        assertServiceException(() -> ontractService.deleteontract(id), CONTRACT_NOT_EXISTS);
     }
 
     @Test

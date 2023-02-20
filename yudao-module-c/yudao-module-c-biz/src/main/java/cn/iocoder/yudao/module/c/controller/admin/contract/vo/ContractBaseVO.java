@@ -49,7 +49,7 @@ public class ContractBaseVO {
 
     @Schema(description = "合同状态 0未签订 1签订 2到期 3终止", required = true, example = "0")
     @NotNull(message = "合同状态 0未签订 1签订 2到期 3终止不能为空")
-    private Byte status;
+    private Integer status;
 
     @Schema(description = "甲方")
     private String firstParty;

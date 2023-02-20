@@ -55,7 +55,7 @@ public class ContractTemplateServiceImpl implements ContractTemplateService {
 
     private void validateontractTemplateExists(Long id) {
         if (ontractTemplateMapper.selectById(id) == null) {
-            throw exception(ONTRACT_TEMPLATE_NOT_EXISTS);
+            throw exception(CONTRACT_TEMPLATE_NOT_EXISTS);
         }
     }
 

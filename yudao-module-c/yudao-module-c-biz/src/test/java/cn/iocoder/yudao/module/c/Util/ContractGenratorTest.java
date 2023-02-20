@@ -1,5 +1,7 @@
 package cn.iocoder.yudao.module.c.Util;
 
+import cn.iocoder.yudao.framework.common.exception.ServiceException;
+import cn.iocoder.yudao.module.c.controller.admin.Util.vo.AttachBean;
 import cn.iocoder.yudao.module.c.controller.admin.Util.vo.AttachReqVO;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ class ContractGenratorTest {
     @Test
     public void testGenerator() {
         assertThrows(NullPointerException.class, () -> ContractGenerator.generator(null));
-        AttachReqVO attachReqVO = new AttachReqVO();
+        AttachBean attachReqVO = new AttachBean();
         assertThrows(NullPointerException.class, () -> ContractGenerator.generator(attachReqVO));
         attachReqVO.setAttach("hello {姓名}");
         assertEquals("hello <font color='red'>姓名未赋值</font>",ContractGenerator.generator(attachReqVO));
@@ -26,11 +28,11 @@ class ContractGenratorTest {
         // 正确输入
         assertEquals("hello 张三", ContractGenerator.generator(attachReqVO));
         attachReqVO.setAttach("{{ff}");
-        assertThrows(IllegalArgumentException.class, () -> ContractGenerator.generator(attachReqVO));
+        assertThrows(ServiceException.class, () -> ContractGenerator.generator(attachReqVO));
         attachReqVO.setAttach("{{f}f}");
-        assertThrows(IllegalArgumentException.class, () -> ContractGenerator.generator(attachReqVO));
+        assertThrows(ServiceException.class, () -> ContractGenerator.generator(attachReqVO));
         attachReqVO.setAttach("{f}f}");
-        assertThrows(IllegalArgumentException.class, () -> ContractGenerator.generator(attachReqVO));
+        assertThrows(ServiceException.class, () -> ContractGenerator.generator(attachReqVO));
 
     }
 }

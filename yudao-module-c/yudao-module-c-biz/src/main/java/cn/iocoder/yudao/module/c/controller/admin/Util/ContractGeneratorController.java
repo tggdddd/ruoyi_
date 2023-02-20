@@ -1,7 +1,13 @@
 package cn.iocoder.yudao.module.c.controller.admin.Util;
 
+import cn.iocoder.yudao.framework.common.util.object.ObjectUtils;
+import cn.iocoder.yudao.framework.common.util.string.StrUtils;
 import cn.iocoder.yudao.module.c.Util.ContractGenerator;
 import cn.iocoder.yudao.module.c.controller.admin.Util.vo.AttachReqVO;
+import cn.iocoder.yudao.module.c.service.UtilService;
+import cn.iocoder.yudao.module.system.api.dept.PostApi;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -32,15 +38,13 @@ import cn.iocoder.yudao.module.c.service.contract.ContractService;
 @RequestMapping("/c/util")
 @Validated
 public class ContractGeneratorController {
-
     @Resource
-    private ContractService contractService;
-
-    @GetMapping("/getAttach")
+    UtilService utilService;
+    @PostMapping("/getAttach")
     @Operation(summary = "获得合同附件")
-    @PreAuthorize("@ss.hasPermission('c:ontract:query')")
-    public CommonResult<String> generatorContractAttach(@Valid AttachReqVO attachReqVO) {
-        return success(ContractGenerator.generator(attachReqVO));
+    public CommonResult<String> generatorContractAttach(@Valid @RequestBody AttachReqVO attachReqVO) {
+
+        return success(utilService.attachGenerator(attachReqVO));
     }
 
 }

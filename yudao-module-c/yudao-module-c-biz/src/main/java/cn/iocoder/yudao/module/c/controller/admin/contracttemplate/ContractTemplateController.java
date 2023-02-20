@@ -3,6 +3,7 @@ package cn.iocoder.yudao.module.c.controller.admin.contracttemplate;
 import cn.iocoder.yudao.module.c.Util.ContractGenerator;
 import cn.iocoder.yudao.module.c.controller.admin.Util.vo.AttachReqVO;
 import cn.iocoder.yudao.module.c.convert.contract.ContractConvert;
+import cn.iocoder.yudao.module.c.service.UtilService;
 import org.mapstruct.Mapper;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
@@ -40,7 +41,8 @@ public class ContractTemplateController {
 
     @Resource
     private ContractTemplateService ontractTemplateService;
-
+    @Resource
+    UtilService utilService;
     @PostMapping("/create")
     @Operation(summary = "创建合同表单模板")
     @PreAuthorize("@ss.hasPermission('c:ontract-template:create')")
@@ -107,6 +109,6 @@ public class ContractTemplateController {
     @PreAuthorize("@ss.hasPermission('c:ontract-template:query')")
     public CommonResult<String> generatorContractAttach(@RequestParam("id") Long id) {
         ContractTemplateDO contractTemplateDO = ontractTemplateService.getontractTemplate(id);
-        return success(ContractGenerator.generator( ContractConvert.INSTANCE.convert(contractTemplateDO)));
+        return success(utilService.attachGenerator(ContractConvert.INSTANCE.convert(contractTemplateDO)));
     }
 }

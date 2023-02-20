@@ -17,5 +17,6 @@ public interface PostApi {
      * @param ids 岗位编号数组
      */
     void validPostList(Collection<Long> ids);
+    String getPostName(Long id);
 
 }

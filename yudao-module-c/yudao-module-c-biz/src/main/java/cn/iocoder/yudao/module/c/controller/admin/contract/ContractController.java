@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.c.controller.admin.contract;
 
 import cn.iocoder.yudao.module.c.Util.ContractGenerator;
 import cn.iocoder.yudao.module.c.dal.dataobject.contracttemplate.ContractTemplateDO;
+import cn.iocoder.yudao.module.c.service.UtilService;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -38,7 +39,8 @@ public class ContractController {
 
     @Resource
     private ContractService ontractService;
-
+    @Resource
+    UtilService utilService;
     @PostMapping("/create")
     @Operation(summary = "创建合同表单")
     @PreAuthorize("@ss.hasPermission('c:ontract:create')")
@@ -105,6 +107,6 @@ public class ContractController {
     @PreAuthorize("@ss.hasPermission('c:ontract:query')")
     public CommonResult<String> generatorContractAttach(@RequestParam("id") Long id) {
         ContractDO contractDO = ontractService.getontract(id);
-        return success(ContractGenerator.generator( ContractConvert.INSTANCE.convert0(contractDO)));
+        return success(utilService.attachGenerator(ContractConvert.INSTANCE.convert0(contractDO)));
     }
 }

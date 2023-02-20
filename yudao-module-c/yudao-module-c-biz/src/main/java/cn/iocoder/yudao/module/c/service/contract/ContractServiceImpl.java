@@ -55,7 +55,7 @@ public class ContractServiceImpl implements ContractService {
 
     private void validateontractExists(Long id) {
         if (ontractMapper.selectById(id) == null) {
-            throw exception(ONTRACT_NOT_EXISTS);
+            throw exception(CONTRACT_NOT_EXISTS);
         }
     }
 

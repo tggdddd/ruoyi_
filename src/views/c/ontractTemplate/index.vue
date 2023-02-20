@@ -20,8 +20,8 @@
           @click="exportList('合同表单模板.xls')"
         />
       </template>
-      <template #postId_default="{ row }">
-        <el-tag type="success"> {{ getPostName(row.postId) }} </el-tag>
+      <template #post_default="{ row }">
+        <el-tag type="success"> {{ getPostName(row.post) }} </el-tag>
       </template>
       <template #attach_default="{ row }">
         <vxe-button content="查看" @click="previewAttachById(row.id)" />
@@ -72,22 +72,8 @@
       :schema="allSchemas.detailSchema"
       :data="detailData"
     >
-      <template #postId="{ row }">
-        <el-tag> {{ getPostName(row.postId) }} </el-tag>
-      </template>
-      <template #attach="{ row }">
-        <XTextButton
-          preIcon="ep:view"
-          :title="t('action.detail')"
-          v-hasPermi="['c:ontract-template:query']"
-          @click="previewAttachById(row.id)"
-        />
-      </template>
-      <template #defaultClause="{ row }">
-        <div v-html="row.defaultClause"></div>
-      </template>
-      <template #performanceRequirements="{ row }">
-        <div v-html="row.performanceRequirements"></div>
+      <template #post="{ row }">
+        <el-tag type="success"> {{ getPostName(row.post) }} </el-tag>
       </template>
     </Descriptions>
     <template #footer>
@@ -121,17 +107,23 @@
     :height="800"
     @show="setShadow"
   >
-    <div v-html="attachRef" id="attachContent"> </div>
+    <div v-html="attachRef" id="attachContent"></div>
   </XModal>
 </template>
+<style lang="scss">
+// #attachContent * {
+//   all: revert;
+// }
+</style>
 <script lang="ts" setup>
 import { FormExpose } from '@/components/Form'
 // 业务相关的 import
 import { rules, allSchemas, postPackageOption } from './ontractTemplate.data'
 import * as ontractTemplateApi from '@/api/c/ontractTemplate'
-import { getAttachApi } from '@/api/c/util'
-import { ontractVO } from '@/api/c/ontract'
-import XButton from '@/components/XButton/src/XButton.vue'
+import { getAttachApi, ontractVO } from '@/api/c/util'
+import { listSimplePostsApi, PostVO } from '@/api/system/post'
+import { VxeColumnPropTypes } from 'vxe-table'
+import * as attach from './attach.data'
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const attachModalRef = ref()
@@ -227,6 +219,7 @@ const previewForm = async () => {
         const data = unref(formRef)?.formModel as ontractVO
         const res = await getAttachApi(data)
         attachRef.value = res
+        document.getElementById('attachId').innerText = res
         attachModelVisible.value = true
       } finally {
         actionLoading.value = false
@@ -235,15 +228,29 @@ const previewForm = async () => {
   })
 }
 const previewAttachById = async (id: number) => {
-  actionLoading.value = true
-  // 提交请求
-  try {
-    const res = await ontractTemplateApi.getAttachByIdApi(id)
-    attachRef.value = res
-    attachModelVisible.value = true
-  } finally {
-    actionLoading.value = false
-  }
+  let xmodal = require('xmodal')
+  // 调用xmodal中的open()方法
+  xmodal.open({
+    title: '提示',
+    content: '您确定要提交吗？',
+    okText: '确定',
+    cancelText: '取消',
+    onOk() {
+      console.log('点击了确定')
+    },
+    onCancel() {
+      console.log('点击了取消')
+    }
+  })
+  // actionLoading.value = true
+  // // 提交请求
+  // try {
+  //   const res = await ontractTemplateApi.getAttachByIdApi(id)
+  //   attachRef.value = res
+  //   attachModelVisible.value = true
+  // } finally {
+  //   actionLoading.value = false
+  // }
 }
 
 // 获得岗位数据
@@ -253,19 +260,9 @@ const getPostName = (id: number) => {
       return item.label
     }
   }
-  return '无'
+  return '错误'
 }
-// 避免主题样式的影响
-const setShadow = (type) => {
-  const container = type.$modal.getBox().querySelector('#attachContent')
-  const inner = container.innerHTML
-  container.innerHTML = ''
-  container.attachShadow({ mode: 'open' })
-  container.shadowRoot.innerHTML = inner
+const setShadow = (e: ModalOptions) => {
+  // e.target.attachShadow({ mode: 'open' })
 }
 </script>
-<style>
-.editor-for-vue.fullscreen {
-  z-index: 999999;
-}
-</style>

@@ -3,37 +3,31 @@ import request from '@/config/axios'
 export interface PerformanceReportRequestVO {
   id: number
   contractId: number
+  formIds: string
   startTime: Date
   endTime: Date
   notifyTime: Date
-  processDefitionId: number
-  urgeTime: Date
-  userId: number
-  processInstanceId: number
+  notifyDuration: Date
 }
 
 export interface PerformanceReportRequestPageReqVO extends PageParam {
   contractId?: number
+  formIds?: string
   startTime?: Date[]
   endTime?: Date[]
   notifyTime?: Date[]
+  notifyDuration?: Date[]
   createTime?: Date[]
-  processDefitionId?: number
-  urgeTime?: Date[]
-  userId?: number
-  processInstanceId?: number
 }
 
 export interface PerformanceReportRequestExcelReqVO {
   contractId?: number
+  formIds?: string
   startTime?: Date[]
   endTime?: Date[]
   notifyTime?: Date[]
+  notifyDuration?: Date[]
   createTime?: Date[]
-  processDefitionId?: number
-  urgeTime?: Date[]
-  userId?: number
-  processInstanceId?: number
 }
 
 // 查询业绩定义列表

@@ -48,7 +48,7 @@ public class ContractTemplateDO extends BaseDO {
      */
     private BigDecimal salary;
     /**岗位  */
-    private String post;
+    private String postId;
     /**
      * 附件
      */

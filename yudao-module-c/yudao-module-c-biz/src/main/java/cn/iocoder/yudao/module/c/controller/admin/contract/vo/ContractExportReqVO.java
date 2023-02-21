@@ -32,8 +32,8 @@ public class ContractExportReqVO {
 
     @Schema(description = "业绩要求")
     private String performanceRequirements;
-    @Schema(description = "岗位", required = true, example = "开发人员")
-    private String post;
+    @Schema(description = "岗位", required = true, example = "1")
+    private String postId;
     @Schema(description = "违约条款")
     private String defaultClause;
 

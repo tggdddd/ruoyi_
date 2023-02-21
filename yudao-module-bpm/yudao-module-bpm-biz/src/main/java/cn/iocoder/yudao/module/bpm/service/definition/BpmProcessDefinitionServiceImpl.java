@@ -129,7 +129,7 @@ public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionServ
         // 设置 ProcessDefinition 的 category 分类
         ProcessDefinition definition = repositoryService.createProcessDefinitionQuery()
                 .deploymentId(deploy.getId()).singleResult();
-        repositoryService.setProcessDefinitionCategory(definition.getId(), createReqDTO.getCategory());
+            repositoryService.setProcessDefinitionCategory(definition.getId(), createReqDTO.getCategory());
         // 注意 1，ProcessDefinition 的 key 和 name 是通过 BPMN 中的 <bpmn2:process /> 的 id 和 name 决定
         // 注意 2，目前该项目的设计上，需要保证 Model、Deployment、ProcessDefinition 使用相同的 key，保证关联性。
         //          否则，会导致 ProcessDefinition 的分页无法查询到。

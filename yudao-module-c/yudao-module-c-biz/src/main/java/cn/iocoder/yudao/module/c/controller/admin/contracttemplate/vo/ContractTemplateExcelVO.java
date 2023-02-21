@@ -31,8 +31,8 @@ public class ContractTemplateExcelVO {
 
     @ExcelProperty("用户的身份证号")
     private String identityCard;
-    @Schema(description = "岗位", required = true, example = "开发人员")
-    private String post;
+    @Schema(description = "岗位", required = true, example = "1")
+    private String postId;
     @ExcelProperty("薪资")
     private BigDecimal salary;
 

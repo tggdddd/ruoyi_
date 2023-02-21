@@ -28,8 +28,8 @@ public class ContractBaseVO {
     @Schema(description = "用户的真实姓名", required = true, example = "芋艿")
     @NotNull(message = "用户的真实姓名不能为空")
     private String name;
-    @Schema(description = "岗位", required = true, example = "开发人员")
-    private String post;
+    @Schema(description = "岗位", required = true, example = "1")
+    private String postId;
     @Schema(description = "用户的身份证号", required = true)
     @NotNull(message = "用户的身份证号不能为空")
     private String identityCard;

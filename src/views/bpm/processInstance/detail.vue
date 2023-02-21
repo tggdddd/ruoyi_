@@ -51,12 +51,12 @@
             title="转办"
             @click="handleUpdateAssignee(item)"
           />
-          <!--          <XButton-->
-          <!--            pre-icon="ep:position"-->
-          <!--            type="primary"-->
-          <!--            title="委派"-->
-          <!--            @click="handleDelegate(item)"-->
-          <!--          />-->
+          <XButton
+            pre-icon="ep:position"
+            type="primary"
+            title="委派"
+            @click="handleDelegate(item)"
+          />
           <XButton pre-icon="ep:back" type="warning" title="委派" @click="handleBack(item)" />
         </div>
       </el-col>
@@ -393,6 +393,7 @@ const getDetail = () => {
         return
       }
       processInstance.value = data
+
       // 设置表单信息
       const processDefinition = data.processDefinition
       if (processDefinition.formType === 10) {
@@ -403,9 +404,9 @@ const getDetail = () => {
           data.formVariables
         )
         nextTick().then(() => {
-          fApi.value?.fapi?.btn.show(false)
-          fApi.value?.fapi?.resetBtn.show(false)
-          fApi.value?.fapi?.disabled(true)
+          fApi.value?.btn.show(false)
+          fApi.value?.resetBtn.show(false)
+          fApi.value?.btn.disabled(true)
         })
       }
 

@@ -21,6 +21,7 @@ public interface ContractTemplateMapper extends BaseMapperX<ContractTemplateDO> 
     default PageResult<ContractTemplateDO> selectPage(ContractTemplatePageReqVO reqVO) {
         return selectPage(reqVO, new LambdaQueryWrapperX<ContractTemplateDO>()
                 .likeIfPresent(ContractTemplateDO::getName, reqVO.getName())
+                .eqIfPresent(ContractTemplateDO::getResult, reqVO.getResult())
                 .eqIfPresent(ContractTemplateDO::getIdentityCard, reqVO.getIdentityCard())
                 .eqIfPresent(ContractTemplateDO::getSalary, reqVO.getSalary())
                 .eqIfPresent(ContractTemplateDO::getPerformanceRequirements, reqVO.getPerformanceRequirements())
@@ -36,6 +37,7 @@ public interface ContractTemplateMapper extends BaseMapperX<ContractTemplateDO> 
     default List<ContractTemplateDO> selectList(ContractTemplateExportReqVO reqVO) {
         return selectList(new LambdaQueryWrapperX<ContractTemplateDO>()
                 .likeIfPresent(ContractTemplateDO::getName, reqVO.getName())
+                .eqIfPresent(ContractTemplateDO::getResult, reqVO.getResult())
                 .eqIfPresent(ContractTemplateDO::getIdentityCard, reqVO.getIdentityCard())
                 .eqIfPresent(ContractTemplateDO::getSalary, reqVO.getSalary())
                 .eqIfPresent(ContractTemplateDO::getPerformanceRequirements, reqVO.getPerformanceRequirements())

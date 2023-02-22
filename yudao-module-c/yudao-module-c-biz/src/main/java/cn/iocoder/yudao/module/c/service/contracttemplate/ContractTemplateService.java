@@ -29,6 +29,13 @@ public interface ContractTemplateService {
     void updateontractTemplate(@Valid ContractTemplateUpdateReqVO updateReqVO);
 
     /**
+     * 更新审核的状态
+     *
+     * @param id 编号
+     * @param result 结果
+     */
+    void updateontractResult(Long id, Integer result);
+    /**
      * 删除合同表单模板
      *
      * @param id 编号

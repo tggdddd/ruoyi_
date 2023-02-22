@@ -1,6 +1,7 @@
 package cn.iocoder.yudao.module.c.dal.dataobject.contracttemplate;
 
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.yudao.module.bpm.enums.task.BpmProcessInstanceResultEnum;
 import cn.iocoder.yudao.module.c.enums.dal.ContractTemplateEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -48,7 +49,7 @@ public class ContractTemplateDO extends BaseDO {
      */
     private BigDecimal salary;
     /**岗位  */
-    private String postId;
+    private Integer postId;
     /**
      * 附件
      */
@@ -79,5 +80,18 @@ public class ContractTemplateDO extends BaseDO {
      * 合同结束时间
      */
     private LocalDateTime endTime;
+    /**
+     * 审核的结果
+     *
+     * 枚举 {@link BpmProcessInstanceResultEnum}
+     * 考虑到简单，所以直接复用了 BpmProcessInstanceResultEnum 枚举，也可以自己定义一个枚举哈
+     */
+    private Integer result;
 
+    /**
+     * 对应的流程编号
+     *
+     * 关联 ProcessInstance 的 id 属性
+     */
+    private String processInstanceId;
 }

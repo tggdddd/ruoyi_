@@ -19,4 +19,6 @@ public class ContractTemplateRespVO extends ContractTemplateBaseVO {
     @Schema(description = "创建时间", required = true)
     private LocalDateTime createTime;
 
+    @Schema(description = "审核结果",example = "1")
+    private Integer result;
 }

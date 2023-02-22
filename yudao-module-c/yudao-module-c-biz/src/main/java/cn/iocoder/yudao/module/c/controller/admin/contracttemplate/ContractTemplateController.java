@@ -27,6 +27,7 @@ import cn.iocoder.yudao.framework.excel.core.util.ExcelUtils;
 
 import cn.iocoder.yudao.framework.operatelog.core.annotations.OperateLog;
 import static cn.iocoder.yudao.framework.operatelog.core.enums.OperateTypeEnum.*;
+import static cn.iocoder.yudao.framework.security.core.util.SecurityFrameworkUtils.getLoginUserId;
 
 import cn.iocoder.yudao.module.c.controller.admin.contracttemplate.vo.*;
 import cn.iocoder.yudao.module.c.dal.dataobject.contracttemplate.ContractTemplateDO;

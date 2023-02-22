@@ -26,7 +26,7 @@ public class ContractTemplatePageReqVO extends PageParam {
     @Schema(description = "薪资")
     private BigDecimal salary;
     @Schema(description = "岗位", required = true, example = "开发人员")
-    private String postId;
+    private Integer postId;
     @Schema(description = "业绩要求")
     private String performanceRequirements;
 
@@ -51,5 +51,7 @@ public class ContractTemplatePageReqVO extends PageParam {
     @Schema(description = "创建时间")
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
     private LocalDateTime[] createTime;
+    @Schema(description = "状态-参见 bpm_process_instance_result 枚举", example = "1")
+    private Integer result;
 
 }

@@ -30,13 +30,15 @@ public class ContractTemplateBaseVO {
     @Schema(description = "薪资")
     private BigDecimal salary;
     @Schema(description = "岗位", required = true, example = "1")
-    private String postId;
+    private Integer postId;
     @Schema(description = "业绩要求")
     private String performanceRequirements;
 
     @Schema(description = "违约条款")
     private String defaultClause;
 
+    @Schema(description = "合同")
+    private String attach;
     @Schema(description = "甲方", required = true)
     @NotNull(message = "甲方不能为空")
     private String firstParty;

@@ -1,4 +1,8 @@
 import type { VxeCrudSchema } from '@/hooks/web/useVxeCrudSchemas'
+import type { ComponentOptions } from 'vue'
+import { getSimpleSmsChannels } from '@/api/system/sms/smsChannel'
+import type { simpleChannelVO } from '@/api/system/sms/smsChannel'
+import { getDictObj } from '@/utils/dict'
 const { t } = useI18n() // 国际化
 
 // 表单校验
@@ -11,7 +15,23 @@ export const rules = reactive({
   apiTemplateId: [required],
   channelId: [required]
 })
-
+// 获得短信渠道字典
+export const simpleChannelOption: ComponentOptions[] = []
+const getsimpleChannelOptions = async () => {
+  const res = await getSimpleSmsChannels()
+  res.forEach((simpleChannel: simpleChannelVO) => {
+    simpleChannelOption.push({
+      key: simpleChannel.id,
+      label:
+        getDictObj(DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE, simpleChannel.code)?.label +
+        ':' +
+        simpleChannel.signature,
+      value: simpleChannel.id
+    })
+  })
+  return simpleChannelOption
+}
+getsimpleChannelOptions()
 // CrudSchema
 const crudSchemas = reactive<VxeCrudSchema>({
   primaryKey: 'id',
@@ -20,6 +40,22 @@ const crudSchemas = reactive<VxeCrudSchema>({
   action: true,
   actionWidth: '280',
   columns: [
+    {
+      field: 'channelId',
+      title: '短信渠道',
+      isSearch: true,
+      table: {
+        slots: {
+          default: 'channelId_default'
+        }
+      },
+      form: {
+        component: 'Select',
+        componentProps: {
+          options: simpleChannelOption
+        }
+      }
+    },
     {
       title: '模板编码',
       field: 'code',

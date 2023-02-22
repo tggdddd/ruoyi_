@@ -504,17 +504,17 @@ const handleFileSuccess = async (response: any): Promise<void> => {
   importDialogVisible.value = false
   uploadDisabled.value = false
   const data = response.data
-  let text = '上传成功数量：' + data.createUsernames.length + ';'
+  let text = '上传成功数量：' + data.createUsernames.length + ';\n'
   for (let username of data.createUsernames) {
-    text += '< ' + username + ' >'
+    text += '< ' + username + ' >\n'
   }
-  text += '更新成功数量：' + data.updateUsernames.length + ';'
+  text += '\n更新成功数量：' + data.updateUsernames.length + ';\n'
   for (const username of data.updateUsernames) {
-    text += '< ' + username + ' >'
+    text += '< ' + username + ' >\n'
   }
-  text += '更新失败数量：' + Object.keys(data.failureUsernames).length + ';'
+  text += '\n更新失败数量：' + Object.keys(data.failureUsernames).length + ';\n'
   for (const username in data.failureUsernames) {
-    text += '< ' + username + ': ' + data.failureUsernames[username] + ' >'
+    text += '< ' + username + ': ' + data.failureUsernames[username] + ' >\n'
   }
   message.alert(text)
   await reload()

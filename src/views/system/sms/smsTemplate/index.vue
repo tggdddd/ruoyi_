@@ -12,6 +12,9 @@
           @click="handleCreate()"
         />
       </template>
+      <template #channelId_default="{ row }">
+        <el-tag type="success"> {{ getChannelName(row.channelId) }} </el-tag>
+      </template>
       <template #actionbtns_default="{ row }">
         <XTextButton
           preIcon="ep:cpu"
@@ -56,7 +59,11 @@
       v-if="actionType === 'detail'"
       :schema="allSchemas.detailSchema"
       :data="detailData"
-    />
+    >
+      <template #channelId="{ row }">
+        <el-tag type="success"> {{ getChannelName(row.channelId) }} </el-tag>
+      </template>
+    </Descriptions>
     <!-- 操作按钮 -->
     <template #footer>
       <!-- 按钮：保存 -->
@@ -113,7 +120,7 @@ import type { FormExpose } from '@/components/Form'
 // 业务相关的 import
 import * as SmsTemplateApi from '@/api/system/sms/smsTemplate'
 import { rules, allSchemas } from './sms.template.data'
-
+import { simpleChannelOption } from './sms.template.data'
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
@@ -228,5 +235,14 @@ const sendSmsTest = async () => {
     message.success('提交发送成功！发送结果，见发送日志编号：' + res)
   }
   sendVisible.value = false
+}
+// 获得短信渠道数据
+const getChannelName = (id: number) => {
+  for (let item of simpleChannelOption) {
+    if (item.value == id) {
+      return item.label
+    }
+  }
+  return '错误'
 }
 </script>

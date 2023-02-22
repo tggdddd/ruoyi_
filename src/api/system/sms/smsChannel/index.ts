@@ -11,7 +11,11 @@ export interface SmsChannelVO {
   callbackUrl: string
   createTime: Date
 }
-
+export interface simpleChannelVO {
+  id: number
+  code: string
+  signature: string
+}
 export interface SmsChannelPageReqVO extends PageParam {
   signature?: string
   code?: string

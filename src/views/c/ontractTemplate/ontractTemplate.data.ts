@@ -1,6 +1,7 @@
 import type { VxeCrudSchema } from '@/hooks/web/useVxeCrudSchemas'
 import { listSimplePostsApi, SimplePostVO } from '@/api/system/post'
 import { ComponentOptions } from '@/types/components'
+
 const { t } = useI18n() // 国际化
 // 表单校验
 export const rules = reactive({
@@ -29,7 +30,7 @@ const crudSchemas = reactive<VxeCrudSchema>({
   actionWidth: '200', // 3个按钮默认200，如有删减对应增减即可
   columns: [
     {
-      title: '真实姓名',
+      title: '姓名',
       field: 'name'
     },
     {
@@ -38,11 +39,11 @@ const crudSchemas = reactive<VxeCrudSchema>({
     },
     {
       title: '岗位',
-      field: 'post',
+      field: 'postId',
       isSearch: true,
       table: {
         slots: {
-          default: 'post_default'
+          default: 'postId_default'
         }
       },
       form: {
@@ -59,8 +60,7 @@ const crudSchemas = reactive<VxeCrudSchema>({
     },
     {
       title: '甲方',
-      field: 'firstParty',
-      isSearch: true
+      field: 'firstParty'
     },
     {
       title: '业绩要求',
@@ -143,6 +143,13 @@ const crudSchemas = reactive<VxeCrudSchema>({
           default: 'attach_default'
         }
       }
+    },
+    {
+      title: '状态',
+      field: 'result',
+      dictType: DICT_TYPE.CONTRACT_TEMPLATE_AUDIT_STATUS,
+      dictClass: 'number',
+      isSearch: true
     }
   ]
 })

@@ -3,7 +3,7 @@ import request from '@/config/axios'
 export interface ontractTemplateVO {
   id: number
   name: string
-  post: number
+  postId: number
   identityCard: string
   salary: number
   attach: string
@@ -17,7 +17,7 @@ export interface ontractTemplateVO {
 
 export interface ontractTemplatePageReqVO extends PageParam {
   name?: string
-  post?: number
+  postId?: number
   identityCard?: string
   salary?: number
   performanceRequirements?: string
@@ -31,7 +31,7 @@ export interface ontractTemplatePageReqVO extends PageParam {
 
 export interface ontractTemplateExcelReqVO {
   name?: string
-  post?: number
+  postId?: number
   identityCard?: string
   salary?: number
   performanceRequirements?: string

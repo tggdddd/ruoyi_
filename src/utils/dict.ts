@@ -63,11 +63,14 @@ export const getBoolDictOptions = (dictType: string) => {
 
 export const getDictObj = (dictType: string, value: any) => {
   const dictOptions: DictDataType[] = getDictOptions(dictType)
+  let result: DictDataType | undefined
   dictOptions.forEach((dict: DictDataType) => {
     if (dict.value === value.toString()) {
-      return dict
+      result = dict
+      return result
     }
   })
+  return result
 }
 
 export enum DICT_TYPE {
@@ -123,5 +126,8 @@ export enum DICT_TYPE {
   PAY_ORDER_STATUS = 'pay_order_status', // 商户支付订单状态
   PAY_ORDER_REFUND_STATUS = 'pay_order_refund_status', // 商户支付订单退款状态
   PAY_REFUND_ORDER_STATUS = 'pay_refund_order_status', // 退款订单状态
-  PAY_REFUND_ORDER_TYPE = 'pay_refund_order_type' // 退款订单类别
+  PAY_REFUND_ORDER_TYPE = 'pay_refund_order_type', // 退款订单类别
+  // =======合同模块=========
+  CONTRACT_STATUS = 'contract_status',
+  CONTRACT_TEMPLATE_AUDIT_STATUS = 'contract_template_audit_status'
 }

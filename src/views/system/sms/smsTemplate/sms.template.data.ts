@@ -1,19 +1,10 @@
 import type { VxeCrudSchema } from '@/hooks/web/useVxeCrudSchemas'
-import * as smsApi from '@/api/system/sms/smsChannel'
+import type { ComponentOptions } from 'vue'
+import { getSimpleSmsChannels } from '@/api/system/sms/smsChannel'
+import type { simpleChannelVO } from '@/api/system/sms/smsChannel'
+import { getDictObj } from '@/utils/dict'
 const { t } = useI18n() // 国际化
-const tenantPackageOption = []
-const getTenantPackageOptions = async () => {
-  const res = await smsApi.getSimpleSmsChannels()
-  console.log(res, 'resresres')
-  res.forEach((tenantPackage: TenantPackageVO) => {
-    tenantPackageOption.push({
-      key: tenantPackage.id,
-      value: tenantPackage.id,
-      label: tenantPackage.signature
-    })
-  })
-}
-getTenantPackageOptions()
+
 // 表单校验
 export const rules = reactive({
   type: [required],
@@ -24,25 +15,44 @@ export const rules = reactive({
   apiTemplateId: [required],
   channelId: [required]
 })
-
+// 获得短信渠道字典
+export const simpleChannelOption: ComponentOptions[] = []
+const getsimpleChannelOptions = async () => {
+  const res = await getSimpleSmsChannels()
+  res.forEach((simpleChannel: simpleChannelVO) => {
+    simpleChannelOption.push({
+      key: simpleChannel.id,
+      label:
+        getDictObj(DICT_TYPE.SYSTEM_SMS_CHANNEL_CODE, simpleChannel.code)?.label +
+        ':' +
+        simpleChannel.signature,
+      value: simpleChannel.id
+    })
+  })
+  return simpleChannelOption
+}
+getsimpleChannelOptions()
 // CrudSchema
 const crudSchemas = reactive<VxeCrudSchema>({
   primaryKey: 'id',
-  primaryType: 'id',
+  primaryType: 'seq',
   primaryTitle: '模板编号',
   action: true,
   actionWidth: '280',
   columns: [
     {
-      title: '短信渠道编码',
       field: 'channelId',
-      isSearch: false,
-      isForm: true,
-      isTable: false,
+      title: '短信渠道',
+      isSearch: true,
+      table: {
+        slots: {
+          default: 'channelId_default'
+        }
+      },
       form: {
         component: 'Select',
         componentProps: {
-          options: tenantPackageOption
+          options: simpleChannelOption
         }
       }
     },

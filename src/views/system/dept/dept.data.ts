@@ -23,6 +23,10 @@ const crudSchemas = reactive<VxeCrudSchema>({
   action: true,
   columns: [
     {
+      title: '编号ID',
+      field: 'id'
+    },
+    {
       title: '上级部门',
       field: 'parentId',
       isTable: false

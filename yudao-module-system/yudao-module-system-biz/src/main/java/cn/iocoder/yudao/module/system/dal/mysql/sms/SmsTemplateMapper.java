@@ -44,5 +44,7 @@ public interface SmsTemplateMapper extends BaseMapperX<SmsTemplateDO> {
     default Long selectCountByChannelId(Long channelId) {
         return selectCount(SmsTemplateDO::getChannelId, channelId);
     }
-
+    default SmsTemplateDO selectByApiTemplateId(String apiTemplateId){
+        return selectOne(new LambdaQueryWrapperX<SmsTemplateDO>().eq(SmsTemplateDO::getApiTemplateId,apiTemplateId));
+    }
 }

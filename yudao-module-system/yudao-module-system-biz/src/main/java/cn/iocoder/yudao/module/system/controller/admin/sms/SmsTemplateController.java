@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -67,6 +68,15 @@ public class SmsTemplateController {
         return success(SmsTemplateConvert.INSTANCE.convert(smsTemplate));
     }
 
+    @GetMapping("/getContentByTemplateId")
+    @Operation(summary = "获得短信模板内容")
+    @Parameter(name = "code", description = "模板编码", required = true, example = "1024")
+    @OperateLog(enable = false)
+    @PermitAll
+    public String getSmsTemplate(@RequestParam("templateId") String templateId) {
+        String smsTemplateContent = smsTemplateService.getSmsTemplateList(new SmsTemplateExportReqVO().setApiTemplateId(templateId)).get(0).getContent();
+        return smsTemplateContent;
+    }
     @GetMapping("/page")
     @Operation(summary = "获得短信模板分页")
     @PreAuthorize("@ss.hasPermission('system:sms-template:query')")

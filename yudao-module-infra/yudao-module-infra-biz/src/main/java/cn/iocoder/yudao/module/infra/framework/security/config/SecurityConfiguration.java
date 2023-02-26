@@ -41,6 +41,8 @@ public class SecurityConfiguration {
                         .antMatchers(adminSeverContextPath + "/**").anonymous();
                 // 文件读取
                 registry.antMatchers(buildAdminApi("/infra/file/*/get/**")).permitAll();
+                //短信模板
+                registry.antMatchers("/system/sms-template/getContentByTemplateId").anonymous();
             }
 
         };

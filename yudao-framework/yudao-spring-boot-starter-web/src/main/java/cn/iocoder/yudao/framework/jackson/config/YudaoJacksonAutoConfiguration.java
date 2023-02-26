@@ -6,6 +6,7 @@ import cn.iocoder.yudao.framework.jackson.core.databind.LocalDateTimeSerializer;
 import cn.iocoder.yudao.framework.common.util.json.JsonUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -37,9 +38,12 @@ public class YudaoJacksonAutoConfiguration {
                         .addSerializer(Long.TYPE, NumberSerializer.INSTANCE)
                         .addSerializer(LocalDateTime.class, LocalDateTimeSerializer.INSTANCE)
                         .addDeserializer(LocalDateTime.class, LocalDateTimeDeserializer.INSTANCE);
-
+                JavaTimeModule javaTimeModule = new JavaTimeModule();
+                javaTimeModule
+                        .addSerializer(LocalDateTime.class, com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer.INSTANCE)
+                        .addDeserializer(LocalDateTime.class,com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer.INSTANCE);
                 objectMapper.registerModules(simpleModule);
-
+                objectMapper.registerModules(javaTimeModule);
                 JsonUtils.init(objectMapper);
                 log.info("初始化 jackson 自动配置");
                 return bean;

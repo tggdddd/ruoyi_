@@ -8,6 +8,7 @@ import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.crypto.digest.HmacAlgorithm;
 import cn.hutool.http.HttpUtil;
 import cn.iocoder.yudao.framework.common.core.KeyValue;
+import cn.iocoder.yudao.framework.common.exception.ErrorCode;
 import cn.iocoder.yudao.framework.sms.core.client.SmsCommonResult;
 import cn.iocoder.yudao.framework.sms.core.client.dto.SmsReceiveRespDTO;
 import cn.iocoder.yudao.framework.sms.core.client.dto.SmsSendRespDTO;
@@ -22,9 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
+
 /**
  * 基于钉钉 WebHook 实现的调试的短信客户端实现类
- *
+ * <p>
  * 考虑到省钱，我们使用钉钉 WebHook 模拟发送短信，方便调试。
  *
  * @author 芋道源码
@@ -48,8 +51,16 @@ public class DebugDingTalkSmsClient extends AbstractSmsClient {
         String url = buildUrl("robot/send");
         Map<String, Object> params = new HashMap<>();
         params.put("msgtype", "text");
-        String content = String.format("【模拟短信】\n手机号：%s\n短信日志编号：%d\n模板参数：%s",
-                mobile, sendLogId, MapUtils.convertMap(templateParams));
+        String content = null;
+        try {
+            content = HttpUtil.get("http://localhost:48080/admin-api/system/sms-template/getContentByTemplateId?templateId="+apiTemplateId);
+        } catch (Exception e) {
+            content = String.format("【模拟短信】\n手机号：%s\n短信日志编号：%d\n模板参数：%s",
+                    mobile, sendLogId, MapUtils.convertMap(templateParams));
+        }
+        Map map =MapUtils.convertMap(templateParams);
+        map.put("mobile",mobile);
+        content = format("【模拟短信】\n手机号：{mobile}\n"+content,map);
         params.put("text", MapUtil.builder().put("content", content).build());
         // 执行请求
         String responseText = HttpUtil.post(url, JsonUtils.toJsonString(params));
@@ -58,10 +69,33 @@ public class DebugDingTalkSmsClient extends AbstractSmsClient {
         return SmsCommonResult.build(MapUtil.getStr(responseObj, "errcode"), MapUtil.getStr(responseObj, "errorMsg"),
                 null, new SmsSendRespDTO().setSerialNo(StrUtil.uuid()), codeMapping);
     }
-
+    private String format(String content,Map map){
+        StringBuilder stringBuilder = new StringBuilder();
+        int index = 0;
+        int startIndex = -1;
+        // 对所有的变量赋值
+        while ((startIndex = content.indexOf("{",index))!= -1){
+            int endIndex = content.indexOf("}",index);
+            // 对错误的{进行处理
+            if(content.substring(startIndex + 1, endIndex).contains("{")){
+                throw exception(new ErrorCode(10086,"短信模板异常"));
+            }else{
+                stringBuilder.append(content,index,startIndex);
+                String key = content.substring(startIndex + 1, endIndex);
+                String data = (String) map.get(key);
+                if(data == null){
+                    data = "{"+key+"}";
+                }
+                stringBuilder.append(data);
+                index = endIndex + 1;
+            }
+        }
+        stringBuilder.append(content,index,content.length());
+        return stringBuilder.toString();
+    }
     /**
      * 构建请求地址
-     *
+     * <p>
      * 参见 https://developers.dingtalk.com/document/app/custom-robot-access/title-nfv-794-g71 文档
      *
      * @param path 请求路径

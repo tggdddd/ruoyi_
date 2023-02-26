@@ -225,5 +225,4 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         // 校验短信模板是否正确
         templateResult.checkError();
     }
-
 }

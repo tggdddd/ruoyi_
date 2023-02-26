@@ -24,7 +24,6 @@ public interface SmsTemplateService {
      * 初始化短信模板的本地缓存
      */
     void initLocalCache();
-
     /**
      * 获得短信模板，从缓存中
      *

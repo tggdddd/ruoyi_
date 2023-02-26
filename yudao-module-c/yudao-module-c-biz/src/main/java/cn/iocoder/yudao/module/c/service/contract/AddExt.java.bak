@@ -1,0 +1,46 @@
+package cn.iocoder.yudao.module.c.service.contract;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.flowable.bpmn.model.BpmnModel;
+import org.flowable.bpmn.model.ExtensionElement;
+import org.flowable.bpmn.model.Process;
+import org.flowable.bpmn.model.UserTask;
+import org.flowable.engine.RepositoryService;
+import org.flowable.task.service.delegate.DelegateTask;
+import org.flowable.task.service.delegate.TaskListener;
+
+import javax.annotation.Resource;
+
+public class AddExt implements TaskListener {
+    @Resource
+    RepositoryService repositoryService;
+    @Override
+    public void notify(DelegateTask delegateTask) {
+        // 获取当前任务的流程实例 ID
+        String processInstanceId = delegateTask.getProcessInstanceId();
+
+        // 获取当前任务的模型信息
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(delegateTask.getProcessDefinitionId());
+        Process process = bpmnModel.getProcessById(delegateTask.getProcessDefinitionId());
+        UserTask userTask = (UserTask) process.getFlowElement(delegateTask.getTaskDefinitionKey());
+        Map<String, Object> definedVariables = new HashMap<>();
+        Map<String, List<ExtensionElement>> extensionElements = userTask.getExtensionElements();
+        List<ExtensionElement> propertiesElements = extensionElements.get("properties");
+        if (propertiesElements != null && !propertiesElements.isEmpty()) {
+            for (ExtensionElement propertiesElement : propertiesElements) {
+                List<ExtensionElement> propertyElements = propertiesElement.getChildElements().get("property");
+                if (propertyElements != null && !propertyElements.isEmpty()) {
+                    for (ExtensionElement propertyElement : propertyElements) {
+                        String name = propertyElement.getAttributeValue(null, "name");
+                        String value = propertyElement.getAttributeValue(null, "value");
+                        definedVariables.put(name, value);
+                    }
+                }
+            }
+        }
+        // 将任务扩展变量参数添加到任务中
+        delegateTask.setVariables(definedVariables);
+    }
+}

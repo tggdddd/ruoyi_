@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.apache.ibatis.type.JdbcType;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -84,7 +85,7 @@ public class BpmProcessInstanceExtDO extends BaseDO {
     /**
      * 提交的表单值
      */
-    @TableField(typeHandler = JacksonTypeHandler.class)
+    @TableField(typeHandler = JacksonTypeHandler.class,jdbcType= JdbcType.VARCHAR)
     private Map<String, Object> formVariables;
 
 }

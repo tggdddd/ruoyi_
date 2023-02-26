@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                   xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                   xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                   xmlns:flowable="http://flowable.org/bpmn" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0"
+                   id="diagram_Process_1677064431755" targetNamespace="http://flowable.org/bpmn">
+    <bpmn2:process id="oa_contract" name="合同的审核与签约流程" isExecutable="true">
+        <bpmn2:startEvent id="Event_025f566" name="创建合同">
+            <bpmn2:outgoing>Flow_1a8fjuk</bpmn2:outgoing>
+        </bpmn2:startEvent>
+        <bpmn2:userTask id="Activity_11ezfru" name="领导审核">
+            <bpmn2:incoming>Flow_1a8fjuk</bpmn2:incoming>
+            <bpmn2:outgoing>Flow_11ca17h</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="Flow_1a8fjuk" sourceRef="Event_025f566" targetRef="Activity_11ezfru"/>
+        <bpmn2:userTask id="Activity_1dd108y" name="二次审核">
+            <bpmn2:incoming>Flow_11ca17h</bpmn2:incoming>
+            <bpmn2:outgoing>Flow_17nq7pc</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="Flow_11ca17h" sourceRef="Activity_11ezfru" targetRef="Activity_1dd108y"/>
+        <bpmn2:userTask id="Activity_0cspojz" name="用户签约">
+            <bpmn2:incoming>Flow_17nq7pc</bpmn2:incoming>
+            <bpmn2:outgoing>Flow_0kw0777</bpmn2:outgoing>
+        </bpmn2:userTask>
+        <bpmn2:sequenceFlow id="Flow_17nq7pc" sourceRef="Activity_1dd108y" targetRef="Activity_0cspojz"/>
+        <bpmn2:boundaryEvent id="Event_1hm2jsq" name="超过合同开始时间自动取消" attachedToRef="Activity_0cspojz">
+            <bpmn2:extensionElements>
+                <flowable:properties>
+                    <flowable:property name="startTime" value="${starTime}"/>
+                </flowable:properties>
+            </bpmn2:extensionElements>
+            <bpmn2:timerEventDefinition id="TimerEventDefinition_0djquy5">
+                <bpmn2:timeDate>R3/PT10H/${startTime}</bpmn2:timeDate>
+            </bpmn2:timerEventDefinition>
+        </bpmn2:boundaryEvent>
+        <bpmn2:endEvent id="Event_0xdlelf" name="合同生效">
+            <bpmn2:incoming>Flow_0kw0777</bpmn2:incoming>
+        </bpmn2:endEvent>
+        <bpmn2:sequenceFlow id="Flow_0kw0777" sourceRef="Activity_0cspojz" targetRef="Event_0xdlelf"/>
+        <bpmn2:boundaryEvent id="Event_1hdu4q7" name="提醒签约" cancelActivity="false" attachedToRef="Activity_0cspojz">
+            <bpmn2:extensionElements>
+                <flowable:properties>
+                    <flowable:property name="remindTime" value="${starTime}"/>
+                </flowable:properties>
+            </bpmn2:extensionElements>
+            <bpmn2:timerEventDefinition id="TimerEventDefinition_1xu3l9c">
+                <bpmn2:timeCycle>${remindTime}</bpmn2:timeCycle>
+            </bpmn2:timerEventDefinition>
+        </bpmn2:boundaryEvent>
+    </bpmn2:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="oa_contract_di" bpmnElement="oa_contract">
+            <bpmndi:BPMNEdge id="Flow_0kw0777_di" bpmnElement="Flow_0kw0777">
+                <di:waypoint x="650" y="270"/>
+                <di:waypoint x="712" y="270"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_17nq7pc_di" bpmnElement="Flow_17nq7pc">
+                <di:waypoint x="490" y="270"/>
+                <di:waypoint x="550" y="270"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_11ca17h_di" bpmnElement="Flow_11ca17h">
+                <di:waypoint x="330" y="270"/>
+                <di:waypoint x="390" y="270"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_1a8fjuk_di" bpmnElement="Flow_1a8fjuk">
+                <di:waypoint x="178" y="270"/>
+                <di:waypoint x="230" y="270"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNShape id="Event_025f566_di" bpmnElement="Event_025f566" bioc:stroke="#000" bioc:fill="#fff">
+                <dc:Bounds x="142" y="252" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="139" y="295" width="43" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_11ezfru_di" bpmnElement="Activity_11ezfru">
+                <dc:Bounds x="230" y="230" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1dd108y_di" bpmnElement="Activity_1dd108y">
+                <dc:Bounds x="390" y="230" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0cspojz_di" bpmnElement="Activity_0cspojz">
+                <dc:Bounds x="550" y="230" width="100" height="80"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_0xdlelf_di" bpmnElement="Event_0xdlelf" bioc:stroke="#000" bioc:fill="#fff">
+                <dc:Bounds x="712" y="252" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="708" y="228" width="44" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_056bldn_di" bpmnElement="Event_1hm2jsq" bioc:stroke="#000" bioc:fill="#fff">
+                <dc:Bounds x="612" y="292" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="592" y="335" width="77" height="27"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_17958fp_di" bpmnElement="Event_1hdu4q7">
+                <dc:Bounds x="582" y="212" width="36" height="36"/>
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="579" y="182" width="43" height="14"/>
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn2:definitions>

@@ -35,7 +35,7 @@ public class ContractExcelVO {
     @ExcelProperty("用户的身份证号")
     private String identityCard;
     @Schema(description = "岗位", required = true, example = "1")
-    private String postId;
+    private Integer postId;
     @ExcelProperty("薪资")
     private BigDecimal salary;
 
@@ -66,5 +66,6 @@ public class ContractExcelVO {
 
     @ExcelProperty("创建时间")
     private LocalDateTime createTime;
-
+    @Schema(description = "状态-参见 bpm_process_instance_result 枚举", required = true, example = "1")
+    private Integer result;
 }

@@ -44,31 +44,52 @@ public class ContractGenerator {
         stringBuilder.append(content,index,content.length());
         return stringBuilder.toString();
     }
+    private static String[] param = {"姓名","身份证号","薪资","甲方","岗位","业绩要求","违约条款","合同开始时间","合同结束时间","签约时间"};
+    private static String getMay(String p){
+        int max = 0;
+        int pos = 0;
+        for (int j = 0; j < param.length; j++) {
+            String s = param[j];
+            int cache = 0;
+            for(int i = 0; i<p.length();i++){
+                if(s.indexOf(p.charAt(i)) == -1){
+                    continue;
+                }
+                cache ++;
+            }
+            if(cache > max){
+                max = cache;
+                pos = j;
+            }
+        }
+        return param[pos];
+    }
 
     private static String getData(AttachBean attachBean, String param) {
         switch (param) {
             case "姓名":
-                return attachBean.getName();
+                return attachBean.getName()==null?"<font color='red'>{"+param+"}</font>":attachBean.getName();
             case "身份证号":
-                return attachBean.getIdentityCard();
+                return attachBean.getIdentityCard()==null?"<font color='red'>{"+param+"}</font>":attachBean.getIdentityCard();
             case "薪资":
-                return attachBean.getSalary().toString();
+                return attachBean.getSalary().toString()==null?"<font color='red'>{"+param+"}</font>":attachBean.getSalary().toString();
             case "甲方":
-                return attachBean.getFirstParty();
+                return attachBean.getFirstParty()==null?"<font color='red'>{"+param+"}</font>":attachBean.getFirstParty();
             case "岗位":
-                return attachBean.getPost();
+                return attachBean.getPost()==null?"<font color='red'>{"+param+"}</font>":attachBean.getPost();
             case "业绩要求":
-                return attachBean.getPerformanceRequirements();
+                return attachBean.getPerformanceRequirements()==null?"<font color='red'>{"+param+"}</font>":attachBean.getPerformanceRequirements();
             case "违约条款":
-                return attachBean.getDefaultClause();
+                return attachBean.getDefaultClause()==null?"<font color='red'>{"+param+"}</font>":attachBean.getDefaultClause();
             case "合同开始时间":
-                return DateTimeFormatter.ofPattern(DateUtils.FORMAT_YEAR_MONTH_DAY).format(attachBean.getStartTime());
+                return attachBean.getStartTime()==null?"<font color='red'>{"+param+"}</font>":DateTimeFormatter.ofPattern(DateUtils.FORMAT_YEAR_MONTH_DAY).format(attachBean.getStartTime());
             case "合同结束时间":
-                return DateTimeFormatter.ofPattern(DateUtils.FORMAT_YEAR_MONTH_DAY).format(attachBean.getEndTime());
+                return attachBean.getEndTime()==null?"<font color='red'>{"+param+"}</font>":DateTimeFormatter.ofPattern(DateUtils.FORMAT_YEAR_MONTH_DAY).format(attachBean.getEndTime());
             case "签约时间":
-                return DateTimeFormatter.ofPattern(DateUtils.FORMAT_YEAR_MONTH_DAY).format(attachBean.getSignedTime());
+                return attachBean.getSignedTime()==null?"<font color='red'>{"+param+"}</font>":DateTimeFormatter.ofPattern(DateUtils.FORMAT_YEAR_MONTH_DAY).format(attachBean.getSignedTime());
             default:
-                throw exception(CONTRACT_ATTACH_PARAM_ERROR,param);
+                // return "<font color='red'>{"+param+"}</font>";
+                throw exception(CONTRACT_ATTACH_PARAM_ERROR,param,getMay(param));
         }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
+import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_ZONE;
 
 @Schema(description = "管理后台 - 合同表单分页 Request VO")
 @Data
@@ -25,14 +26,11 @@ public class ContractPageReqVO extends PageParam {
 
     @Schema(description = "用户的身份证号")
     private String identityCard;
-    @Schema(description = "岗位", required = true, example = "1")
-    private String postId;
+
     @Schema(description = "薪资")
     private BigDecimal salary;
-
-    @Schema(description = "附件")
-    private String attach;
-
+    @Schema(description = "岗位", required = true, example = "开发人员")
+    private Integer postId;
     @Schema(description = "业绩要求")
     private String performanceRequirements;
 
@@ -46,7 +44,7 @@ public class ContractPageReqVO extends PageParam {
     private String firstParty;
 
     @Schema(description = "签约时间")
-    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
+    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_ZONE)
     private LocalDateTime[] signedTime;
 
     @Schema(description = "合同开始时间")
@@ -60,5 +58,7 @@ public class ContractPageReqVO extends PageParam {
     @Schema(description = "创建时间")
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
     private LocalDateTime[] createTime;
+    @Schema(description = "状态-参见 bpm_process_instance_result 枚举", example = "1")
+    private Integer result;
 
 }

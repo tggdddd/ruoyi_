@@ -29,12 +29,24 @@ public interface ContractService {
     void updateontract(@Valid ContractUpdateReqVO updateReqVO);
 
     /**
+     * 更新审核的状态
+     *
+     * @param id 编号
+     * @param result 结果
+     */
+    void updateontractResult(Long id, Integer result);
+    /**
      * 删除合同表单
      *
      * @param id 编号
      */
     void deleteontract(Long id);
-
+    /**
+     * 删除合同表单 必删除
+     *
+     * @param id 编号
+     */
+    void deleteContractAbs(Long id);
     /**
      * 获得合同表单
      *

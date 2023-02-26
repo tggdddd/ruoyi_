@@ -1,10 +1,10 @@
 package cn.iocoder.yudao.module.c.dal.dataobject.contract;
 
 import cn.iocoder.yudao.framework.mybatis.core.dataobject.BaseDO;
+import cn.iocoder.yudao.module.bpm.enums.task.BpmProcessInstanceResultEnum;
 import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.sun.xml.internal.bind.v2.TODO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,8 +51,8 @@ public class ContractDO extends BaseDO {
      * 薪资
      */
     private BigDecimal salary;
-      /**岗位  */
-      private String postId;
+    /**岗位  */
+    private Integer postId;
     /**
      * 附件
      */
@@ -68,9 +68,9 @@ public class ContractDO extends BaseDO {
     /**
      * 合同状态 0未签订 1签订 2到期 3终止
      *
-     * 枚举 {@link TODO contract_status 对应的类}
+     * 枚举 {@link cn.iocoder.yudao.module.c.enums.dal.ContractStatus 对应的类}
      */
-    private Byte status;
+    private Integer status;
     /**
      * 甲方
      */
@@ -87,5 +87,18 @@ public class ContractDO extends BaseDO {
      * 合同结束时间
      */
     private LocalDateTime endTime;
+    /**
+     * 审核的结果
+     *
+     * 枚举 {@link BpmProcessInstanceResultEnum}
+     * 考虑到简单，所以直接复用了 BpmProcessInstanceResultEnum 枚举，也可以自己定义一个枚举哈
+     */
+    private Integer result;
 
+    /**
+     * 对应的流程编号
+     *
+     * 关联 ProcessInstance 的 id 属性
+     */
+    private String processInstanceId;
 }

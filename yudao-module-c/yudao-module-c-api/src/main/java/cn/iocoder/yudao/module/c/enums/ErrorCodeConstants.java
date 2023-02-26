@@ -13,7 +13,7 @@ public interface ErrorCodeConstants {
 
     ErrorCode CONTRACT_NOT_EXISTS = new ErrorCode(1007000000, "合同表单不存在");
 
-    ErrorCode CONTRACT_ATTACH_PARAM_ERROR = new ErrorCode(1007000001,"合同附件参数{}不存在");
+    ErrorCode CONTRACT_ATTACH_PARAM_ERROR = new ErrorCode(1007000001,"合同附件参数：{} 不存在,\n您是否想用：{}");
     ErrorCode CONTRACT_ATTACH_GRAMMAR_ERROR = new ErrorCode(1007000002,"合同附件参数语法{}错误");
 
     // ========== 合同表单模板  模块 1007001000 ==========

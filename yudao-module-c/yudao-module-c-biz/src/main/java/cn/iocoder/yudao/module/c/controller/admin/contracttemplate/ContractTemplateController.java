@@ -48,6 +48,7 @@ public class ContractTemplateController {
     @Operation(summary = "创建合同表单模板")
     @PreAuthorize("@ss.hasPermission('c:ontract-template:create')")
     public CommonResult<Long> createContractTemplate(@Valid @RequestBody ContractTemplateCreateReqVO createReqVO) {
+        utilService.attachGenerator(ContractConvert.INSTANCE.convert(createReqVO));
         return success(ontractTemplateService.createontractTemplate(createReqVO));
     }
 
@@ -55,6 +56,7 @@ public class ContractTemplateController {
     @Operation(summary = "更新合同表单模板")
     @PreAuthorize("@ss.hasPermission('c:ontract-template:update')")
     public CommonResult<Boolean> updateContractTemplate(@Valid @RequestBody ContractTemplateUpdateReqVO updateReqVO) {
+        utilService.attachGenerator(ContractConvert.INSTANCE.convert(updateReqVO));
         ontractTemplateService.updateontractTemplate(updateReqVO);
         return success(true);
     }

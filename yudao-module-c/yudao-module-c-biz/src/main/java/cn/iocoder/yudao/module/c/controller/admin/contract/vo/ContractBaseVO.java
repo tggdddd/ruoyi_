@@ -1,7 +1,10 @@
 package cn.iocoder.yudao.module.c.controller.admin.contract.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,8 +12,10 @@ import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.time.LocalDateTime;
 import java.time.LocalDateTime;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
 import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
 
@@ -26,31 +31,27 @@ public class ContractBaseVO {
     private Long userId;
 
     @Schema(description = "用户的真实姓名", required = true, example = "芋艿")
-    @NotNull(message = "用户的真实姓名不能为空")
+    @NotNull(message = "用户的姓名不能为空")
     private String name;
-    @Schema(description = "岗位", required = true, example = "1")
-    private String postId;
-    @Schema(description = "用户的身份证号", required = true)
-    @NotNull(message = "用户的身份证号不能为空")
+
+    @Schema(description = "用户的身份证号")
+    @NotNull(message = "身份证不能为空")
     private String identityCard;
 
-    @Schema(description = "薪资", required = true)
+    @Schema(description = "薪资")
     @NotNull(message = "薪资不能为空")
     private BigDecimal salary;
-
-    @Schema(description = "附件")
-    private String attach;
-
+    @Schema(description = "岗位", required = true, example = "1")
+    private Integer postId;
     @Schema(description = "业绩要求")
     private String performanceRequirements;
 
     @Schema(description = "违约条款")
     private String defaultClause;
 
-    @Schema(description = "合同状态 0未签订 1签订 2到期 3终止", required = true, example = "0")
-    @NotNull(message = "合同状态 0未签订 1签订 2到期 3终止不能为空")
-    private Integer status;
-
+    // @Schema(description = "合同状态 0未签订 1签订 2到期 3终止", required = false, example = "0")
+    // private Integer status;
+    @NotNull(message = "甲方不能为空")
     @Schema(description = "甲方")
     private String firstParty;
 
@@ -60,10 +61,15 @@ public class ContractBaseVO {
 
     @Schema(description = "合同开始时间")
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
+    @NotNull(message = "合同的开始时间不能为空")
     private LocalDateTime startTime;
 
     @Schema(description = "合同结束时间")
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
+    @NotNull(message = "合同的结束时间不能为空")
     private LocalDateTime endTime;
+    @Schema(description = "合同附件")
+    @NotNull(message = "合同的附件内容不能为空")
+    private String attach;
 
 }

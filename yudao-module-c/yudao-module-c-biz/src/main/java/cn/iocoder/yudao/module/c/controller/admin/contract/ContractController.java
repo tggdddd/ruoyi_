@@ -45,6 +45,8 @@ public class ContractController {
     @Operation(summary = "创建合同表单")
     @PreAuthorize("@ss.hasPermission('c:ontract:create')")
     public CommonResult<Long> createontract(@Valid @RequestBody ContractCreateReqVO createReqVO) {
+        // 校验参数
+        utilService.attachGenerator(ContractConvert.INSTANCE.convert1(createReqVO));
         return success(ontractService.createontract(createReqVO));
     }
 
@@ -52,6 +54,8 @@ public class ContractController {
     @Operation(summary = "更新合同表单")
     @PreAuthorize("@ss.hasPermission('c:ontract:update')")
     public CommonResult<Boolean> updateontract(@Valid @RequestBody ContractUpdateReqVO updateReqVO) {
+        // 校验参数
+        utilService.attachGenerator(ContractConvert.INSTANCE.convert1(updateReqVO));
         ontractService.updateontract(updateReqVO);
         return success(true);
     }

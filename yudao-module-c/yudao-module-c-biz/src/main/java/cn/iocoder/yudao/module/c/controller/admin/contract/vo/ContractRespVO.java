@@ -10,10 +10,15 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 public class ContractRespVO extends ContractBaseVO {
 
-    @Schema(description = "主键(自增策略)", required = true, example = "5260")
+    @Schema(description = "主键(自增策略)", required = true, example = "28516")
     private Long id;
+
+    @Schema(description = "附件")
+    private String attach;
 
     @Schema(description = "创建时间", required = true)
     private LocalDateTime createTime;
 
+    @Schema(description = "审核结果",example = "1")
+    private Integer result;
 }

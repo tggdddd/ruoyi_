@@ -5,6 +5,8 @@ import java.util.*;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 
 import cn.iocoder.yudao.module.c.controller.admin.Util.vo.AttachReqVO;
+import cn.iocoder.yudao.module.c.controller.admin.contracttemplate.vo.ContractTemplateCreateReqVO;
+import cn.iocoder.yudao.module.c.controller.admin.contracttemplate.vo.ContractTemplateUpdateReqVO;
 import cn.iocoder.yudao.module.c.dal.dataobject.contracttemplate.ContractTemplateDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -35,4 +37,12 @@ public interface ContractConvert {
 
     AttachReqVO convert(ContractTemplateDO contractTemplateDO);
     AttachReqVO convert0(ContractDO contractDO);
+
+    AttachReqVO convert1(ContractCreateReqVO createReqVO);
+
+    AttachReqVO convert(ContractTemplateCreateReqVO createReqVO);
+
+    AttachReqVO convert1(ContractUpdateReqVO updateReqVO);
+
+    AttachReqVO convert(ContractTemplateUpdateReqVO updateReqVO);
 }

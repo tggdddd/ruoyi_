@@ -5,6 +5,7 @@ import cn.iocoder.yudao.framework.security.core.LoginUser;
 import cn.iocoder.yudao.module.bpm.api.task.BpmProcessInstanceApi;
 import cn.iocoder.yudao.module.bpm.api.task.dto.BpmProcessInstanceCreateReqDTO;
 import cn.iocoder.yudao.module.bpm.enums.task.BpmProcessInstanceResultEnum;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 
@@ -40,6 +41,7 @@ public class ContractTemplateServiceImpl implements ContractTemplateService {
     @Resource
     private ContractTemplateMapper ontractTemplateMapper;
     @Resource
+    @Lazy // 解决循环依赖
     private BpmProcessInstanceApi processInstanceApi;
 
     @Override
@@ -68,11 +70,18 @@ public class ContractTemplateServiceImpl implements ContractTemplateService {
     public void updateontractTemplate(ContractTemplateUpdateReqVO updateReqVO) {
         // 校验存在
         validateontractTemplateExists(updateReqVO.getId());
+        // 获得实例
+        String processInstanceId = ontractTemplateMapper.selectById(updateReqVO.getId()).getProcessInstanceId();
+        // 删除还在审核的流程
+        try {
+            processInstanceApi.cancelProcessInstance(processInstanceId,"已被修改");
+        }catch (Exception ignored){
+
+        }
         // 发起 BPM 流程
-        String processInstanceId = processInstanceApi.createProcessInstance(getLoginUserId(),
+        processInstanceId = processInstanceApi.createProcessInstance(getLoginUserId(),
                 new BpmProcessInstanceCreateReqDTO().setProcessDefinitionKey(PROCESS_KEY)
                         .setBusinessKey(String.valueOf(updateReqVO.getId())));
-        
 
         // 更新标新数据
         // 更新最新工作流编号
@@ -91,9 +100,18 @@ public class ContractTemplateServiceImpl implements ContractTemplateService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteontractTemplate(Long id) {
         // 校验存在
         validateontractTemplateExists(id);
+        // 获得实例
+        String processInstanceId = ontractTemplateMapper.selectById(id).getProcessInstanceId();
+        // 删除还在审核的流程
+        try {
+            processInstanceApi.cancelProcessInstance(processInstanceId,"已被修改");
+        }catch (Exception ignored){
+
+        }
         // 删除
         ontractTemplateMapper.deleteById(id);
     }

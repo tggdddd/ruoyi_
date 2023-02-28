@@ -16,7 +16,10 @@ export interface UserVO {
   loginDate: Date
   createTime: Date
 }
-
+export interface SimpleUserVO {
+  id: number
+  nickname: string
+}
 export interface UserPageReqVO extends PageParam {
   deptId?: number
   username?: string

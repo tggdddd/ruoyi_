@@ -83,6 +83,12 @@
           @click="previewAttachById(row.id)"
         />
       </template>
+      <template #defaultClause="{ row }">
+        <div v-html="row.defaultClause"></div>
+      </template>
+      <template #performanceRequirements="{ row }">
+        <div v-html="row.performanceRequirements"></div>
+      </template>
     </Descriptions>
     <template #footer>
       <!-- 按钮：保存 -->
@@ -258,3 +264,8 @@ const setShadow = (type) => {
   container.shadowRoot.innerHTML = inner
 }
 </script>
+<style>
+.editor-for-vue.fullscreen {
+  z-index: 999999;
+}
+</style>

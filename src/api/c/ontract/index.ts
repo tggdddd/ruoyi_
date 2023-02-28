@@ -3,7 +3,7 @@ import request from '@/config/axios'
 export interface ontractVO {
   id: number
   userId: number
-  post: number
+  postId: number
   name: string
   identityCard: string
   salary: number
@@ -20,7 +20,7 @@ export interface ontractVO {
 export interface ontractPageReqVO extends PageParam {
   userId?: number
   name?: string
-  post: number
+  postId: number
   identityCard?: string
   salary?: number
   attach?: string
@@ -37,7 +37,7 @@ export interface ontractPageReqVO extends PageParam {
 export interface ontractExcelReqVO {
   userId?: number
   name?: string
-  post: number
+  postId: number
   identityCard?: string
   salary?: number
   attach?: string

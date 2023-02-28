@@ -13,6 +13,7 @@ export interface ontractTemplateVO {
   signedTime: Date
   startTime: Date
   endTime: Date
+  result: number
 }
 
 export interface ontractTemplatePageReqVO extends PageParam {
@@ -27,6 +28,7 @@ export interface ontractTemplatePageReqVO extends PageParam {
   startTime?: Date[]
   endTime?: Date[]
   createTime?: Date[]
+  result?: number
 }
 
 export interface ontractTemplateExcelReqVO {
@@ -41,13 +43,18 @@ export interface ontractTemplateExcelReqVO {
   startTime?: Date[]
   endTime?: Date[]
   createTime?: Date[]
+  result?: number
 }
 
 // 查询合同表单模板列表
 export const getontractTemplatePageApi = async (params: ontractTemplatePageReqVO) => {
   return await request.get({ url: '/c/ontract-template/page', params })
 }
-
+// 查询通过审核的合同表单模板列表
+export const getAcceptContractTemplatePageApi = async (params: ontractTemplatePageReqVO) => {
+  params.result = 2
+  return await request.get({ url: '/c/ontract-template/page', params })
+}
 // 查询合同表单模板详情
 export const getontractTemplateApi = async (id: number) => {
   return await request.get({ url: '/c/ontract-template/get?id=' + id })

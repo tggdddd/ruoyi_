@@ -297,7 +297,8 @@ export default {
     typeCreate: 'Dict Type Create',
     typeUpdate: 'Dict Type Eidt',
     dataCreate: 'Dict Data Create',
-    dataUpdate: 'Dict Data Eidt'
+    dataUpdate: 'Dict Data Eidt',
+    select: 'select'
   },
   dialog: {
     dialog: 'Dialog',

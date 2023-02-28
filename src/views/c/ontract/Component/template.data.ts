@@ -25,18 +25,10 @@ getPostPackageOptions()
 const crudSchemas = reactive<VxeCrudSchema>({
   primaryKey: 'id', // 默认的主键ID
   primaryTitle: t('common.index'), // 默认显示的值
-  primaryType: 'seq', // 默认为seq，序号模式
+  // primaryType: 'seq', // 默认为seq，序号模式
   action: true,
   actionWidth: '200', // 3个按钮默认200，如有删减对应增减即可
   columns: [
-    {
-      title: '姓名',
-      field: 'name'
-    },
-    {
-      title: '身份证号',
-      field: 'identityCard'
-    },
     {
       title: '岗位',
       field: 'postId',
@@ -53,18 +45,38 @@ const crudSchemas = reactive<VxeCrudSchema>({
         }
       }
     },
+
+    {
+      title: '甲方',
+      field: 'firstParty'
+    },
+    {
+      title: '附件模板',
+      field: 'attach',
+      form: {
+        component: 'Editor',
+        colProps: {
+          span: 24
+        },
+        componentProps: {
+          valueHtml: ''
+        }
+      },
+      table: {
+        slots: {
+          default: 'attach_default'
+        }
+      }
+    },
     {
       title: '薪资',
       field: 'salary',
       isSearch: true
     },
     {
-      title: '甲方',
-      field: 'firstParty'
-    },
-    {
       title: '业绩要求',
       field: 'performanceRequirements',
+      isTable: false,
       form: {
         component: 'Input',
         componentProps: {
@@ -79,6 +91,7 @@ const crudSchemas = reactive<VxeCrudSchema>({
     {
       title: '违约条款',
       field: 'defaultClause',
+      isTable: false,
       form: {
         component: 'Input',
         componentProps: {
@@ -127,30 +140,20 @@ const crudSchemas = reactive<VxeCrudSchema>({
       }
     },
     {
-      title: '附件模板',
-      field: 'attach',
-      form: {
-        component: 'Editor',
-        colProps: {
-          span: 24
-        },
-        componentProps: {
-          valueHtml: ''
-        }
-      },
-      table: {
-        slots: {
-          default: 'attach_default'
-        }
-      }
+      title: '姓名',
+      field: 'name'
+    },
+    {
+      title: '身份证号',
+      field: 'identityCard'
     },
     {
       title: '状态',
       field: 'result',
       dictType: DICT_TYPE.CONTRACT_TEMPLATE_AUDIT_STATUS,
       dictClass: 'number',
-      isSearch: true,
-      isForm: false
+      isTable: false,
+      search: {}
     }
   ]
 })

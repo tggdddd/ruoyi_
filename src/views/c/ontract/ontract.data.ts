@@ -1,4 +1,8 @@
 import type { VxeCrudSchema } from '@/hooks/web/useVxeCrudSchemas'
+import { listSimplePostsApi, SimplePostVO } from '@/api/system/post'
+import { ComponentOptions } from '@/types/components'
+import { getListSimpleUsersApi, SimpleUserVO } from '@/api/system/user'
+
 const { t } = useI18n() // 国际化
 // 表单校验
 export const rules = reactive({
@@ -8,32 +12,85 @@ export const rules = reactive({
   salary: [required],
   status: [required]
 })
+// 获得post字段字典
+export const postPackageOption: ComponentOptions[] = []
+const getPostPackageOptions = async () => {
+  const res = await listSimplePostsApi()
+  res.forEach((postPackage: SimplePostVO) => {
+    postPackageOption.push({
+      key: postPackage.id,
+      label: postPackage.name,
+      value: postPackage.id
+    })
+  })
+  return postPackageOption
+}
+getPostPackageOptions()
+
+// 获得userId字段字典
+export const userIdOption: ComponentOptions[] = []
+const getUserIdOptions = async () => {
+  const res = await getListSimpleUsersApi()
+  res.forEach((postPackage: SimpleUserVO) => {
+    userIdOption.push({
+      key: postPackage.id,
+      label: postPackage.nickname,
+      value: postPackage.id
+    })
+  })
+  return userIdOption
+}
+getUserIdOptions()
+
 // CrudSchema
 const crudSchemas = reactive<VxeCrudSchema>({
   primaryKey: 'id', // 默认的主键ID
   primaryTitle: t('common.index'), // 默认显示的值
-  primaryType: 'seq', // 默认为seq，序号模式
+  // primaryType: 'seq', // 默认为seq，序号模式
   action: true,
   actionWidth: '200', // 3个按钮默认200，如有删减对应增减即可
   columns: [
     {
-      title: 'system_user表用户ID',
+      title: '账号',
       field: 'userId',
-      form: {
-        component: 'InputNumber',
-        value: 0
+      isSearch: true,
+      table: {
+        slots: {
+          default: 'userId_default'
+        }
       },
-      isSearch: true
+      form: {
+        component: 'Select',
+        componentProps: {
+          options: userIdOption,
+          filterable: true,
+          autocomplete: true
+        }
+      }
     },
     {
-      title: '用户的真实姓名',
-      field: 'name',
-      isSearch: true
+      title: '姓名',
+      field: 'name'
     },
     {
-      title: '用户的身份证号',
-      field: 'identityCard',
-      isSearch: true
+      title: '身份证号',
+      field: 'identityCard'
+    },
+    {
+      title: '岗位',
+      field: 'postId',
+      isSearch: true,
+      table: {
+        slots: {
+          default: 'postId_default'
+        }
+      },
+      form: {
+        component: 'Select',
+        componentProps: {
+          options: postPackageOption
+        }
+      }
     },
     {
       title: '薪资',
@@ -41,14 +98,8 @@ const crudSchemas = reactive<VxeCrudSchema>({
       isSearch: true
     },
     {
-      title: '岗位',
-      field: 'post',
-      isSearch: true
-    },
-    {
-      title: '附件',
-      field: 'attach',
-      isSearch: true
+      title: '甲方',
+      field: 'firstParty'
     },
     {
       title: '业绩要求',
@@ -79,16 +130,12 @@ const crudSchemas = reactive<VxeCrudSchema>({
       }
     },
     {
-      title: '合同状态 0未签订 1签订 2到期 3终止',
+      title: '合同状态',
       field: 'status',
       dictType: DICT_TYPE.CONTRACT_STATUS,
       dictClass: 'string',
-      isSearch: true
-    },
-    {
-      title: '甲方',
-      field: 'firstParty',
-      isSearch: true
+      isSearch: true,
+      isForm: false
     },
     {
       title: '签约时间',
@@ -100,6 +147,7 @@ const crudSchemas = reactive<VxeCrudSchema>({
           valueFormat: 'x'
         }
       },
+      isForm: false,
       formatter: 'formatDate',
       search: {
         show: true,
@@ -155,6 +203,32 @@ const crudSchemas = reactive<VxeCrudSchema>({
           name: 'XDataTimePicker'
         }
       }
+    },
+    {
+      title: '附件模板',
+      field: 'attach',
+      form: {
+        component: 'Editor',
+        colProps: {
+          span: 24
+        },
+        componentProps: {
+          valueHtml: ''
+        }
+      },
+      table: {
+        slots: {
+          default: 'attach_default'
+        }
+      }
+    },
+    {
+      title: '状态',
+      field: 'result',
+      dictType: DICT_TYPE.CONTRACT_TEMPLATE_AUDIT_STATUS,
+      dictClass: 'number',
+      isSearch: true,
+      isForm: false
     }
   ]
 })

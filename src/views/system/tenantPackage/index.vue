@@ -25,7 +25,7 @@
       ref="formRef"
     >
       <template #menuIds>
-        <el-card>
+        <el-card class="w-120">
           <template #header>
             <div class="card-header">
               全选/全不选:
@@ -91,16 +91,6 @@ const dialogTitle = ref('edit') // 弹出层标题
 const handleCheckedTreeNodeAll = () => {
   treeRef.value!.setCheckedNodes(treeNodeAll.value ? menuOptions.value : [])
 }
-
-const validateCategory = (rule: any, value: any, callback: any) => {
-  if (!treeRef.value!.getCheckedKeys().length) {
-    callback(new Error('该项为必填项'))
-  } else {
-    callback()
-  }
-}
-rules.menuIds = [{ required: true, validator: validateCategory, trigger: 'blur' }]
-
 const getTree = async () => {
   const res = await listSimpleMenusApi()
   menuOptions.value = handleTree(res)
@@ -136,7 +126,7 @@ const handleUpdate = async (rowId: number) => {
   unref(formRef)?.setValues(res)
   // 设置选中
   res.menuIds?.forEach((item: any) => {
-    unref(treeRef)?.setChecked(item, true, false)
+    unref(treeRef)?.setChecked(item, true,false);
   })
 }
 
@@ -178,10 +168,3 @@ onMounted(async () => {
 })
 // getList()
 </script>
-<style scoped>
-.el-card {
-  width: 100%;
-  max-height: 400px;
-  overflow-y: scroll;
-}
-</style>

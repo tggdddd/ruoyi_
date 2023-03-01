@@ -1,5 +1,7 @@
 package cn.iocoder.yudao.module.c.service.contract;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import javax.validation.*;
 import cn.iocoder.yudao.module.c.controller.admin.contract.vo.*;
@@ -40,7 +42,7 @@ public interface ContractService {
      *
      * @param id 编号
      */
-    void deleteontract(Long id);
+    Object deleteontract(Long id);
     /**
      * 删除合同表单 必删除
      *
@@ -79,4 +81,5 @@ public interface ContractService {
      */
     List<ContractDO> getontractList(ContractExportReqVO exportReqVO);
 
+    void sign(Long id);
 }

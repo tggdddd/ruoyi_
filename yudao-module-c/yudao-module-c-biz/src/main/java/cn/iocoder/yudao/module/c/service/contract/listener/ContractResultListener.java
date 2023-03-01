@@ -5,12 +5,16 @@ import cn.iocoder.yudao.module.bpm.framework.bpm.core.event.BpmProcessInstanceRe
 import cn.iocoder.yudao.module.bpm.framework.bpm.core.event.BpmProcessInstanceResultEventListener;
 import cn.iocoder.yudao.module.bpm.service.oa.BpmOALeaveService;
 import cn.iocoder.yudao.module.bpm.service.oa.BpmOALeaveServiceImpl;
+import cn.iocoder.yudao.module.c.controller.admin.contract.vo.ContractUpdateReqVO;
 import cn.iocoder.yudao.module.c.service.contract.ContractService;
 import cn.iocoder.yudao.module.c.service.contract.ContractServiceImpl;
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -32,8 +36,9 @@ public class ContractResultListener extends BpmProcessInstanceResultEventListene
 
     @Override
     protected void onEvent(BpmProcessInstanceResultEvent event) {
-        if(Objects.equals(event.getResult(), BpmProcessInstanceResultEnum.APPROVE.getResult())){
-            contractService.deleteContractAbs(Long.parseLong(event.getBusinessKey()));
+        contractService.updateontractResult(Long.parseLong(event.getBusinessKey()), event.getResult());
+        if(event.getResult().equals(BpmProcessInstanceResultEnum.APPROVE.getResult())){
+            contractService.sign(Long.valueOf(event.getBusinessKey()));
         }
     }
 

@@ -157,7 +157,6 @@ public class ContractServiceImplTest extends BaseDbUnitTest {
        reqVO.setName(null);
        reqVO.setIdentityCard(null);
        reqVO.setSalary(null);
-       reqVO.setAttach(null);
        reqVO.setPerformanceRequirements(null);
        reqVO.setDefaultClause(null);
        reqVO.setStatus(null);
@@ -227,7 +226,6 @@ public class ContractServiceImplTest extends BaseDbUnitTest {
        reqVO.setName(null);
        reqVO.setIdentityCard(null);
        reqVO.setSalary(null);
-       reqVO.setAttach(null);
        reqVO.setPerformanceRequirements(null);
        reqVO.setDefaultClause(null);
        reqVO.setStatus(null);

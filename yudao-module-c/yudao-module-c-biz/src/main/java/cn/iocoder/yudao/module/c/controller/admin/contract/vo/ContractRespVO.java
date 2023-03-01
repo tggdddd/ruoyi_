@@ -21,4 +21,7 @@ public class ContractRespVO extends ContractBaseVO {
 
     @Schema(description = "审核结果",example = "1")
     private Integer result;
+
+    @Schema(description = "合同状态 0未签订 1签订 2到期 3终止", required = false, example = "0")
+    private Integer status;
 }

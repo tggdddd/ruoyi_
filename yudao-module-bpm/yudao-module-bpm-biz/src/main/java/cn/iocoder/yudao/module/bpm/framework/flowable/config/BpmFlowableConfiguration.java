@@ -2,13 +2,19 @@ package cn.iocoder.yudao.module.bpm.framework.flowable.config;
 
 import cn.hutool.core.collection.ListUtil;
 import cn.iocoder.yudao.module.bpm.framework.flowable.core.behavior.BpmActivityBehaviorFactory;
+import cn.iocoder.yudao.module.bpm.framework.flowable.core.event.SetParams;
 import cn.iocoder.yudao.module.bpm.service.definition.BpmTaskAssignRuleService;
 import org.flowable.common.engine.api.delegate.event.FlowableEventListener;
 import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.spring.boot.EngineConfigurationConfigurer;
+import org.flowable.spring.boot.ProcessEngineConfigurationConfigurer;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * BPM 模块的 Flowable 配置类

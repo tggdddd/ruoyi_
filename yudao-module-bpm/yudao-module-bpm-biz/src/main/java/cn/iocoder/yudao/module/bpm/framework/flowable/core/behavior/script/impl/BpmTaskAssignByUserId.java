@@ -28,7 +28,6 @@ public class BpmTaskAssignByUserId implements BpmTaskAssignScript {
 
     @Override
     public Set<Long> calculateTaskCandidateUsers(DelegateExecution execution) {
-        execution.getVariables().forEach((k,v)-> System.out.println(k+":"+v));
         Long userId = (Long) execution.getVariable("userId");
         if(userId == null || adminUserApi.getUser(userId) == null){
             throw exception(USER_IS_NOT_EXISTS);

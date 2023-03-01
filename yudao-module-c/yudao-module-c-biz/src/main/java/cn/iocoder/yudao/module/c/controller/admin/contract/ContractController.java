@@ -64,9 +64,8 @@ public class ContractController {
     @Operation(summary = "删除合同表单")
     @Parameter(name = "id", description = "编号", required = true)
     @PreAuthorize("@ss.hasPermission('c:ontract:delete')")
-    public CommonResult<Boolean> deleteontract(@RequestParam("id") Long id) {
-        ontractService.deleteontract(id);
-        return success(true);
+    public CommonResult<Object> deleteontract(@RequestParam("id") Long id) {
+        return success(ontractService.deleteontract(id));
     }
 
     @GetMapping("/get")

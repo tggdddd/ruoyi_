@@ -11,6 +11,7 @@ import cn.iocoder.yudao.module.c.enums.ContractStatusConstant;
 import cn.iocoder.yudao.module.c.enums.dal.ContractStatus;
 import liquibase.pro.packaged.E;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class ContractServiceImpl implements ContractService {
     public static final String PROCESS_DEL_KEY = "oa_contract_del";
     @Resource
     private ContractMapper ontractMapper;
-    @Setter
+    @Resource
     private BpmProcessInstanceApi processInstanceApi;
 
     @Override
@@ -127,7 +128,7 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteontract(Long id) {
+    public Object deleteontract(Long id) {
         // 校验存在
         validateontractExists(id);
         // 获得实例
@@ -143,13 +144,14 @@ public class ContractServiceImpl implements ContractService {
             }
             // 删除表单
             ontractMapper.deleteById(id);
-            return;
+            return true;
         }
         // 对于已经实施的流程，使用启动删除流程
         // 发起 BPM 流程
         processInstanceApi.createProcessInstance(getLoginUserId(),
                 new BpmProcessInstanceCreateReqDTO().setProcessDefinitionKey(PROCESS_DEL_KEY)
                         .setBusinessKey(String.valueOf(contractDo.getId())));
+        return "删除的流程已经提交！";
     }
 
     @Override
@@ -184,6 +186,11 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<ContractDO> getontractList(ContractExportReqVO exportReqVO) {
         return ontractMapper.selectList(exportReqVO);
+    }
+
+    @Override
+    public void sign(Long id) {
+        ontractMapper.updateById(new ContractDO().setId(id).setSignedTime(LocalDateTime.now()).setStatus(ContractStatus.SIGNED.getCode()));
     }
 
 }

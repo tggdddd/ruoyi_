@@ -51,13 +51,13 @@
             title="转办"
             @click="handleUpdateAssignee(item)"
           />
-          <XButton
-            pre-icon="ep:position"
-            type="primary"
-            title="委派"
-            @click="handleDelegate(item)"
-          />
-          <XButton pre-icon="ep:back" type="warning" title="委派" @click="handleBack(item)" />
+          <!--          <XButton-->
+          <!--            pre-icon="ep:position"-->
+          <!--            type="primary"-->
+          <!--            title="委派"-->
+          <!--            @click="handleDelegate(item)"-->
+          <!--          />-->
+          <!--          <XButton pre-icon="ep:back" type="warning" title="委派" @click="handleBack(item)" />-->
         </div>
       </el-col>
     </el-card>

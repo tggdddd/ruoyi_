@@ -201,7 +201,7 @@ import { getAttachApi } from '@/api/c/util'
 import * as ontractTemplateApi from '@/api/c/ontractTemplate'
 import { postPackageOption } from '@/views/c/ontractTemplate/ontractTemplate.data'
 import XButton from '@/components/XButton/src/XButton.vue'
-
+import { ElMessageBox } from 'element-plus'
 // ========== 列表相关 ==========
 const tableTitle = ref('用户列表')
 const queryParams = reactive({
@@ -236,13 +236,36 @@ const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 
 // 列表相关的变量
-const [registerTable, { reload, deleteData, exportList }] = useXTable({
+const [registerTable, { reload, exportList }] = useXTable({
   allSchemas: allSchemas,
   getListApi: ontractApi.getontractPageApi,
   deleteApi: ontractApi.deleteontractApi,
   exportListApi: ontractApi.exportontractApi
 })
+const deleteData = (id: number) => {
+  if (!id) {
+    return
+  }
+  delConfirm().then(async () => {
+    const result = await ontractApi.deleteontractApi(id)
+    message.success(result == true ? t('common.delSuccess') : result)
+    // 刷新列表
+    reload()
+  })
+}
 
+// 删除窗体
+const delConfirm = (content?: string, tip?: string) => {
+  return ElMessageBox.confirm(
+    content ? content : t('common.delMessage'),
+    tip ? tip : t('common.confirmTitle'),
+    {
+      confirmButtonText: t('common.ok'),
+      cancelButtonText: t('common.cancel'),
+      type: 'warning'
+    }
+  )
+}
 // 弹窗相关的变量
 const modelVisible = ref(false) // 是否显示弹出层
 const modelTitle = ref('edit') // 弹出层标题

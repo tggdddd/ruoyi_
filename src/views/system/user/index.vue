@@ -332,6 +332,7 @@ const getPostOptions = async () => {
   const res = await listSimplePostsApi()
   postOptions.value.push(...res)
 }
+
 const dataFormater = (val) => {
   return deptFormater(deptOptions.value, val)
 }
@@ -408,31 +409,24 @@ const handleDetail = async (rowId: number) => {
 
 // 提交按钮
 const submitForm = async () => {
-  const elForm = unref(formRef)?.getElFormRef()
-  if (!elForm) return
-  elForm.validate(async (valid) => {
-    if (valid) {
-      // 提交请求
-      try {
-        const data = unref(formRef)?.formModel as UserApi.UserVO
-        if (actionType.value === 'create') {
-          loading.value = true
-          await UserApi.createUserApi(data)
-          message.success(t('common.createSuccess'))
-        } else {
-          loading.value = true
-          await UserApi.updateUserApi(data)
-          message.success(t('common.updateSuccess'))
-        }
-        dialogVisible.value = false
-      } finally {
-        // unref(formRef)?.setSchema(allSchemas.formSchema)
-        // 刷新列表
-        await reload()
-        loading.value = false
-      }
+  loading.value = true
+  // 提交请求
+  try {
+    const data = unref(formRef)?.formModel as UserApi.UserVO
+    if (actionType.value === 'create') {
+      await UserApi.createUserApi(data)
+      message.success(t('common.createSuccess'))
+    } else {
+      await UserApi.updateUserApi(data)
+      message.success(t('common.updateSuccess'))
     }
-  })
+    dialogVisible.value = false
+  } finally {
+    // unref(formRef)?.setSchema(allSchemas.formSchema)
+    // 刷新列表
+    await reload()
+    loading.value = false
+  }
 }
 // 改变用户状态操作
 const handleStatusChange = async (row: UserApi.UserVO) => {
@@ -533,17 +527,17 @@ const handleFileSuccess = async (response: any): Promise<void> => {
   importDialogVisible.value = false
   uploadDisabled.value = false
   const data = response.data
-  let text = '上传成功数量：' + data.createUsernames.length + ';\n'
+  let text = '上传成功数量：' + data.createUsernames.length + ';'
   for (let username of data.createUsernames) {
-    text += '< ' + username + ' >\n'
+    text += '< ' + username + ' >'
   }
-  text += '\n更新成功数量：' + data.updateUsernames.length + ';\n'
+  text += '更新成功数量：' + data.updateUsernames.length + ';'
   for (const username of data.updateUsernames) {
-    text += '< ' + username + ' >\n'
+    text += '< ' + username + ' >'
   }
-  text += '\n更新失败数量：' + Object.keys(data.failureUsernames).length + ';\n'
+  text += '更新失败数量：' + Object.keys(data.failureUsernames).length + ';'
   for (const username in data.failureUsernames) {
-    text += '< ' + username + ': ' + data.failureUsernames[username] + ' >\n'
+    text += '< ' + username + ': ' + data.failureUsernames[username] + ' >'
   }
   message.alert(text)
   await reload()

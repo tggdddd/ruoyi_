@@ -1,16 +1,10 @@
 package cn.iocoder.yudao.module.c.controller.admin.PerformanceReportRequest.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
-import java.util.*;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-
 import com.alibaba.excel.annotation.ExcelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+
+import java.time.LocalDateTime;
 
 /**
  * 业绩定义 Excel VO
@@ -26,22 +20,28 @@ public class PerformanceReportRequestExcelVO {
     @ExcelProperty("关联的合同表ID")
     private Long contractId;
 
-    @ExcelProperty("业绩提交表单ids")
-    private String formIds;
-
     @ExcelProperty("业绩表单提交开始开始时间")
-    private LocalDateTime startTime;
+    private String startTime;
 
     @ExcelProperty("业绩表单提交终止时间")
-    private LocalDateTime endTime;
+    private String endTime;
 
     @ExcelProperty("业绩表单提交通知时间")
-    private LocalDateTime notifyTime;
-
-    @ExcelProperty("业绩表单提交通知频率")
-    private LocalDateTime notifyDuration;
+    private String notifyTime;
 
     @ExcelProperty("创建时间")
     private LocalDateTime createTime;
+
+    @ExcelProperty("业绩提交流程id")
+    private String processDefitionId;
+
+    @ExcelProperty("业绩表单未交通知时间")
+    private String urgeTime;
+
+    @ExcelProperty("用户id")
+    private Long userId;
+
+    @Schema(description = "dept")
+    private Long postId;
 
 }

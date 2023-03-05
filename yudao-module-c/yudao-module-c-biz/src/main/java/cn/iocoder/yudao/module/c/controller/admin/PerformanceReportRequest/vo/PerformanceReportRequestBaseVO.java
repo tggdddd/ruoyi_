@@ -25,25 +25,26 @@ public class PerformanceReportRequestBaseVO {
     @NotNull(message = "关联的合同表ID不能为空")
     private Long contractId;
 
-    @Schema(description = "业绩提交表单ids", required = true)
-    @NotNull(message = "业绩提交表单ids不能为空")
-    private String formIds;
-
     @Schema(description = "业绩表单提交开始开始时间", required = true)
     @NotNull(message = "业绩表单提交开始开始时间不能为空")
-    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-    private LocalDateTime startTime;
+    private String startTime;
 
     @Schema(description = "业绩表单提交终止时间")
-    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-    private LocalDateTime endTime;
+    private String endTime;
 
     @Schema(description = "业绩表单提交通知时间")
-    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-    private LocalDateTime notifyTime;
+    private String notifyTime;
 
-    @Schema(description = "业绩表单提交通知频率")
-    @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
-    private LocalDateTime notifyDuration;
+    @Schema(description = "业绩提交流程id", required = true, example = "20491")
+    @NotNull(message = "业绩提交流程id不能为空")
+    private String processDefitionId;
 
+    @Schema(description = "业绩表单未交通知时间")
+    private String urgeTime;
+
+    @Schema(description = "用户id", required = true, example = "9748")
+    private Long userId;
+
+    @Schema(description = "dept")
+    private Long postId;
 }

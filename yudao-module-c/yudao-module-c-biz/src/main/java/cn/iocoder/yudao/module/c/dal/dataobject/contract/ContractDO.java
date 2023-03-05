@@ -52,7 +52,7 @@ public class ContractDO extends BaseDO {
      */
     private BigDecimal salary;
     /**岗位  */
-    private Integer postId;
+    private Long postId;
     /**
      * 附件
      */

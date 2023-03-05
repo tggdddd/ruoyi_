@@ -111,37 +111,37 @@ public class PerformanceReportRequestServiceImplTest extends BaseDbUnitTest {
        // mock 数据
        PerformanceReportRequestDO dbPerformanceReportRequest = randomPojo(PerformanceReportRequestDO.class, o -> { // 等会查询到
            o.setContractId(null);
-           o.setFormIds(null);
            o.setStartTime(null);
            o.setEndTime(null);
            o.setNotifyTime(null);
-           o.setNotifyDuration(null);
            o.setCreateTime(null);
+           o.setProcessDefitionId(null);
+           o.setUrgeTime(null);
+           o.setUserId(null);
        });
        performanceReportRequestMapper.insert(dbPerformanceReportRequest);
        // 测试 contractId 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setContractId(null)));
-       // 测试 formIds 不匹配
-       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setFormIds(null)));
        // 测试 startTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setStartTime(null)));
        // 测试 endTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setEndTime(null)));
        // 测试 notifyTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setNotifyTime(null)));
-       // 测试 notifyDuration 不匹配
-       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setNotifyDuration(null)));
        // 测试 createTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setCreateTime(null)));
-       // 准备参数
+       // 测试 processDefitionId 不匹配
+       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setProcessDefitionId(null)));
+       // 测试 urgeTime 不匹配
+       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setUrgeTime(null)));
+       // 测试 userId 不匹配
+       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setUserId(null)));
+     // 准备参数
        PerformanceReportRequestPageReqVO reqVO = new PerformanceReportRequestPageReqVO();
        reqVO.setContractId(null);
-       reqVO.setFormIds(null);
-       reqVO.setStartTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setEndTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setNotifyTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setNotifyDuration(null);
-       reqVO.setCreateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
+
+       reqVO.setProcessDefitionId(null);
+      reqVO.setUserId(null);
 
        // 调用
        PageResult<PerformanceReportRequestDO> pageResult = performanceReportRequestService.getPerformanceReportRequestPage(reqVO);
@@ -157,37 +157,35 @@ public class PerformanceReportRequestServiceImplTest extends BaseDbUnitTest {
        // mock 数据
        PerformanceReportRequestDO dbPerformanceReportRequest = randomPojo(PerformanceReportRequestDO.class, o -> { // 等会查询到
            o.setContractId(null);
-           o.setFormIds(null);
            o.setStartTime(null);
            o.setEndTime(null);
            o.setNotifyTime(null);
-           o.setNotifyDuration(null);
            o.setCreateTime(null);
+           o.setProcessDefitionId(null);
+           o.setUrgeTime(null);
+           o.setUserId(null);
        });
        performanceReportRequestMapper.insert(dbPerformanceReportRequest);
        // 测试 contractId 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setContractId(null)));
-       // 测试 formIds 不匹配
-       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setFormIds(null)));
        // 测试 startTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setStartTime(null)));
        // 测试 endTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setEndTime(null)));
        // 测试 notifyTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setNotifyTime(null)));
-       // 测试 notifyDuration 不匹配
-       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setNotifyDuration(null)));
        // 测试 createTime 不匹配
        performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setCreateTime(null)));
+       // 测试 processDefitionId 不匹配
+       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setProcessDefitionId(null)));
+       // 测试 urgeTime 不匹配
+       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setUrgeTime(null)));
+       // 测试 userId 不匹配
+       performanceReportRequestMapper.insert(cloneIgnoreId(dbPerformanceReportRequest, o -> o.setUserId(null)));
        // 准备参数
        PerformanceReportRequestExportReqVO reqVO = new PerformanceReportRequestExportReqVO();
        reqVO.setContractId(null);
-       reqVO.setFormIds(null);
-       reqVO.setStartTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setEndTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setNotifyTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
-       reqVO.setNotifyDuration(null);
-       reqVO.setCreateTime(buildBetweenTime(2023, 2, 1, 2023, 2, 28));
+       reqVO.setUserId(null);
 
        // 调用
        List<PerformanceReportRequestDO> list = performanceReportRequestService.getPerformanceReportRequestList(reqVO);

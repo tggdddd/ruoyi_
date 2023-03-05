@@ -51,6 +51,7 @@ public interface PerformanceReportRequestService {
      */
     List<PerformanceReportRequestDO> getPerformanceReportRequestList(Collection<Long> ids);
 
+
     /**
      * 获得业绩定义分页
      *
@@ -66,5 +67,10 @@ public interface PerformanceReportRequestService {
      * @return 业绩定义列表
      */
     List<PerformanceReportRequestDO> getPerformanceReportRequestList(PerformanceReportRequestExportReqVO exportReqVO);
+    /**
+     * 获得业绩定义列表
+     * @return 业绩定义列表
+     */
+    List<PerformanceReportRequestDO> getAll();
 
 }

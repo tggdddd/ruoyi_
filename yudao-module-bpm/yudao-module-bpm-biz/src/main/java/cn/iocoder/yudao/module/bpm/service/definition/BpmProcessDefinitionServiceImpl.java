@@ -14,6 +14,7 @@ import cn.iocoder.yudao.module.bpm.convert.definition.BpmProcessDefinitionConver
 import cn.iocoder.yudao.module.bpm.dal.dataobject.definition.BpmFormDO;
 import cn.iocoder.yudao.module.bpm.dal.dataobject.definition.BpmProcessDefinitionExtDO;
 import cn.iocoder.yudao.module.bpm.dal.mysql.definition.BpmProcessDefinitionExtMapper;
+import cn.iocoder.yudao.module.bpm.enums.definition.BpmModelCategoryEnum;
 import cn.iocoder.yudao.module.bpm.service.definition.dto.BpmProcessDefinitionCreateReqDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.bpmn.converter.BpmnXMLConverter;
@@ -232,6 +233,9 @@ public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionServ
             definitionQuery.suspended();
         } else if (Objects.equals(SuspensionState.ACTIVE.getStateCode(), listReqVO.getSuspensionState())) {
             definitionQuery.active();
+        }
+        if(listReqVO.getCategory()!=null) {
+            definitionQuery.processDefinitionCategory(BpmModelCategoryEnum.PERFORM.getType());
         }
         // 执行查询
         List<ProcessDefinition> processDefinitions = definitionQuery.list();

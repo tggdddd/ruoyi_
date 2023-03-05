@@ -4,6 +4,7 @@ import java.util.*;
 
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 
+import cn.iocoder.yudao.module.c.Job.VO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import cn.iocoder.yudao.module.c.controller.admin.PerformanceReportRequest.vo.*;
@@ -31,4 +32,7 @@ public interface PerformanceReportRequestConvert {
 
     List<PerformanceReportRequestExcelVO> convertList02(List<PerformanceReportRequestDO> list);
 
+    VO convertVO(PerformanceReportRequestDO performanceReportRequest);
+
+    VO convertVO(PerformanceReportRequestUpdateReqVO updateReqVO);
 }

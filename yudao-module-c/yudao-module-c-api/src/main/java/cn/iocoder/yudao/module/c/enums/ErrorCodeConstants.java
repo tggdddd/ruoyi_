@@ -23,4 +23,11 @@ public interface ErrorCodeConstants {
     // ========== 业绩定义  模块 1007002000 ==========
 
     ErrorCode PERFORMANCE_REPORT_REQUEST_NOT_EXISTS = new ErrorCode(1007002000, "业绩定义不存在");
+    ErrorCode PERFORM_REPORT_NOT_EXISTS = new ErrorCode(1007002001, "业绩信息不存在");
+
+    // 定时任务
+    ErrorCode PERFORM_REPORT_JOB_KEY_ERROR = new ErrorCode(1007003001, "定时任务触发器key错误");
+
+    ErrorCode PERFORM_REPORT_TIME_TOO_SHORT = new ErrorCode(1007003002, "触发时间过于短暂，您是否设置错了");
+
 }

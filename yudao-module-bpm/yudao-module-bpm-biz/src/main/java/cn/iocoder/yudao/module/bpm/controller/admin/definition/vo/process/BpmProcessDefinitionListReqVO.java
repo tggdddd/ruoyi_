@@ -15,4 +15,6 @@ public class BpmProcessDefinitionListReqVO extends PageParam {
     @Schema(description = "中断状态-参见 SuspensionState 枚举", example = "1")
     private Integer suspensionState;
 
+    @Schema(description = "分类",example = "1")
+    private String category;
 }

@@ -54,7 +54,16 @@ public class   JobHandlerInvoker extends QuartzJobBean {
             // 记录 Job 日志（初始）
             jobLogId = jobLogFrameworkService.createJobLog(jobId, startTime, jobHandlerName, jobHandlerParam, refireCount + 1);
             // 执行任务
-            data = this.executeInternal(jobHandlerName, jobHandlerParam);
+            // 获得 JobHandler 对象
+            JobHandler jobHandler = applicationContext.getBean(jobHandlerName, JobHandler.class);
+            if(jobHandler != null){
+                data = jobHandler.execute(jobHandlerParam);
+            }else{
+                JobHandlerInterface jobHandlerInterface = applicationContext.getBean(jobHandlerName, JobHandlerInterface.class);
+                Assert.notNull(jobHandlerInterface, "JobHandler 不会为空");
+                data = jobHandlerInterface.execute(executionContext);
+            }
+
         } catch (Throwable ex) {
             exception = ex;
         }
@@ -66,13 +75,6 @@ public class   JobHandlerInvoker extends QuartzJobBean {
         handleException(exception, refireCount, retryCount, retryInterval);
     }
 
-    private String executeInternal(String jobHandlerName, String jobHandlerParam) throws Exception {
-        // 获得 JobHandler 对象
-        JobHandler jobHandler = applicationContext.getBean(jobHandlerName, JobHandler.class);
-        Assert.notNull(jobHandler, "JobHandler 不会为空");
-        // 执行任务
-        return jobHandler.execute(jobHandlerParam);
-    }
 
     private void updateJobLogResultAsync(Long jobLogId, LocalDateTime startTime, String data, Throwable exception,
                                          JobExecutionContext executionContext) {

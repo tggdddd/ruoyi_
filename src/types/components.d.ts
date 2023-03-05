@@ -24,7 +24,7 @@ export type ComponentName =
   | 'UploadImg'
   | 'UploadImgs'
   | 'UploadFile'
-
+  | 'Crontab'
 export type ColProps = {
   span?: number
   xs?: number

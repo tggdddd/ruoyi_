@@ -278,6 +278,7 @@ export default {
     header: 'Header'
   },
   action: {
+    submit: 'Submit',
     create: 'Create',
     add: 'Add',
     del: 'Delete',

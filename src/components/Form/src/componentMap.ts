@@ -23,7 +23,7 @@ import { InputPassword } from '@/components/InputPassword'
 import { Editor } from '@/components/Editor'
 import { UploadImg, UploadImgs, UploadFile } from '@/components/UploadFile'
 import { ComponentName } from '@/types/components'
-
+import { Crontab } from '@/components/Crontab'
 const componentMap: Recordable<Component, ComponentName> = {
   Radio: ElRadioGroup,
   Checkbox: ElCheckboxGroup,
@@ -49,7 +49,8 @@ const componentMap: Recordable<Component, ComponentName> = {
   Editor: Editor,
   UploadImg: UploadImg,
   UploadImgs: UploadImgs,
-  UploadFile: UploadFile
+  UploadFile: UploadFile,
+  Crontab: Crontab
 }
 
 export { componentMap }

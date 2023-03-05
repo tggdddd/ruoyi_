@@ -88,7 +88,9 @@ const crudSchemas = reactive<VxeCrudSchema>({
       form: {
         component: 'Select',
         componentProps: {
-          options: postPackageOption
+          options: postPackageOption,
+          filterable: true,
+          autocomplete: true
         }
       }
     },

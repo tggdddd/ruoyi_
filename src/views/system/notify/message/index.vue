@@ -37,7 +37,6 @@ const { t } = useI18n() // 国际化
 // 列表相关的变量
 const [registerTable] = useXTable({
   allSchemas: allSchemas,
-  topActionSlots: false,
   getListApi: NotifyMessageApi.getNotifyMessagePageApi
 })
 

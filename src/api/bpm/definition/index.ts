@@ -1,5 +1,30 @@
 import request from '@/config/axios'
 
+export type BpmProcessDefinitionRespVO = {
+  id: string
+
+  version: number
+
+  name: string
+
+  description: string
+
+  category: string
+
+  formType: number
+
+  formId: number
+
+  formConf: string
+
+  formFields: Object
+
+  formCustomCreatePath: string
+
+  formCustomViewPath: string
+
+  suspensionState: number
+}
 export const getProcessDefinitionBpmnXMLApi = async (id: number) => {
   return await request.get({
     url: '/bpm/process-definition/get-bpmn-xml?id=' + id

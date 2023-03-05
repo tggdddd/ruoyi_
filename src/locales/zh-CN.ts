@@ -279,6 +279,7 @@ export default {
     header: '头部'
   },
   action: {
+    submit: '提交',
     create: '新增',
     add: '新增',
     del: '删除',

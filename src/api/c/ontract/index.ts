@@ -70,7 +70,11 @@ export const createontractApi = async (data: ontractVO) => {
 export const updateontractApi = async (data: ontractVO) => {
   return await request.put({ url: '/c/ontract/update', data })
 }
-
+// 查询生效的合同表单列表
+export const getAcceptContractPageApi = async (params: ontractPageReqVO) => {
+  params.status = 1
+  return await request.get({ url: '/c/ontract/page', params })
+}
 // 删除合同表单
 export const deleteontractApi = async (id: number) => {
   return await request.delete({ url: '/c/ontract/delete?id=' + id })

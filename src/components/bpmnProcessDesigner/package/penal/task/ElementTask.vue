@@ -45,12 +45,11 @@ const installedComponent = ref({
 })
 const bpmnElement = ref()
 
-const bpmnInstances = () => (window as any).bpmnInstances
 const changeTaskAsync = () => {
   if (!taskConfigForm.value.asyncBefore && !taskConfigForm.value.asyncAfter) {
     taskConfigForm.value.exclusive = false
   }
-  bpmnInstances().modeling.updateProperties(bpmnInstances().bpmnElement, {
+  window.bpmnInstances.modeling.updateProperties(window.bpmnInstances.bpmnElement, {
     ...taskConfigForm.value
   })
 }
@@ -58,7 +57,7 @@ const changeTaskAsync = () => {
 watch(
   () => props.id,
   () => {
-    bpmnElement.value = bpmnInstances().bpmnElement
+    bpmnElement.value = window.bpmnInstances.bpmnElement
     taskConfigForm.value.asyncBefore = bpmnElement.value?.businessObject?.asyncBefore
     taskConfigForm.value.asyncAfter = bpmnElement.value?.businessObject?.asyncAfter
     taskConfigForm.value.exclusive = bpmnElement.value?.businessObject?.exclusive

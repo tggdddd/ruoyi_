@@ -46,6 +46,7 @@
       </template>
     </XTable>
   </ContentWrap>
+
   <!-- 表单弹窗：添加/修改/详情 -->
   <PostForm ref="modalRef" @success="reload()" />
 </template>

@@ -1,4 +1,6 @@
 import type { VxeCrudSchema } from '@/hooks/web/useVxeCrudSchemas'
+import { ComponentOptions } from '@/types/components'
+import { BpmProcessDefinitionRespVO, getProcessDefinitionListApi } from '@/api/bpm/definition'
 const { t } = useI18n() // 国际化
 // 表单校验
 export const rules = reactive({
@@ -6,6 +8,27 @@ export const rules = reactive({
   formIds: [required],
   startTime: [required]
 })
+
+// 获得流程定义字典
+export const processDefinedOption: ComponentOptions[] = []
+export const processDefineds = ref()
+const getProcessDefinedOptions = async () => {
+  const res = await getProcessDefinitionListApi({
+    suspensionState: 1, //激活的流程
+    category: 3 //分类
+  })
+  processDefineds.value = res
+  res.forEach((item: BpmProcessDefinitionRespVO) => {
+    processDefinedOption.push({
+      key: item.id,
+      label: item.name,
+      value: item.id
+    })
+  })
+  return processDefinedOption
+}
+getProcessDefinedOptions()
+
 // CrudSchema
 const crudSchemas = reactive<VxeCrudSchema>({
   primaryKey: 'id', // 默认的主键ID
@@ -15,89 +38,62 @@ const crudSchemas = reactive<VxeCrudSchema>({
   actionWidth: '200', // 3个按钮默认200，如有删减对应增减即可
   columns: [
     {
-      title: '关联的合同表ID',
+      title: '用户',
+      field: 'userId',
+      isForm: false
+    },
+    {
+      title: '流程定义',
+      field: 'processDefitionId',
+      form: {
+        component: 'Select',
+        componentProps: {
+          options: processDefinedOption,
+          filterable: true,
+          autocomplete: true
+        }
+      }
+    },
+    {
+      title: '合同',
       field: 'contractId',
       form: {
         component: 'InputNumber',
-        value: 0
+        value: 0,
+        hidden: true
       }
     },
     {
-      title: '业绩提交表单ids',
-      field: 'formIds',
-      isSearch: true
-    },
-    {
-      title: '业绩表单提交开始开始时间',
+      title: '提交开始开始时间',
       field: 'startTime',
       form: {
-        component: 'DatePicker',
-        componentProps: {
-          type: 'datetime',
-          valueFormat: 'x'
-        }
+        component: 'Crontab'
       },
-      formatter: 'formatDate',
-      search: {
-        show: true,
-        itemRender: {
-          name: 'XDataTimePicker'
-        }
-      }
+      isSearch: false
     },
     {
-      title: '业绩表单提交终止时间',
+      title: '提交终止时间',
       field: 'endTime',
       form: {
-        component: 'DatePicker',
-        componentProps: {
-          type: 'datetime',
-          valueFormat: 'x'
-        }
+        component: 'Crontab'
       },
-      formatter: 'formatDate',
-      search: {
-        show: true,
-        itemRender: {
-          name: 'XDataTimePicker'
-        }
-      }
+      isSearch: false
     },
     {
-      title: '业绩表单提交通知时间',
+      title: '业绩提交通知时间',
       field: 'notifyTime',
       form: {
-        component: 'DatePicker',
-        componentProps: {
-          type: 'datetime',
-          valueFormat: 'x'
-        }
+        component: 'Crontab'
       },
-      formatter: 'formatDate',
-      search: {
-        show: true,
-        itemRender: {
-          name: 'XDataTimePicker'
-        }
-      }
+      isSearch: false
     },
     {
-      title: '业绩表单提交通知频率',
-      field: 'notifyDuration',
+      title: '未交提醒时间',
+      field: 'urgeTime',
       form: {
-        component: 'DatePicker',
-        componentProps: {
-          type: 'datetime',
-          valueFormat: 'x'
-        }
+        component: 'Crontab'
       },
-      formatter: 'formatDate',
-      search: {
-        show: true,
-        itemRender: {
-          name: 'XDataTimePicker'
-        }
-      }
+      isSearch: false
     },
     {
       title: '创建时间',

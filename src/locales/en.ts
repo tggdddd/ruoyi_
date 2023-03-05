@@ -278,7 +278,6 @@ export default {
     header: 'Header'
   },
   action: {
-    contractDetail: 'ContractDetail',
     submit: 'Submit',
     create: 'Create',
     add: 'Add',

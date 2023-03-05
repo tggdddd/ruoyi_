@@ -266,10 +266,9 @@ const otherExtensionList = ref()
 const bpmnElementListeners = ref()
 const listenerFormRef = ref()
 const listenerFieldFormRef = ref()
-const bpmnInstances = () => (window as any)?.bpmnInstances
 
 const resetListenersList = () => {
-  bpmnElement.value = bpmnInstances().bpmnElement
+  bpmnElement.value = window.bpmnInstances.bpmnElement
   otherExtensionList.value = []
   bpmnElementListeners.value =
     bpmnElement.value.businessObject?.extensionElements?.values?.filter(

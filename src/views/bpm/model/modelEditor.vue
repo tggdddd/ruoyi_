@@ -108,7 +108,7 @@ const initModeler = (item) => {
 
 const save = (bpmnXml) => {
   const data: ModelVO = {
-    ...(model.value ?? ({} as ModelVO)),
+    ...model.value,
     bpmnXml: bpmnXml // bpmnXml 只是初始化流程图，后续修改无法通过它获得
   }
   console.log(data, 'data')

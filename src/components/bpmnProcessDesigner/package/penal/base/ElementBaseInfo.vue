@@ -59,12 +59,11 @@ const rules = reactive({
   name: [{ required: true, message: '流程名称不能为空', trigger: 'blur' }]
 })
 
-const bpmnInstances = () => (window as any)?.bpmnInstances
 const resetBaseInfo = () => {
   console.log(window, 'window')
   console.log(bpmnElement.value, 'bpmnElement')
 
-  bpmnElement.value = bpmnInstances()?.bpmnElement
+  bpmnElement.value = window?.bpmnInstances?.bpmnElement
   console.log(bpmnElement.value, 'resetBaseInfo11111111111')
   elementBaseInfo.value = bpmnElement.value.businessObject
   needProps.value['type'] = bpmnElement.value.businessObject.$type
@@ -126,13 +125,13 @@ const updateBaseInfo = (key) => {
     console.log(window, 'window')
     console.log(bpmnElement.value, 'bpmnElement')
     console.log(toRaw(bpmnElement.value), 'bpmnElement')
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
       id: elementBaseInfo.value[key],
       di: { id: `${elementBaseInfo.value[key]}_di` }
     })
   } else {
     console.log(attrObj, 'attrObj')
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), attrObj)
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), attrObj)
   }
 }
 onMounted(() => {

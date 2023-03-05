@@ -22,7 +22,6 @@ const { push } = useRouter() // 路由
 
 const [registerTable] = useXTable({
   allSchemas: allSchemas,
-  topActionSlots: false,
   getListApi: TaskApi.getTodoTaskPage
 })
 

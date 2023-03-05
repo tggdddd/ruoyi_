@@ -85,7 +85,6 @@ const defaultLoopInstanceForm = ref({
 const loopInstanceForm = ref<any>({})
 const bpmnElement = ref(null)
 const multiLoopInstance = ref(null)
-const bpmnInstances = () => (window as any)?.bpmnInstances
 
 const getElementLoop = (businessObject) => {
   if (!businessObject.loopCharacteristics) {
@@ -111,7 +110,7 @@ const getElementLoop = (businessObject) => {
     loopCardinality: businessObject.loopCharacteristics?.loopCardinality?.body ?? ''
   }
   // 保留当前元素 businessObject 上的 loopCharacteristics 实例
-  multiLoopInstance.value = bpmnInstances().bpmnElement.businessObject.loopCharacteristics
+  multiLoopInstance.value = window.bpmnInstances.bpmnElement.businessObject.loopCharacteristics
   // 更新表单
   if (
     businessObject.loopCharacteristics.extensionElements &&
@@ -126,17 +125,17 @@ const changeLoopCharacteristicsType = (type) => {
   // this.loopInstanceForm = { ...this.defaultLoopInstanceForm }; // 切换类型取消原表单配置
   // 取消多实例配置
   if (type === 'Null') {
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
       loopCharacteristics: null
     })
     return
   }
   // 配置循环
   if (type === 'StandardLoop') {
-    const loopCharacteristicsObject = bpmnInstances().moddle.create(
+    const loopCharacteristicsObject = window.bpmnInstances.moddle.create(
       'bpmn:StandardLoopCharacteristics'
     )
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
       loopCharacteristics: loopCharacteristicsObject
     })
     multiLoopInstance.value = null
@@ -144,17 +143,17 @@ const changeLoopCharacteristicsType = (type) => {
   }
   // 时序
   if (type === 'SequentialMultiInstance') {
-    multiLoopInstance.value = bpmnInstances().moddle.create(
+    multiLoopInstance.value = window.bpmnInstances.moddle.create(
       'bpmn:MultiInstanceLoopCharacteristics',
       { isSequential: true }
     )
   } else {
-    multiLoopInstance.value = bpmnInstances().moddle.create(
+    multiLoopInstance.value = window.bpmnInstances.moddle.create(
       'bpmn:MultiInstanceLoopCharacteristics',
       { collection: '${coll_userList}' }
     )
   }
-  bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+  window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
     loopCharacteristics: toRaw(multiLoopInstance.value)
   })
 }
@@ -162,11 +161,11 @@ const changeLoopCharacteristicsType = (type) => {
 const updateLoopCardinality = (cardinality) => {
   let loopCardinality = null
   if (cardinality && cardinality.length) {
-    loopCardinality = bpmnInstances().moddle.create('bpmn:FormalExpression', {
+    loopCardinality = window.bpmnInstances.moddle.create('bpmn:FormalExpression', {
       body: cardinality
     })
   }
-  bpmnInstances().modeling.updateModdleProperties(
+  window.bpmnInstances.modeling.updateModdleProperties(
     toRaw(bpmnElement.value),
     multiLoopInstance.value,
     {
@@ -178,11 +177,11 @@ const updateLoopCardinality = (cardinality) => {
 const updateLoopCondition = (condition) => {
   let completionCondition = null
   if (condition && condition.length) {
-    completionCondition = bpmnInstances().moddle.create('bpmn:FormalExpression', {
+    completionCondition = window.bpmnInstances.moddle.create('bpmn:FormalExpression', {
       body: condition
     })
   }
-  bpmnInstances().modeling.updateModdleProperties(
+  window.bpmnInstances.modeling.updateModdleProperties(
     toRaw(bpmnElement.value),
     multiLoopInstance.value,
     {
@@ -192,14 +191,14 @@ const updateLoopCondition = (condition) => {
 }
 // 重试周期
 const updateLoopTimeCycle = (timeCycle) => {
-  const extensionElements = bpmnInstances().moddle.create('bpmn:ExtensionElements', {
+  const extensionElements = window.bpmnInstances.moddle.create('bpmn:ExtensionElements', {
     values: [
-      bpmnInstances().moddle.create(`${prefix}:FailedJobRetryTimeCycle`, {
+      window.bpmnInstances.moddle.create(`${prefix}:FailedJobRetryTimeCycle`, {
         body: timeCycle
       })
     ]
   })
-  bpmnInstances().modeling.updateModdleProperties(
+  window.bpmnInstances.modeling.updateModdleProperties(
     toRaw(bpmnElement.value),
     multiLoopInstance.value,
     {
@@ -209,7 +208,7 @@ const updateLoopTimeCycle = (timeCycle) => {
 }
 // 直接更新的基础信息
 const updateLoopBase = () => {
-  bpmnInstances().modeling.updateModdleProperties(
+  window.bpmnInstances.modeling.updateModdleProperties(
     toRaw(bpmnElement.value),
     multiLoopInstance.value,
     {
@@ -229,7 +228,7 @@ const updateLoopAsync = (key) => {
   } else {
     asyncAttr[key] = loopInstanceForm.value[key]
   }
-  bpmnInstances().modeling.updateModdleProperties(
+  window.bpmnInstances.modeling.updateModdleProperties(
     toRaw(bpmnElement.value),
     multiLoopInstance.value,
     asyncAttr
@@ -244,7 +243,7 @@ onBeforeUnmount(() => {
 watch(
   () => props.businessObject,
   (val) => {
-    bpmnElement.value = bpmnInstances().bpmnElement
+    bpmnElement.value = window.bpmnInstances.bpmnElement
     getElementLoop(val)
   },
   { immediate: true }

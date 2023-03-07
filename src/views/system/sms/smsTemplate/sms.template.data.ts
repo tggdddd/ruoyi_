@@ -35,7 +35,7 @@ getsimpleChannelOptions()
 // CrudSchema
 const crudSchemas = reactive<VxeCrudSchema>({
   primaryKey: 'id',
-  primaryType: 'seq',
+  primaryType: 'id',
   primaryTitle: '模板编号',
   action: true,
   actionWidth: '280',

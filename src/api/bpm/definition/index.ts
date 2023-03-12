@@ -44,3 +44,18 @@ export const getProcessDefinitionListApi = async (params) => {
     params
   })
 }
+
+export const getProcessDefinitionListOnlyPerformApi = async (params) => {
+  params.category = 2
+  return await request.get({
+    url: '/bpm/process-definition/list',
+    params
+  })
+}
+
+export const getProcessDefinitionApi = async (key) => {
+  return await request.get({
+    url: '/bpm/process-definition/get',
+    params: { id: key }
+  })
+}

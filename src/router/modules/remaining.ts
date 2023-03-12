@@ -191,6 +191,28 @@ const remainingRouter: AppRouteRecordRaw[] = [
     }
   },
   {
+    path: '/report',
+    component: Layout,
+    name: 'report3',
+    meta: {
+      hidden: true
+    },
+    children: [
+      {
+        path: 'process-instance/create',
+        component: () => import('@/views/c/performReport/component/processInstance/create.vue'),
+        name: 'ReportBpmProcessInstanceCreate',
+        meta: {
+          noCache: true,
+          hidden: true,
+          canTo: true,
+          title: '发起流程',
+          activeMenu: '/perform/perform-report'
+        }
+      }
+    ]
+  },
+  {
     path: '/bpm',
     component: Layout,
     name: 'bpm',

@@ -26,8 +26,9 @@
       <!-- 列表 -->
       <el-card class="w-4/5 user" style="margin-left: 10px" :gutter="12" shadow="hover">
         <XTable @register="registerTable">
-          <template #userId_default="{}">
-            <el-button text type="primary">查看详情</el-button>
+          <template #userId_default="{ row }">
+            <!--            <el-button text type="primary">查看详情</el-button>-->
+            {{ row.userId }}
           </template>
           <template #postId_default="{ row }">
             <el-tag type="success"> {{ getPostName(row.postId) }} </el-tag>
@@ -69,12 +70,12 @@
               @click="handleDetail(row.id)"
             />
             <!-- 操作：详情 -->
-            <XTextButton
-              preIcon="ep:view"
-              :title="t('action.detail')"
-              v-hasPermi="['c:ontract:query']"
-              @click="handleDetail(row.id)"
-            />
+            <!--            <XTextButton-->
+            <!--              preIcon="ep:view"-->
+            <!--              :title="t('action.detail')"-->
+            <!--              v-hasPermi="['c:ontract:query']"-->
+            <!--              @click="handleDetail(row.id)"-->
+            <!--            />-->
             <!-- 操作：删除 -->
             <XTextButton
               preIcon="ep:delete"
@@ -88,7 +89,13 @@
     </div>
   </ContentWrap>
   <!-- 弹窗 -->
-  <XModal id="ontractModel" :loading="modelLoading" v-model="modelVisible" :title="modelTitle">
+  <XModal
+    id="ontractModel"
+    :loading="modelLoading"
+    v-model="modelVisible"
+    :title="modelTitle"
+    :fullscreen="true"
+  >
     <!-- 表单：添加/修改 -->
     <Form
       ref="formRef"

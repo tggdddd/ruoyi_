@@ -140,14 +140,6 @@ const crudSchemas = reactive<VxeCrudSchema>({
       isForm: false
     },
     {
-      title: '状态',
-      field: 'result',
-      dictType: DICT_TYPE.CONTRACT_TEMPLATE_AUDIT_STATUS,
-      dictClass: 'number',
-      isSearch: true,
-      isForm: false
-    },
-    {
       title: '签约时间',
       field: 'signedTime',
       form: {
@@ -231,6 +223,14 @@ const crudSchemas = reactive<VxeCrudSchema>({
           default: 'attach_default'
         }
       }
+    },
+    {
+      title: '状态',
+      field: 'result',
+      dictType: DICT_TYPE.CONTRACT_TEMPLATE_AUDIT_STATUS,
+      dictClass: 'number',
+      isSearch: true,
+      isForm: false
     }
   ]
 })

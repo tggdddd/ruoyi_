@@ -30,10 +30,10 @@ export default defineComponent({
       })
     }
     const rederDictTag = () => {
-      if (!props.type) {
+      if (props.type == undefined) {
         return null
       }
-      if (!props.value) {
+      if (props.value != 0 && props.value == '') {
         return null
       }
       getDictObj(props.type, props.value.toString())

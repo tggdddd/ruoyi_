@@ -279,6 +279,7 @@ export default {
     header: '头部'
   },
   action: {
+    contractDetail: '合同详情',
     submit: '提交',
     create: '新增',
     add: '新增',

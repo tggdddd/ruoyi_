@@ -129,5 +129,7 @@ export enum DICT_TYPE {
   PAY_REFUND_ORDER_TYPE = 'pay_refund_order_type', // 退款订单类别
   // =======合同模块=========
   CONTRACT_STATUS = 'contract_status',
-  CONTRACT_TEMPLATE_AUDIT_STATUS = 'contract_template_audit_status'
+  CONTRACT_TEMPLATE_AUDIT_STATUS = 'contract_template_audit_status',
+  //   ============业绩模块===========
+  REPORT_STATUS = 'report_status' // 业绩报告的状态
 }

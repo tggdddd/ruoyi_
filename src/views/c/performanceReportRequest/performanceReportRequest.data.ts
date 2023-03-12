@@ -52,6 +52,11 @@ const crudSchemas = reactive<VxeCrudSchema>({
           filterable: true,
           autocomplete: true
         }
+      },
+      table: {
+        slots: {
+          default: 'processDefitionId_default'
+        }
       }
     },
     {
@@ -61,6 +66,11 @@ const crudSchemas = reactive<VxeCrudSchema>({
         component: 'InputNumber',
         value: 0,
         hidden: true
+      },
+      table: {
+        slots: {
+          default: 'contractId_default'
+        }
       }
     },
     {

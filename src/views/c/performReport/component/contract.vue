@@ -1,36 +1,39 @@
 <template>
   <div>
     <!-- 弹窗 -->
-    <XModal
-      id="ontractModel"
-      :loading="modelLoading"
-      v-model="modelVisibleReal"
-      :title="modelTitle"
-    >
+    <XModal id="ontractModel" :loading="modelLoading" v-model="modelVisible" :title="modelTitle">
       <!-- 表单：详情 -->
       <Descriptions :schema="allSchemas.detailSchema" :data="detailData">
         <template #userId="{ row }">
-          <el-button type="text">{{ row?.userId }}</el-button>
+          <el-button type="text">{{ row.userId }}</el-button>
         </template>
         <template #postId="{ row }">
-          <el-tag> {{ getPostName(row?.postId) }}</el-tag>
+          <el-tag> {{ getPostName(row.postId) }} </el-tag>
         </template>
         <template #attach="{ row }">
           <XTextButton
             preIcon="ep:view"
             :title="t('action.detail')"
             v-hasPermi="['c:ontract-template:query']"
-            @click="previewAttachById(row?.id)"
+            @click="previewAttachById(row.id)"
           />
         </template>
         <template #defaultClause="{ row }">
-          <div v-html="row?.defaultClause"></div>
+          <div v-html="row.defaultClause"></div>
         </template>
         <template #performanceRequirements="{ row }">
-          <div v-html="row?.performanceRequirements"></div>
+          <div v-html="row.performanceRequirements"></div>
         </template>
       </Descriptions>
       <template #footer>
+        <!-- 按钮：预览 -->
+        <XButton
+          v-if="['create', 'update'].includes(actionType)"
+          type="warning"
+          :title="t('action.preview')"
+          :loading="actionLoading"
+          @click="previewForm()"
+        />
         <!-- 按钮：关闭 -->
         <XButton :loading="actionLoading" :title="t('dialog.close')" @click="close" />
       </template>
@@ -45,17 +48,18 @@
       :height="800"
       @show="setShadow"
     >
-      <div v-html="attachRef" id="attachContent"></div>
+      <div v-html="attachRef" id="attachContent"> </div>
     </XModal>
   </div>
 </template>
 <script lang="ts" setup name="ContractDetail">
+import { FormExpose } from '@/components/Form'
 // 业务相关的 import
+import { ontractVO } from '@/api/c/ontract'
 import XButton from '@/components/XButton/src/XButton.vue'
-import { allSchemas } from '@/views/c/ontract/ontract.data'
+import { rules, allSchemas } from '@/views/c/ontract/ontract.data'
 import { postPackageOption } from '@/views/c/ontractTemplate/ontractTemplate.data'
-import { getAttachByIdApi, getontractApi } from '@/api/c/ontract/index'
-
+import { getontractApi, getAttachByIdApi } from '@/api/c/ontract/index'
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 const attachModalRef = ref()
@@ -84,8 +88,8 @@ const attachModelVisible = ref(false) // 是否显示弹出层
 const attachModelLoading = ref(false) // 弹出层loading
 const attachActionLoading = ref(false) // 按钮 Loading
 const attachRef = ref<string>() // 表单 Ref
-const modelVisibleReal = ref(false)
-const emit = defineEmits(['update:formTemplateData', 'update:modelVisible'])
+
+const emit = defineEmits(['update:formTemplateData'])
 
 const previewAttachById = async (id: number) => {
   actionLoading.value = true
@@ -113,15 +117,7 @@ watch(contractId, (val) => {
   setFormDetail(val)
 })
 const setFormDetail = async (val: number) => {
-  await getontractApi(val).then((res) => {
-    detailData.value = res
-    console.log(res, typeof res)
-    if (res === undefined || res === null || res === '') {
-      close()
-    } else {
-      modelVisibleReal.value = true
-    }
-  })
+  detailData.value = await getontractApi(val)
 }
 // 关闭窗口
 const close = () => {

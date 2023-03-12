@@ -156,4 +156,9 @@ public interface BpmProcessDefinitionService {
      * @return Bpmn 模型
      */
     BpmnModel getBpmnModel(String processDefinitionId);
+/** 获得流程定义
+ * @param processDefinedKey 流程定义id
+ * @return 结果*/
+
+BpmProcessDefinitionRespVO getProcessDefinitionItem(String processDefinedKey);
 }

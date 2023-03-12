@@ -29,5 +29,6 @@ public interface ErrorCodeConstants {
     ErrorCode PERFORM_REPORT_JOB_KEY_ERROR = new ErrorCode(1007003001, "定时任务触发器key错误");
 
     ErrorCode PERFORM_REPORT_TIME_TOO_SHORT = new ErrorCode(1007003002, "触发时间过于短暂，您是否设置错了");
+    ErrorCode PERFORM_REPORT_REPEAT_SUBMIT = new ErrorCode(1007003003, "请不要重复提交！");
 
 }

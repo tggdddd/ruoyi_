@@ -106,6 +106,7 @@ public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionServ
         return list;
     }
 
+
     @Override
     public Deployment getDeployment(String id) {
         if (StrUtil.isEmpty(id)) {
@@ -113,6 +114,7 @@ public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionServ
         }
         return repositoryService.createDeploymentQuery().deploymentId(id).singleResult();
     }
+
 
     @Override
     public BpmnModel getBpmnModel(String processDefinitionId) {
@@ -251,7 +253,21 @@ public class BpmProcessDefinitionServiceImpl implements BpmProcessDefinitionServ
         // 执行查询，并返回
         return BpmProcessDefinitionConvert.INSTANCE.convertList3(processDefinitions, processDefinitionDOMap);
     }
-
+    @Override
+    public BpmProcessDefinitionRespVO getProcessDefinitionItem(String processDefinedKey) {
+        // 拼接查询条件
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(processDefinedKey)
+                .singleResult();
+        List<ProcessDefinition> processDefinitions = Collections.singletonList(processDefinition);
+        // 获得 BpmProcessDefinitionDO Map
+        List<BpmProcessDefinitionExtDO> processDefinitionDOs = processDefinitionMapper.selectListByProcessDefinitionIds(
+                Collections.singleton(processDefinedKey));
+        Map<String, BpmProcessDefinitionExtDO> processDefinitionDOMap = convertMap(processDefinitionDOs,
+                BpmProcessDefinitionExtDO::getProcessDefinitionId);
+        // 执行查询，并返回
+        return BpmProcessDefinitionConvert.INSTANCE.convertList3(processDefinitions, processDefinitionDOMap).get(0);
+    }
     @Override
     public PageResult<BpmProcessDefinitionPageItemRespVO> getProcessDefinitionPage(BpmProcessDefinitionPageReqVO pageVO) {
         ProcessDefinitionQuery definitionQuery = repositoryService.createProcessDefinitionQuery();

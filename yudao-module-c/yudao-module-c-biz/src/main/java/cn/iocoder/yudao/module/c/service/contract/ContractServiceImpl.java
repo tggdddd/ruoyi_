@@ -9,6 +9,7 @@ import cn.iocoder.yudao.module.c.convert.contracttemplate.ContractTemplateConver
 import cn.iocoder.yudao.module.c.dal.dataobject.contracttemplate.ContractTemplateDO;
 import cn.iocoder.yudao.module.c.enums.ContractStatusConstant;
 import cn.iocoder.yudao.module.c.enums.dal.ContractStatus;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import liquibase.pro.packaged.E;
 import lombok.Setter;
 import org.springframework.cglib.core.Local;
@@ -119,6 +120,13 @@ public class ContractServiceImpl implements ContractService {
                 .setResult(BpmProcessInstanceResultEnum.PROCESS.getResult());
         ontractMapper.updateById(updateObj);
     }
+
+    @Override
+    public void updateContractStatus(Long id, Integer status) {
+        validateontractExists(id);
+        ontractMapper.updateById(new ContractDO().setId(id).setStatus(status));
+    }
+
     @Override
     public void updateontractResult(Long id, Integer result) {
         validateontractExists(id);
@@ -186,6 +194,16 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public List<ContractDO> getontractList(ContractExportReqVO exportReqVO) {
         return ontractMapper.selectList(exportReqVO);
+    }
+
+    @Override
+    public boolean checkIsStart(Long id) {
+        return ontractMapper.selectOne(new LambdaQueryWrapper<ContractDO>()
+                .eq(ContractDO::getId, id)
+                .eq(ContractDO::getStatus, ContractStatusConstant.SIGNED)
+                .eq(ContractDO::getResult, BpmProcessInstanceResultEnum.APPROVE.getResult())
+                .lt(true, ContractDO::getStartTime, LocalDateTime.now())
+        ) != null;
     }
 
     @Override

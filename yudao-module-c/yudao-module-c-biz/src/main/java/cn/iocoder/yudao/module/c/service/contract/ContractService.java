@@ -38,6 +38,13 @@ public interface ContractService {
      */
     void updateontractResult(Long id, Integer result);
     /**
+     * 更新合同的状态
+     *
+     * @param id 编号
+     * @param status 状态
+     */
+    void updateContractStatus(Long id, Integer status);
+    /**
      * 删除合同表单
      *
      * @param id 编号
@@ -80,6 +87,9 @@ public interface ContractService {
      * @return 合同表单列表
      */
     List<ContractDO> getontractList(ContractExportReqVO exportReqVO);
-
+    /** 用户签约  */
     void sign(Long id);
+    /** 验证是否已经开始生效
+     * 签约加到了合同开始时间 */
+    boolean checkIsStart(Long id);
 }

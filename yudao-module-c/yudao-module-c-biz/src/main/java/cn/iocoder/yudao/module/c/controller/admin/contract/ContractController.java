@@ -53,11 +53,11 @@ public class ContractController {
     @PutMapping("/update")
     @Operation(summary = "更新合同表单")
     @PreAuthorize("@ss.hasPermission('c:ontract:update')")
-    public CommonResult<Boolean> updateontract(@Valid @RequestBody ContractUpdateReqVO updateReqVO) {
+    public CommonResult<String> updateontract(@Valid @RequestBody ContractUpdateReqVO updateReqVO) {
         // 校验参数
         utilService.attachGenerator(ContractConvert.INSTANCE.convert1(updateReqVO));
         ontractService.updateontract(updateReqVO);
-        return success(true);
+        return success("已提交审核流程");
     }
 
     @DeleteMapping("/delete")

@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.bpm.controller.admin.definition;
 
 import cn.iocoder.yudao.framework.common.pojo.CommonResult;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.framework.operatelog.core.annotations.OperateLog;
 import cn.iocoder.yudao.module.bpm.controller.admin.definition.vo.process.BpmProcessDefinitionListReqVO;
 import cn.iocoder.yudao.module.bpm.controller.admin.definition.vo.process.BpmProcessDefinitionPageItemRespVO;
 import cn.iocoder.yudao.module.bpm.controller.admin.definition.vo.process.BpmProcessDefinitionPageReqVO;
@@ -10,6 +11,7 @@ import cn.iocoder.yudao.module.bpm.service.definition.BpmProcessDefinitionServic
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Operation;
+import org.flowable.engine.repository.Deployment;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+import java.io.IOException;
 import java.util.List;
 
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
+import static cn.iocoder.yudao.framework.operatelog.core.enums.OperateTypeEnum.EXPORT;
 
 @Tag(name = "管理后台 - 流程定义")
 @RestController
@@ -47,6 +51,13 @@ public class BpmProcessDefinitionController {
             BpmProcessDefinitionListReqVO listReqVO) {
         return success(bpmDefinitionService.getProcessDefinitionList(listReqVO));
     }
+    @GetMapping ("/get")
+    @Operation(summary = "获得流程定义列表")
+    @PreAuthorize("@ss.hasPermission('bpm:process-definition:query')")
+    public CommonResult<BpmProcessDefinitionRespVO> getProcessDefinition(
+            @RequestParam("id") String processDefinedKey) {
+        return success(bpmDefinitionService.getProcessDefinitionItem(processDefinedKey));
+    }
 
     @GetMapping ("/get-bpmn-xml")
     @Operation(summary = "获得流程定义的 BPMN XML")
@@ -55,5 +66,12 @@ public class BpmProcessDefinitionController {
     public CommonResult<String> getProcessDefinitionBpmnXML(@RequestParam("id") String id) {
         String bpmnXML = bpmDefinitionService.getProcessDefinitionBpmnXML(id);
         return success(bpmnXML);
+    }
+    @GetMapping("/getName")
+    @Operation(summary = "获得流程定义的名字")
+    @PreAuthorize("@ss.hasPermission('c:bpm:process-definition:list')")
+    public String getProcessDefinedName(String id) {
+        Deployment deployment = bpmDefinitionService.getDeployment(id);
+        return deployment.getName() == null ?deployment.getName():"";
     }
 }

@@ -9,6 +9,8 @@ import cn.iocoder.yudao.framework.common.pojo.PageParam;
 import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Pattern;
+
 import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
 
 @Schema(description = "管理后台 - 合同表单模板 Excel 导出 Request VO，参数和 ContractTemplatePageReqVO 是一致的")
@@ -51,4 +53,7 @@ public class ContractTemplateExportReqVO {
     private LocalDateTime[] createTime;
     @Schema(description = "状态-参见 bpm_process_instance_result 枚举", required = true, example = "1")
     private Integer result;
+
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

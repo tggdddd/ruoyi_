@@ -64,4 +64,6 @@ public class PerformanceReportRequestDO extends BaseDO {
      * 岗位id
      */
     private Long postId;
+    /** 部门id  */
+    private Long deptId;
 }

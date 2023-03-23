@@ -36,5 +36,6 @@ public class PerformReportBaseVO {
 
     @Schema(description = "过期时间")
     private LocalDateTime expireTime;
-
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

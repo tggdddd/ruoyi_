@@ -27,8 +27,10 @@ public class ContractExportReqVO {
 
     @Schema(description = "薪资")
     private BigDecimal salary;
-    @Schema(description = "岗位", required = true, example = "开发人员")
+    @Schema(description = "岗位",  example = "开发人员")
     private String postId;
+
+
     @Schema(description = "业绩要求")
     private String performanceRequirements;
 
@@ -58,4 +60,7 @@ public class ContractExportReqVO {
     private LocalDateTime[] createTime;
     @Schema(description = "状态-参见 bpm_process_instance_result 枚举", required = true, example = "1")
     private Integer result;
+
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

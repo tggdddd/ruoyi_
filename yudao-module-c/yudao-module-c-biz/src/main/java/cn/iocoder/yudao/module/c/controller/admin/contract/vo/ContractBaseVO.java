@@ -1,21 +1,14 @@
 package cn.iocoder.yudao.module.c.controller.admin.contract.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import cn.iocoder.yudao.framework.common.validation.IDCard;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Data;
+import org.intellij.lang.annotations.Pattern;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import java.time.LocalDateTime;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
 
 import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
 
@@ -36,6 +29,7 @@ public class ContractBaseVO {
 
     @Schema(description = "用户的身份证号")
     @NotNull(message = "身份证不能为空")
+    @IDCard
     private String identityCard;
 
     @Schema(description = "薪资")
@@ -72,4 +66,6 @@ public class ContractBaseVO {
     @NotNull(message = "合同的附件内容不能为空")
     private String attach;
 
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

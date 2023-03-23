@@ -40,4 +40,7 @@ public class PerformReportPageReqVO extends PageParam {
     private LocalDateTime[] expireTime;
     @Schema(description = "状态")
     private Integer status;
+
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

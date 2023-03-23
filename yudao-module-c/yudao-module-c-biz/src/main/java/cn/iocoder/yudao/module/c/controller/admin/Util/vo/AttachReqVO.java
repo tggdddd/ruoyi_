@@ -73,5 +73,6 @@ public class AttachReqVO {
 
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
     private LocalDateTime endTime;
-
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

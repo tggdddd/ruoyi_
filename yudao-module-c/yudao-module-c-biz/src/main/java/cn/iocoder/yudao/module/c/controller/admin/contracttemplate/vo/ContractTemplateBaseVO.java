@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.c.controller.admin.contracttemplate.vo;
 
+import cn.iocoder.yudao.framework.common.validation.IDCard;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.util.*;
@@ -28,6 +29,7 @@ public class ContractTemplateBaseVO {
     private String identityCard;
 
     @Schema(description = "薪资")
+
     private BigDecimal salary;
     @Schema(description = "岗位", required = true, example = "1")
     private Integer postId;
@@ -54,5 +56,6 @@ public class ContractTemplateBaseVO {
     @Schema(description = "合同结束时间")
     @DateTimeFormat(pattern = FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND)
     private LocalDateTime endTime;
-
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

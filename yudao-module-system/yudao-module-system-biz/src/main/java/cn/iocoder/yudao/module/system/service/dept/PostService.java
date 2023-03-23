@@ -1,16 +1,21 @@
 package cn.iocoder.yudao.module.system.service.dept;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.iocoder.yudao.framework.common.enums.CommonStatusEnum;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.post.PostCreateReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.post.PostExportReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.post.PostPageReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.dept.vo.post.PostUpdateReqVO;
+import cn.iocoder.yudao.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.yudao.module.system.dal.dataobject.dept.PostDO;
 import org.springframework.lang.Nullable;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static cn.iocoder.yudao.framework.common.util.collection.SetUtils.asSet;
 
@@ -95,4 +100,17 @@ public interface PostService {
      */
     void validatePostList(Collection<Long> ids);
 
+    /**
+     * 获得指定编号的岗位 Map
+     *
+     * @param ids 岗位编号数组
+     * @return 岗位 Map
+     */
+    default Map<Long, PostDO> getPostMap(Collection<Long> ids) {
+        if (CollUtil.isEmpty(ids)) {
+            return Collections.emptyMap();
+        }
+        List<PostDO> list = getPostList(ids);
+        return CollectionUtils.convertMap(list, PostDO::getId);
+    }
 }

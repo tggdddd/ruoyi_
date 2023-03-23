@@ -1,13 +1,18 @@
 package cn.iocoder.yudao.module.c.dal.mysql.performreport;
 
-import java.util.*;
-
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
+import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
+import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.PerformReportExportReqVO;
+import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.PerformReportPageReqVO;
+import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.StatisticsRespVO;
 import cn.iocoder.yudao.module.c.dal.dataobject.performreport.PerformReportDO;
+import cn.iocoder.yudao.module.c.enums.dal.ReportEnum;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.ibatis.annotations.Mapper;
-import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 业绩信息 Mapper
@@ -25,9 +30,10 @@ public interface PerformReportMapper extends BaseMapperX<PerformReportDO> {
                 .eqIfPresent(PerformReportDO::getBpmProcessInstanceExtId, reqVO.getBpmProcessInstanceExtId())
                 .eqIfPresent(PerformReportDO::getBpmProcessDefinitionId, reqVO.getBpmProcessDefinitionId())
                 .betweenIfPresent(PerformReportDO::getCreateTime, reqVO.getCreateTime())
-                .betweenIfPresent(PerformReportDO::getExpireTime,reqVO.getExpireTime())
+                .betweenIfPresent(PerformReportDO::getExpireTime, reqVO.getExpireTime())
                 .eqIfPresent(PerformReportDO::getProcessInstanceId, reqVO.getProcessInstanceId())
-                .eqIfPresent(PerformReportDO::getStatus,reqVO.getStatus())
+                .eqIfPresent(PerformReportDO::getStatus, reqVO.getStatus())
+                .eqIfPresent(PerformReportDO::getDeptId, reqVO.getDeptId())
                 .orderByDesc(PerformReportDO::getId));
     }
 
@@ -39,12 +45,53 @@ public interface PerformReportMapper extends BaseMapperX<PerformReportDO> {
                 .eqIfPresent(PerformReportDO::getBpmProcessInstanceExtId, reqVO.getBpmProcessInstanceExtId())
                 .eqIfPresent(PerformReportDO::getBpmProcessDefinitionId, reqVO.getBpmProcessDefinitionId())
                 .betweenIfPresent(PerformReportDO::getCreateTime, reqVO.getCreateTime())
-                .betweenIfPresent(PerformReportDO::getExpireTime,reqVO.getExpireTime())
+                .betweenIfPresent(PerformReportDO::getExpireTime, reqVO.getExpireTime())
                 .eqIfPresent(PerformReportDO::getProcessInstanceId, reqVO.getProcessInstanceId())
-                .eqIfPresent(PerformReportDO::getStatus,reqVO.getStatus())
+                .eqIfPresent(PerformReportDO::getStatus, reqVO.getStatus())
+                .eqIfPresent(PerformReportDO::getDeptId, reqVO.getDeptId())
                 .orderByDesc(PerformReportDO::getId));
     }
 
     List<PerformReportDO> getUnSubmit();
 
+    default List<StatisticsRespVO> getStatistics(Long userId) {
+        List<StatisticsRespVO> result = new ArrayList<>(4);
+        result.add(
+                new StatisticsRespVO()
+                        .setName("未提交")
+                        .setValue(
+                                selectCount(new LambdaQueryWrapper<PerformReportDO>()
+                                        .eq(userId != null, PerformReportDO::getUserId, userId)
+                                        .eq(PerformReportDO::getStatus, ReportEnum.Create.getType())
+                                )));
+        result.add( new StatisticsRespVO()
+                .setName("已提交")
+                .setValue(
+                        selectCount(new LambdaQueryWrapper<PerformReportDO>()
+                                .eq(userId != null, PerformReportDO::getUserId, userId)
+                                .eq(PerformReportDO::getStatus , ReportEnum.SUBMIT.getType())
+                        )));
+        result.add( new StatisticsRespVO()
+                .setName("不通过")
+                .setValue(
+                        selectCount(new LambdaQueryWrapper<PerformReportDO>()
+                                .eq(userId != null, PerformReportDO::getUserId, userId)
+                                .eq(PerformReportDO::getStatus , ReportEnum.REJECT.getType())
+                        )));
+        result.add( new StatisticsRespVO()
+                .setName("已完成")
+                .setValue(
+                        selectCount(new LambdaQueryWrapper<PerformReportDO>()
+                                .eq(userId != null, PerformReportDO::getUserId, userId)
+                                .eq(PerformReportDO::getStatus , ReportEnum.COMPLETION.getType())
+                        )));
+        result.add( new StatisticsRespVO()
+                .setName("已超时")
+                .setValue(
+                        selectCount(new LambdaQueryWrapper<PerformReportDO>()
+                                .eq(userId != null, PerformReportDO::getUserId, userId)
+                                .eq(PerformReportDO::getStatus , ReportEnum.EXPIRE.getType())
+                        )));
+        return result;
+    }
 }

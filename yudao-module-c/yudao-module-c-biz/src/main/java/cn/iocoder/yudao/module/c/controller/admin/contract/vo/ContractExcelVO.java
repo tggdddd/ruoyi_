@@ -1,5 +1,8 @@
 package cn.iocoder.yudao.module.c.controller.admin.contract.vo;
 
+import cn.iocoder.yudao.module.c.enums.ContractStatusConstant;
+import cn.iocoder.yudao.module.system.enums.DictTypeConstants;
+import com.alibaba.excel.annotation.ExcelIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.util.*;
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
 import com.alibaba.excel.annotation.ExcelProperty;
 import cn.iocoder.yudao.framework.excel.core.annotations.DictFormat;
 import cn.iocoder.yudao.framework.excel.core.convert.DictConvert;
+import org.jeecgframework.poi.excel.annotation.Excel;
 
 
 /**
@@ -23,10 +27,10 @@ import cn.iocoder.yudao.framework.excel.core.convert.DictConvert;
 @Data
 public class ContractExcelVO {
 
-    @ExcelProperty("主键(自增策略)")
+    @ExcelProperty("主键")
     private Long id;
 
-    @ExcelProperty("system_user表用户ID")
+    @ExcelProperty("用户ID")
     private Long userId;
 
     @ExcelProperty("用户的真实姓名")
@@ -34,8 +38,10 @@ public class ContractExcelVO {
 
     @ExcelProperty("用户的身份证号")
     private String identityCard;
-    @Schema(description = "岗位", required = true, example = "1")
-    private Integer postId;
+    @ExcelProperty("岗位")
+    private String postName;
+    @ExcelIgnore
+    private Long postId;
     @ExcelProperty("薪资")
     private BigDecimal salary;
 
@@ -48,8 +54,8 @@ public class ContractExcelVO {
     @ExcelProperty("违约条款")
     private String defaultClause;
 
-    @ExcelProperty(value = "合同状态 0未签订 1签订 2到期 3终止", converter = DictConvert.class)
-    @DictFormat("contract_status") // TODO 代码优化：建议设置到对应的 XXXDictTypeConstants 枚举类中
+    @ExcelProperty(value = "合同状态", converter = DictConvert.class)
+    @DictFormat(DictTypeConstants.CONTRACT_STATUS) // TODO 代码优化：建议设置到对应的 XXXDictTypeConstants 枚举类中
     private Integer status;
 
     @ExcelProperty("甲方")
@@ -66,6 +72,13 @@ public class ContractExcelVO {
 
     @ExcelProperty("创建时间")
     private LocalDateTime createTime;
-    @Schema(description = "状态-参见 bpm_process_instance_result 枚举", required = true, example = "1")
+    @ExcelProperty(value ="审核结果", converter = DictConvert.class)
+    @DictFormat(DictTypeConstants.BPM_PROCESS_INSTANCE_RESULT)
     private Integer result;
+
+
+    @ExcelProperty("部门")
+    private String deptName;
+    @ExcelIgnore
+    private Long deptId;
 }

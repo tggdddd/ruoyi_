@@ -70,6 +70,8 @@ public class PerformanceReportRequestServiceImpl implements PerformanceReportReq
         createReqVO.setUserId(contractDO.getUserId());
         // 添加postId
         createReqVO.setPostId(contractDO.getPostId());
+        // 添加deptId
+        createReqVO.setDeptId(contractDO.getDeptId());
         // 插入表单
         PerformanceReportRequestDO performanceReportRequest = PerformanceReportRequestConvert.INSTANCE.convert(createReqVO);
         performanceReportRequestMapper.insert(performanceReportRequest);
@@ -112,6 +114,8 @@ public class PerformanceReportRequestServiceImpl implements PerformanceReportReq
         updateReqVO.setUserId(contractDO.getUserId());
         // 添加postId
         updateReqVO.setPostId(contractDO.getPostId());
+        // 添加deptId
+        updateReqVO.setDeptId(contractDO.getDeptId());
         // 更新
         PerformanceReportRequestDO updateObj = PerformanceReportRequestConvert.INSTANCE.convert(updateReqVO);
         performanceReportRequestMapper.updateById(updateObj);

@@ -14,4 +14,6 @@ public class ContractUpdateReqVO extends ContractBaseVO {
     @Schema(description = "主键(自增策略)", required = true, example = "28516")
     @NotNull(message = "主键(自增策略)不能为空")
     private Long id;
+
+
 }

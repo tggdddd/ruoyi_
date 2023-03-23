@@ -7,6 +7,8 @@ import java.util.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import cn.iocoder.yudao.framework.common.pojo.PageParam;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 import static cn.iocoder.yudao.framework.common.util.date.DateUtils.FORMAT_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND;
@@ -60,5 +62,6 @@ public class ContractPageReqVO extends PageParam {
     private LocalDateTime[] createTime;
     @Schema(description = "状态-参见 bpm_process_instance_result 枚举", example = "1")
     private Integer result;
-
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

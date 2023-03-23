@@ -9,6 +9,8 @@ import cn.iocoder.yudao.module.c.convert.contracttemplate.ContractTemplateConver
 import cn.iocoder.yudao.module.c.dal.dataobject.contracttemplate.ContractTemplateDO;
 import cn.iocoder.yudao.module.c.enums.ContractStatusConstant;
 import cn.iocoder.yudao.module.c.enums.dal.ContractStatus;
+import cn.iocoder.yudao.module.system.service.dept.DeptService;
+import cn.iocoder.yudao.module.system.service.user.AdminUserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import liquibase.pro.packaged.E;
 import lombok.Setter;
@@ -55,13 +57,16 @@ public class ContractServiceImpl implements ContractService {
     private ContractMapper ontractMapper;
     @Resource
     private BpmProcessInstanceApi processInstanceApi;
-
+    @Resource
+    private AdminUserService userService;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createontract(ContractCreateReqVO createReqVO) {
         // 插入表单
         ContractDO ontract = ContractConvert.INSTANCE.convert(createReqVO)
                 .setResult(BpmProcessInstanceResultEnum.PROCESS.getResult());
+        // 设置deptID
+        ontract.setDeptId(userService.getUser(ontract.getUserId()).getDeptId());
         ontractMapper.insert(ontract);
         // 发起 BPM 流程
         BpmProcessInstanceCreateReqDTO bpmProcessInstanceCreateReqDTO = new BpmProcessInstanceCreateReqDTO().setProcessDefinitionKey(PROCESS_KEY)

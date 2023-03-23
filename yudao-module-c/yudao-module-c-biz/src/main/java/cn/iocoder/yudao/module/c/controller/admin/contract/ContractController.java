@@ -1,8 +1,17 @@
 package cn.iocoder.yudao.module.c.controller.admin.contract;
 
+import cn.iocoder.yudao.framework.common.util.collection.MapUtils;
 import cn.iocoder.yudao.module.c.Util.ContractGenerator;
 import cn.iocoder.yudao.module.c.dal.dataobject.contracttemplate.ContractTemplateDO;
 import cn.iocoder.yudao.module.c.service.UtilService;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserExcelVO;
+import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserPageItemRespVO;
+import cn.iocoder.yudao.module.system.convert.user.UserConvert;
+import cn.iocoder.yudao.module.system.dal.dataobject.dept.DeptDO;
+import cn.iocoder.yudao.module.system.dal.dataobject.dept.PostDO;
+import cn.iocoder.yudao.module.system.dal.dataobject.user.AdminUserDO;
+import cn.iocoder.yudao.module.system.service.dept.DeptService;
+import cn.iocoder.yudao.module.system.service.dept.PostService;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +33,9 @@ import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 import cn.iocoder.yudao.framework.excel.core.util.ExcelUtils;
 
 import cn.iocoder.yudao.framework.operatelog.core.annotations.OperateLog;
+
+import static cn.iocoder.yudao.framework.common.util.collection.CollectionUtils.convertList;
+import static cn.iocoder.yudao.framework.common.util.collection.CollectionUtils.convertSet;
 import static cn.iocoder.yudao.framework.operatelog.core.enums.OperateTypeEnum.*;
 
 import cn.iocoder.yudao.module.c.controller.admin.contract.vo.*;
@@ -41,6 +53,11 @@ public class ContractController {
     private ContractService ontractService;
     @Resource
     UtilService utilService;
+
+    @Resource
+    PostService postService;
+    @Resource
+    DeptService deptService;
     @PostMapping("/create")
     @Operation(summary = "创建合同表单")
     @PreAuthorize("@ss.hasPermission('c:ontract:create')")
@@ -103,6 +120,24 @@ public class ContractController {
         List<ContractDO> list = ontractService.getontractList(exportReqVO);
         // 导出 Excel
         List<ContractExcelVO> datas = ContractConvert.INSTANCE.convertList02(list);
+
+        // 获得拼接需要的数据
+        Collection<Long> postIds = convertList(list, ContractDO::getPostId);
+        Map<Long, PostDO> postMap = postService.getPostMap(postIds);
+
+        Collection<Long> deptIds = convertList(list, ContractDO::getDeptId);
+        Map<Long, DeptDO> deptMap = deptService.getDeptMap(deptIds);
+
+        datas.forEach(data -> {
+            // 设置岗位
+            MapUtils.findAndThen(postMap, data.getPostId(), deptDO -> {
+                data.setPostName(deptDO.getName());
+            });
+            // 设置部门
+            MapUtils.findAndThen(deptMap, data.getDeptId(), deptDO -> {
+                data.setPostName(deptDO.getName());
+            });
+        });
         ExcelUtils.write(response, "合同表单.xls", "数据", ContractExcelVO.class, datas);
     }
     @GetMapping("/getAttach")

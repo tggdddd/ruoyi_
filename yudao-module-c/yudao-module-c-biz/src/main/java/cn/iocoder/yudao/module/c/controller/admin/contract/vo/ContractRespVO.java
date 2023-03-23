@@ -24,4 +24,7 @@ public class ContractRespVO extends ContractBaseVO {
 
     @Schema(description = "合同状态 0未签订 1签订 2到期 3终止", required = false, example = "0")
     private Integer status;
+
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

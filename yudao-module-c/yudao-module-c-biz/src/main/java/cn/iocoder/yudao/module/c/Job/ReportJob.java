@@ -8,7 +8,6 @@ import cn.iocoder.yudao.framework.web.config.WebProperties;
 import cn.iocoder.yudao.module.c.Util.StringUtil;
 import cn.iocoder.yudao.module.c.dal.dataobject.performreport.PerformReportDO;
 import cn.iocoder.yudao.module.c.dal.mysql.PerformanceReportRequest.PerformanceReportRequestMapper;
-import cn.iocoder.yudao.module.c.dal.mysql.contract.ContractMapper;
 import cn.iocoder.yudao.module.c.dal.mysql.performreport.PerformReportMapper;
 import cn.iocoder.yudao.module.c.enums.ReportJobMessageEnum;
 import cn.iocoder.yudao.module.c.enums.dal.ReportEnum;
@@ -45,7 +44,7 @@ public class ReportJob implements JobHandler {
     PerformReportMapper performReportMapper;
     @Resource
     SchedulerManager schedulerManager;
-@Resource
+    @Resource
     ContractService contractService;
     @Resource
     private SmsSendApi smsSendApi;
@@ -61,7 +60,7 @@ public class ReportJob implements JobHandler {
     }
 
 
-    private boolean cancelNotExist(Long id,String triggerKey){
+    private boolean cancelNotExist(Long id, String triggerKey) {
         // 取消已取消的定时器
         if (performanceReportRequestMapper.selectById(id) == null) {
             try {
@@ -73,27 +72,31 @@ public class ReportJob implements JobHandler {
         }
         return false;
     }
-    private String getDetail(String processInstanceId){
+
+    private String getDetail(String processInstanceId) {
         return webProperties.getAdminUi().getUrl() +
                 "/process-instance/detail?id=" +
                 processInstanceId;
 
     }
-    private String getReportSubmit(String reportId,String processDefinedId){
+
+    private String getReportSubmit(String reportId, String processDefinedId) {
         return webProperties.getAdminUi().getUrl() +
                 "/report/process-instance/create?" +
-                "reportId="+ reportId+
+                "reportId=" + reportId +
                 "&key=" + processDefinedId;
     }
-    private String getList(){
+
+    private String getList() {
         return webProperties.getAdminUi().getUrl() +
                 "/perform/perform-report";
     }
+
     @Override
     @Transactional
     public String execute(String param) throws Exception {
         VO vo = JsonUtils.parseObject(param, VO.class);
-        switch (Objects.requireNonNull(vo).getTriggerKey().substring(0,2)){
+        switch (Objects.requireNonNull(vo).getTriggerKey().substring(0, 2)) {
             case REPORT_START:
                 return createReport(vo);
             case REPORT_NOTIFY:
@@ -109,18 +112,18 @@ public class ReportJob implements JobHandler {
 
     private String expireReport(VO vo) {
         PerformReportDO performReportDO = performReportMapper.selectById(vo.getReportId());
-        if(performReportDO != null && performReportDO.getProcessInstanceId() == null){
+        if (performReportDO != null && performReportDO.getProcessInstanceId() == null) {
             // 取消已取消的定时器
-            if(cancelNotExist(vo.getId(),vo.getTriggerKey())){
-                return vo.getId()+"不存在，已取消定时器。"+vo.getTriggerKey();
+            if (cancelNotExist(vo.getId(), vo.getTriggerKey())) {
+                return vo.getId() + "不存在，已取消定时器。" + vo.getTriggerKey();
             }
             // 设置状态
             performReportMapper.updateById(performReportDO.setStatus(ReportEnum.EXPIRE.getType()));
             // 发送通知
             Map<String, Object> templateParams = new HashMap<>();
             templateParams.put("detailUrl", getList());
-            templateParams.put("startTime",performReportDO.getCreateTime().toString());
-            templateParams.put("endTime",performReportDO.getExpireTime().toString());
+            templateParams.put("startTime", performReportDO.getCreateTime().toString());
+            templateParams.put("endTime", performReportDO.getExpireTime().toString());
             SmsSendSingleToUserReqDTO smsSendSingleToUserReqDTO = new SmsSendSingleToUserReqDTO()
                     .setUserId(vo.getUserId())
                     .setTemplateCode(ReportJobMessageEnum.EXPIRE.getSmsTemplateCode())
@@ -132,118 +135,119 @@ public class ReportJob implements JobHandler {
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
-        return vo.getId()+"业绩提交超时："+vo.getReportId();
+        return vo.getId() + "业绩提交超时：" + vo.getReportId();
     }
 
     private String urgeReport(VO vo) {
         PerformReportDO performReportDO = performReportMapper.selectById(vo.getReportId());
-        if(performReportDO != null && performReportDO.getProcessInstanceId() == null){
+        if (performReportDO != null && performReportDO.getProcessInstanceId() == null) {
             // 取消已取消的定时器
-            if(cancelNotExist(vo.getId(),vo.getTriggerKey())){
-                return vo.getId()+"不存在，已取消定时器。"+vo.getTriggerKey();
+            if (cancelNotExist(vo.getId(), vo.getTriggerKey())) {
+                return vo.getId() + "不存在，已取消定时器。" + vo.getTriggerKey();
             }
             // 发送通知
             Map<String, Object> templateParams = new HashMap<>();
-            templateParams.put("detailUrl", getReportSubmit(String.valueOf(vo.getReportId()),performReportDO.getBpmProcessDefinitionId()));
-            templateParams.put("startTime",performReportDO.getCreateTime().toString());
-            templateParams.put("endTime",performReportDO.getExpireTime().toString());
+            templateParams.put("detailUrl", getReportSubmit(String.valueOf(vo.getReportId()), performReportDO.getBpmProcessDefinitionId()));
+            templateParams.put("startTime", performReportDO.getCreateTime().toString());
+            templateParams.put("endTime", performReportDO.getExpireTime().toString());
             SmsSendSingleToUserReqDTO smsSendSingleToUserReqDTO = new SmsSendSingleToUserReqDTO()
                     .setUserId(vo.getUserId())
                     .setTemplateCode(ReportJobMessageEnum.URGE.getSmsTemplateCode())
                     .setTemplateParams(templateParams);
             sendMessage(smsSendSingleToUserReqDTO);
-        }else {
+        } else {
             try {
                 schedulerManager.deleteTrigger(vo.getTriggerKey());
             } catch (SchedulerException e) {
                 throw new RuntimeException(e);
             }
         }
-        return vo.getId()+"发送业绩提交提醒："+vo.getReportId();
+        return vo.getId() + "发送业绩提交提醒：" + vo.getReportId();
     }
 
     private String notifyReport(VO vo) {
         PerformReportDO performReportDO = performReportMapper.selectById(vo.getReportId());
-        if(performReportDO != null && performReportDO.getProcessInstanceId() == null){
+        if (performReportDO != null && performReportDO.getProcessInstanceId() == null) {
             // 取消已取消的定时器
-            if(cancelNotExist(vo.getId(),vo.getTriggerKey())){
-                return vo.getId()+"不存在，已取消定时器。"+vo.getTriggerKey();
+            if (cancelNotExist(vo.getId(), vo.getTriggerKey())) {
+                return vo.getId() + "不存在，已取消定时器。" + vo.getTriggerKey();
             }
             // 发送通知
             Map<String, Object> templateParams = new HashMap<>();
-            templateParams.put("detailUrl", getReportSubmit(String.valueOf(vo.getReportId()),performReportDO.getBpmProcessDefinitionId()));
-            templateParams.put("startTime",performReportDO.getCreateTime().toString());
-            templateParams.put("endTime",performReportDO.getExpireTime().toString());
+            templateParams.put("detailUrl", getReportSubmit(String.valueOf(vo.getReportId()), performReportDO.getBpmProcessDefinitionId()));
+            templateParams.put("startTime", performReportDO.getCreateTime().toString());
+            templateParams.put("endTime", performReportDO.getExpireTime().toString());
             SmsSendSingleToUserReqDTO smsSendSingleToUserReqDTO = new SmsSendSingleToUserReqDTO()
                     .setUserId(vo.getUserId())
                     .setTemplateCode(ReportJobMessageEnum.NOTIFY.getSmsTemplateCode())
                     .setTemplateParams(templateParams);
             sendMessage(smsSendSingleToUserReqDTO);
-        }else {
+        } else {
             try {
                 schedulerManager.deleteTrigger(vo.getTriggerKey());
             } catch (SchedulerException e) {
                 throw new RuntimeException(e);
             }
         }
-        return vo.getId()+"发送业绩提交通知："+vo.getReportId();
+        return vo.getId() + "发送业绩提交通知：" + vo.getReportId();
     }
 
-    private String createReport(VO vo){
+    private String createReport(VO vo) {
         // 取消已取消的定时器        防止混淆
-        if(cancelNotExist(vo.getId(),vo.getTriggerKey())){
-            return vo.getId()+"不存在，已取消定时器。"+vo.getTriggerKey();
+        if (cancelNotExist(vo.getId(), vo.getTriggerKey())) {
+            return vo.getId() + "不存在，已取消定时器。" + vo.getTriggerKey();
         }
         // 只对已生效的合同创建
         if (!contractService.checkIsStart(vo.getContractId())) {
-            return  vo.getId()+"的合同未到生效时间";
+            return vo.getId() + "的合同未到生效时间";
         }
         PerformReportDO performReportDO = new PerformReportDO().setBpmProcessDefinitionId(vo.getProcessDefitionId())
-                        .setUserId(vo.getUserId())
-                                .setPostId(vo.getPostId())
-                                        .setContractId(vo.getContractId())
-                                                .setExpireTime(CronUtils.getNextTimeOrNull(vo.getEndTime()));
+                .setUserId(vo.getUserId())
+                .setPostId(vo.getPostId())
+                .setContractId(vo.getContractId())
+                .setDeptId(vo.getDeptId())
+                .setExpireTime(CronUtils.getNextTimeOrNull(vo.getEndTime()));
         //     新增报告
         performReportMapper.insert(performReportDO);
         // 获得结果id
         vo.setReportId(performReportDO.getId());
         try {
-            //设置通知定时器
-            if (StringUtil.notEmpty(vo.getNotifyTime())){
-                vo.setTriggerKey(REPORT_NOTIFY+vo.getReportId());
+            // 设置通知定时器
+            if (StringUtil.notEmpty(vo.getNotifyTime())) {
+                vo.setTriggerKey(REPORT_NOTIFY + vo.getReportId());
                 schedulerManager.addJob(vo.getId(),
                         REPORT_JOB,
                         JsonUtils.toJsonString(vo),
                         vo.getNotifyTime(),
                         3,
                         10,
-                        vo.getTriggerKey(),vo.getTriggerKey());
+                        vo.getTriggerKey(), vo.getTriggerKey());
             }
             // 设置提醒定时器
             if (StringUtil.notEmpty(vo.getUrgeTime())) {
-                    vo.setTriggerKey(REPORT_URGE+vo.getReportId());
-                    schedulerManager.addJob(vo.getId(),
-                            REPORT_JOB,
-                            JsonUtils.toJsonString(vo),
-                            vo.getUrgeTime(),
-                            3,
-                            10,
-                            vo.getTriggerKey(),vo.getTriggerKey());
-                }
+                vo.setTriggerKey(REPORT_URGE + vo.getReportId());
+                schedulerManager.addJob(vo.getId(),
+                        REPORT_JOB,
+                        JsonUtils.toJsonString(vo),
+                        vo.getUrgeTime(),
+                        3,
+                        10,
+                        vo.getTriggerKey(), vo.getTriggerKey());
+            }
             // // 设置终止定时器
             if (StringUtil.notEmpty(vo.getEndTime())) {
-                vo.setTriggerKey(REPORT_END+vo.getReportId());
+                vo.setTriggerKey(REPORT_END + vo.getReportId());
                 schedulerManager.addJob(vo.getId(),
                         REPORT_JOB,
                         JsonUtils.toJsonString(vo),
                         vo.getEndTime(),
                         3,
                         10,
-                        vo.getTriggerKey(),vo.getTriggerKey());
+                        vo.getTriggerKey(), vo.getTriggerKey());
             }
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
-        return vo.getId()+"创建业绩提交要求："+vo.getReportId();
+        return vo.getId() + "创建业绩提交要求：" + vo.getReportId();
     }
 }

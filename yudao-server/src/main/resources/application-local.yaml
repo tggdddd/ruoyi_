@@ -205,20 +205,21 @@ justauth:
   enabled: true
   type:
     DINGTALK: # 钉钉
-      client-id: dingvrnreaje3yqvzhxg
-      client-secret: i8E6iZyDvZj51JIb0tYsYfVQYOks9Cq1lgryEjFRqC79P3iJcrxEwT6Qk2QvLrLI
+      client-id: dingras9xnbv2ojuw1wi
+      client-secret: IkOCJd6a1evrtLJO7EuoVY57xqkCuPJ4jNuww3ezu7Hrcqb9XFK-dt32ccWnvQuq
+      redirect-uri: woshibendidizhinizenmekenengbuzhidao.com
       ignore-check-redirect-uri: true
     WECHAT_ENTERPRISE: # 企业微信
-      client-id: wwd411c69a39ad2e54
-      client-secret: 1wTb7hYxnpT2TUbIeHGXGo7T0odav1ic10mLdyyATOw
-      agent-id: 1000004
+      client-id: ww821682fa503f7d0c
+      client-secret: RbZso6uqQ8PcTZz1ZSzqgmLVNan3tGVbgTN77FSaTPg
+      agent-id: 1000002
+      redirect-uri: zhebushilocalhost.com
       ignore-check-redirect-uri: true
     WECHAT_MINI_APP: # 微信小程序
       client-id: ${wx.miniapp.appid}
       client-secret: ${wx.miniapp.secret}
       ignore-check-redirect-uri: true
       ignore-check-state: true # 微信小程序，不会使用到 state，所以不进行校验
-
   cache:
     type: REDIS
     prefix: 'social_auth_state:' # 缓存前缀，目前只对 Redis 缓存生效，默认 JUSTAUTH::STATE::

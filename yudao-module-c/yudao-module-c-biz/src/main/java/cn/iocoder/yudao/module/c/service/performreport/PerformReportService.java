@@ -7,6 +7,7 @@ import cn.iocoder.yudao.module.bpm.controller.admin.task.vo.instance.BpmProcessI
 import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.*;
 import cn.iocoder.yudao.module.c.dal.dataobject.performreport.PerformReportDO;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
+import org.apache.commons.collections4.trie.analyzer.StringKeyAnalyzer;
 
 /**
  * 业绩信息 Service 接口
@@ -80,12 +81,13 @@ public interface PerformReportService {
      * @param createReqVO 表单信息
      * @param userId 业绩的用户
      * */
-    /**
-     * 创建流程实例（提供给前端）
-     *
-     * @param userId 用户编号
-     * @param createReqVO 创建信息
-     * @return 实例的编号
-     */
     String createProcessInstance(Long userId, @Valid BpmProcessInstanceCreateReqVO createReqVO,String reportId);
+    /**获得统计信息
+     * @param userId
+     * */
+
+    List<StatisticsRespVO>  getStatistics(Long userId);
+    /**获得所有业绩报告的统计信息
+     * */
+    List<StatisticsRespVO> getStatistics();
 }

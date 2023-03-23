@@ -41,6 +41,8 @@ public class PerformanceReportRequestPageReqVO extends PageParam {
 
     @Schema(description = "用户id", example = "9748")
     private Long userId;
-    @Schema(description = "dept")
+    @Schema(description = "岗位id")
     private Long postId;
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

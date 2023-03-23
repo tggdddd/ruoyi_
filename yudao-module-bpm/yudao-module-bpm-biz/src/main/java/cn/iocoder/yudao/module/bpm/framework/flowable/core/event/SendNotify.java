@@ -22,5 +22,6 @@ public class SendNotify  implements ExecutionListener {
     @Override
     public void notify(DelegateExecution execution) {
         System.out.println(execution.getEventName()+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        // TODO: 2023/3/13     发送合同签约的提醒
     }
 }

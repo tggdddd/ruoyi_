@@ -29,6 +29,7 @@ public interface PerformanceReportRequestMapper extends BaseMapperX<PerformanceR
                 .eqIfPresent(PerformanceReportRequestDO::getUrgeTime, reqVO.getUrgeTime())
                 .eqIfPresent(PerformanceReportRequestDO::getUserId, reqVO.getUserId())
                 .eqIfPresent(PerformanceReportRequestDO::getPostId,reqVO.getPostId())
+                .eqIfPresent(PerformanceReportRequestDO::getDeptId,reqVO.getDeptId())
                 .orderByDesc(PerformanceReportRequestDO::getId));
     }
 
@@ -43,6 +44,7 @@ public interface PerformanceReportRequestMapper extends BaseMapperX<PerformanceR
                 .eqIfPresent(PerformanceReportRequestDO::getUrgeTime, reqVO.getUrgeTime())
                 .eqIfPresent(PerformanceReportRequestDO::getPostId,reqVO.getPostId())
                 .eqIfPresent(PerformanceReportRequestDO::getUserId, reqVO.getUserId())
+                .eqIfPresent(PerformanceReportRequestDO::getDeptId,reqVO.getDeptId())
                 .orderByDesc(PerformanceReportRequestDO::getId));
     }
 

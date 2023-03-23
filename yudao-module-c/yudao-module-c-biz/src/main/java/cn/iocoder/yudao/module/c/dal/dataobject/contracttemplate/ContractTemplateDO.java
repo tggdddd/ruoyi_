@@ -49,7 +49,7 @@ public class ContractTemplateDO extends BaseDO {
      */
     private BigDecimal salary;
     /**岗位  */
-    private Integer postId;
+    private Long postId;
     /**
      * 附件
      */
@@ -94,4 +94,6 @@ public class ContractTemplateDO extends BaseDO {
      * 关联 ProcessInstance 的 id 属性
      */
     private String processInstanceId;
+    /** 部门id  */
+    private Long deptId;
 }

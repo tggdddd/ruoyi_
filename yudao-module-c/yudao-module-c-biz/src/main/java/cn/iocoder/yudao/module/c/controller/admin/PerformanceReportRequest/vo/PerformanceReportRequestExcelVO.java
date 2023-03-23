@@ -1,5 +1,6 @@
 package cn.iocoder.yudao.module.c.controller.admin.PerformanceReportRequest.vo;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -14,34 +15,38 @@ import java.time.LocalDateTime;
 @Data
 public class PerformanceReportRequestExcelVO {
 
-    @ExcelProperty("主键(自增策略)")
+    @ExcelProperty("主键")
     private Long id;
 
-    @ExcelProperty("关联的合同表ID")
+    @ExcelProperty("合同ID")
     private Long contractId;
 
-    @ExcelProperty("业绩表单提交开始开始时间")
+    @ExcelProperty("开始时间")
     private String startTime;
 
-    @ExcelProperty("业绩表单提交终止时间")
+    @ExcelProperty("终止时间")
     private String endTime;
 
-    @ExcelProperty("业绩表单提交通知时间")
+    @ExcelProperty("通知时间")
     private String notifyTime;
 
     @ExcelProperty("创建时间")
     private LocalDateTime createTime;
 
-    @ExcelProperty("业绩提交流程id")
+    @ExcelProperty("提交流程id")
     private String processDefitionId;
 
-    @ExcelProperty("业绩表单未交通知时间")
+    @ExcelProperty("未交通知时间")
     private String urgeTime;
 
     @ExcelProperty("用户id")
     private Long userId;
-
-    @Schema(description = "dept")
+    @ExcelProperty("岗位")
+    private String postName;
+    @ExcelIgnore
     private Long postId;
-
+    @ExcelProperty("部门")
+    private String deptName;
+    @ExcelIgnore
+    private Long deptId;
 }

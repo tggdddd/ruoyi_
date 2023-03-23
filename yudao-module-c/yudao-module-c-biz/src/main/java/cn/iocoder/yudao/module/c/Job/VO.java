@@ -66,4 +66,6 @@ public class VO {
     private String jobKey;
     private String triggerKey;
     private Long reportId;
+
+    private Long deptId;
 }

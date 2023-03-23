@@ -57,4 +57,6 @@ public class PerformReportDO extends BaseDO {
      */
     private LocalDateTime expireTime;
     private Integer status;
+    /** 部门id  */
+    private Long deptId;
 }

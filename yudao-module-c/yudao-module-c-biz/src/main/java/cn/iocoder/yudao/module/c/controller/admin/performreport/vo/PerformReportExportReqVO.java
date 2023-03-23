@@ -39,4 +39,7 @@ public class PerformReportExportReqVO {
 
     @Schema(description = "状态")
     private Integer status;
+
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

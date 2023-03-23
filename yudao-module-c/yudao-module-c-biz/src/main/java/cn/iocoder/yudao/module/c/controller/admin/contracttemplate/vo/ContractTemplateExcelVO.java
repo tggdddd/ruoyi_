@@ -1,5 +1,7 @@
 package cn.iocoder.yudao.module.c.controller.admin.contracttemplate.vo;
 
+import cn.iocoder.yudao.module.system.enums.DictTypeConstants;
+import com.alibaba.excel.annotation.ExcelIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.util.*;
@@ -23,16 +25,18 @@ import cn.iocoder.yudao.framework.excel.core.convert.DictConvert;
 @Data
 public class ContractTemplateExcelVO {
 
-    @ExcelProperty("主键(自增策略)")
+    @ExcelProperty("主键")
     private Long id;
 
-    @ExcelProperty("用户的真实姓名")
+    @ExcelProperty("姓名")
     private String name;
 
-    @ExcelProperty("用户的身份证号")
+    @ExcelProperty("身份证号")
     private String identityCard;
-    @Schema(description = "岗位", required = true, example = "1")
-    private Integer postId;
+    @ExcelProperty("岗位")
+    private String postName;
+    @ExcelIgnore
+    private Long postId;
     @ExcelProperty("薪资")
     private BigDecimal salary;
 
@@ -59,6 +63,12 @@ public class ContractTemplateExcelVO {
 
     @ExcelProperty("创建时间")
     private LocalDateTime createTime;
-    @Schema(description = "状态-参见 bpm_process_instance_result 枚举", required = true, example = "1")
+    @ExcelProperty(value = "审核结果",converter = DictConvert.class)
+    @DictFormat(DictTypeConstants.BPM_PROCESS_INSTANCE_RESULT)
     private Integer result;
+
+    @ExcelProperty("部门")
+    private String deptName;
+    @ExcelIgnore
+    private Long deptId;
 }

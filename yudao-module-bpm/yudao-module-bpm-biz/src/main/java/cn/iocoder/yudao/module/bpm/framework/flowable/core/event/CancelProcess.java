@@ -26,5 +26,6 @@ public class CancelProcess  implements JavaDelegate {
         if (runtimeService.createActivityInstanceQuery().processInstanceId(execution.getRootProcessInstanceId()).activityName("用户签约").finished().singleResult() == null) {
             runtimeService.deleteProcessInstance(execution.getRootProcessInstanceId(), "用户未在规定时间内签约");
         }
+        // TODO: 2023/3/13 发送合同取消的通知
     }
 }

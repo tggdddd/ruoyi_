@@ -9,7 +9,9 @@ import cn.iocoder.yudao.framework.common.exception.ServiceException;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.collection.CollectionUtils;
 import cn.iocoder.yudao.framework.datapermission.core.util.DataPermissionUtils;
+import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.module.infra.api.file.FileApi;
+import cn.iocoder.yudao.module.system.controller.admin.home.vo.UserInfoRespVO;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.profile.UserProfileUpdatePasswordReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.profile.UserProfileUpdateReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserCreateReqVO;
@@ -37,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -49,7 +52,6 @@ import java.util.Set;
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.iocoder.yudao.framework.common.util.collection.CollectionUtils.convertList;
 import static cn.iocoder.yudao.framework.common.util.collection.CollectionUtils.convertSet;
-import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_COUNT_MAX;
 import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_EMAIL_EXISTS;
 import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_IMPORT_LIST_IS_EMPTY;
 import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.USER_IS_DISABLE;
@@ -291,6 +293,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     /**
      * 获得部门条件：查询指定部门的子部门编号们，包括自身
+     *
      * @param deptId 部门编号
      * @return 部门编号集合
      */
@@ -305,7 +308,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     private void validateUserForCreateOrUpdate(Long id, String username, String mobile, String email,
-                                              Long deptId, Set<Long> postIds) {
+                                               Long deptId, Set<Long> postIds) {
         // 关闭数据权限，避免因为没有数据权限，查询不到数据，进而导致唯一校验不正确
         DataPermissionUtils.executeIgnore(() -> {
             // 校验用户存在
@@ -390,6 +393,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     /**
      * 校验旧密码
+     *
      * @param id          用户 id
      * @param oldPassword 旧密码
      */
@@ -445,6 +449,19 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public List<AdminUserDO> getUserListByStatus(Integer status) {
         return userMapper.selectListByStatus(status);
+    }
+
+    @Override
+    public UserInfoRespVO getHomeUserInfo(Long userId) {
+        Long aLong = userMapper.selectCount(new LambdaQueryWrapperX<AdminUserDO>().eq(AdminUserDO::getId, userId));
+        if (aLong == 0) {
+            throw exception(USER_NOT_EXISTS);
+        }
+        Period between = Period.between(userMapper.getRegisterTime(userId).toLocalDate(), LocalDateTime.now().toLocalDate());
+        return new UserInfoRespVO()
+                .setUserName(userMapper.getNickName(userId))
+                .setDateTime(String.format("%s年%s月%s日", between.getYears(), between.getMonths(), between.getDays()))
+                .setRank(100-userMapper.getOverRankPercentage(userId));
     }
 
     @Override

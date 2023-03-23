@@ -45,6 +45,9 @@ public class PerformanceReportRequestBaseVO {
     @Schema(description = "用户id", required = true, example = "9748")
     private Long userId;
 
-    @Schema(description = "dept")
+    @Schema(description = "岗位id")
     private Long postId;
+
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

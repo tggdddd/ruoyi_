@@ -12,4 +12,5 @@ import lombok.Data;
 @Data
 public class AttachBean extends AttachReqVO{
     String post;
+    String dept;
 }

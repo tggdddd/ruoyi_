@@ -12,6 +12,7 @@ import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.PerformReport
 import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.PerformReportExportReqVO;
 import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.PerformReportPageReqVO;
 import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.PerformReportUpdateReqVO;
+import cn.iocoder.yudao.module.c.controller.admin.performreport.vo.StatisticsRespVO;
 import cn.iocoder.yudao.module.c.convert.performreport.PerformReportConvert;
 import cn.iocoder.yudao.module.c.dal.dataobject.PerformanceReportRequest.PerformanceReportRequestDO;
 import cn.iocoder.yudao.module.c.dal.dataobject.performreport.PerformReportDO;
@@ -20,6 +21,7 @@ import cn.iocoder.yudao.module.c.dal.mysql.performreport.PerformReportMapper;
 import cn.iocoder.yudao.module.c.enums.BussinessFormEnum;
 import cn.iocoder.yudao.module.c.enums.ErrorCodeConstants;
 import cn.iocoder.yudao.module.c.enums.dal.ReportEnum;
+import cn.iocoder.yudao.module.system.service.user.AdminUserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.iocoder.yudao.module.c.enums.ErrorCodeConstants.PERFORM_REPORT_NOT_EXISTS;
@@ -48,7 +51,8 @@ public class PerformReportServiceImpl implements PerformReportService {
     private BpmProcessInstanceService bpmProcessInstanceService;
     @Resource
     private PerformanceReportRequestMapper performanceReportRequestMapper;
-
+    @Resource
+    private AdminUserService userService;
     @Override
     public Long createPerformReport(PerformReportCreateReqVO createReqVO) {
         // 插入
@@ -107,6 +111,16 @@ public class PerformReportServiceImpl implements PerformReportService {
     }
 
     @Override
+    public List<StatisticsRespVO>  getStatistics(Long userId) {
+        return performReportMapper.getStatistics(userId);
+    }
+
+    @Override
+    public List<StatisticsRespVO>  getStatistics() {
+        return performReportMapper.getStatistics(null);
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public String createProcessInstance(Long userId, @Valid BpmProcessInstanceCreateReqVO createReqVO, String reportId) {
         // 检验是否已提交
@@ -138,6 +152,7 @@ public class PerformReportServiceImpl implements PerformReportService {
                     .setBpmProcessDefinitionId(createReqVO.getProcessDefinitionId())
                     .setUserId(userId)
                     .setPostId(performanceReportRequestDO.getPostId())
+                    .setPostId(userService.getUser(userId).getDeptId())
                     .setProcessInstanceId(processInstanceId)
                     .setContractId(performanceReportRequestDO.getContractId())
                     .setStatus(ReportEnum.SUBMIT.getType());

@@ -31,6 +31,7 @@ public interface ContractTemplateMapper extends BaseMapperX<ContractTemplateDO> 
                 .betweenIfPresent(ContractTemplateDO::getStartTime, reqVO.getStartTime())
                 .betweenIfPresent(ContractTemplateDO::getEndTime, reqVO.getEndTime())
                 .betweenIfPresent(ContractTemplateDO::getCreateTime, reqVO.getCreateTime())
+                .eqIfPresent(ContractTemplateDO::getDeptId,reqVO.getDeptId())
                 .orderByDesc(ContractTemplateDO::getId));
     }
 
@@ -47,6 +48,7 @@ public interface ContractTemplateMapper extends BaseMapperX<ContractTemplateDO> 
                 .betweenIfPresent(ContractTemplateDO::getStartTime, reqVO.getStartTime())
                 .betweenIfPresent(ContractTemplateDO::getEndTime, reqVO.getEndTime())
                 .betweenIfPresent(ContractTemplateDO::getCreateTime, reqVO.getCreateTime())
+                .eqIfPresent(ContractTemplateDO::getDeptId,reqVO.getDeptId())
                 .orderByDesc(ContractTemplateDO::getId));
     }
 

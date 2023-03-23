@@ -39,5 +39,6 @@ public class PerformanceReportRequestExportReqVO {
 
     @Schema(description = "dept")
     private Long postId;
-
+    @Schema(description = "部门Id")
+    private Long deptId;
 }

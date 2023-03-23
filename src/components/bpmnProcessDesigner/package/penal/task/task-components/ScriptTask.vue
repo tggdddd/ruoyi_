@@ -58,8 +58,6 @@ const defaultTaskForm = ref({
 const scriptTaskForm = ref<any>({})
 const bpmnElement = ref()
 
-const bpmnInstances = () => (window as any)?.bpmnInstances
-
 const resetTaskForm = () => {
   for (let key in defaultTaskForm.value) {
     let value = bpmnElement.value?.businessObject[key] || defaultTaskForm.value[key]
@@ -78,7 +76,7 @@ const updateElementTask = () => {
     taskAttr.resource = scriptTaskForm.value.resource || null
     taskAttr.script = null
   }
-  bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), taskAttr)
+  window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), taskAttr)
 }
 
 onBeforeUnmount(() => {
@@ -88,7 +86,7 @@ onBeforeUnmount(() => {
 watch(
   () => props.id,
   () => {
-    bpmnElement.value = bpmnInstances().bpmnElement
+    bpmnElement.value = window.bpmnInstances.bpmnElement
     nextTick(() => {
       resetTaskForm()
     })

@@ -72,15 +72,14 @@ const bpmnElement = ref()
 const bpmnElementSource = ref()
 const bpmnElementSourceRef = ref()
 const flowConditionRef = ref()
-const bpmnInstances = () => (window as any)?.bpmnInstances
 const resetFlowCondition = () => {
-  bpmnElement.value = bpmnInstances().bpmnElement
+  bpmnElement.value = window.bpmnInstances.bpmnElement
   bpmnElementSource.value = bpmnElement.value.source
   bpmnElementSourceRef.value = bpmnElement.value.businessObject.sourceRef
   if (
     bpmnElementSourceRef.value &&
     bpmnElementSourceRef.value.default &&
-    bpmnElementSourceRef.value.default.id === bpmnElement.value.id
+    bpmnElementSourceRef.value.default.id === this.bpmnElement.id
   ) {
     // 默认
     flowConditionForm.value = { type: 'default' }
@@ -114,18 +113,18 @@ const resetFlowCondition = () => {
 const updateFlowType = (flowType) => {
   // 正常条件类
   if (flowType === 'condition') {
-    flowConditionRef.value = bpmnInstances().moddle.create('bpmn:FormalExpression')
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+    flowConditionRef.value = window.bpmnInstances.moddle.create('bpmn:FormalExpression')
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
       conditionExpression: flowConditionRef.value
     })
     return
   }
   // 默认路径
   if (flowType === 'default') {
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
       conditionExpression: null
     })
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElementSource.value), {
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElementSource.value), {
       default: bpmnElement.value
     })
     return
@@ -135,11 +134,11 @@ const updateFlowType = (flowType) => {
     bpmnElementSourceRef.value.default &&
     bpmnElementSourceRef.value.default.id === bpmnElement.value.id
   ) {
-    bpmnInstances().modeling.updateProperties(toRaw(bpmnElementSource.value), {
+    window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElementSource.value), {
       default: null
     })
   }
-  bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+  window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
     conditionExpression: null
   })
 }
@@ -147,22 +146,22 @@ const updateFlowCondition = () => {
   let { conditionType, scriptType, body, resource, language } = flowConditionForm.value
   let condition
   if (conditionType === 'expression') {
-    condition = bpmnInstances().moddle.create('bpmn:FormalExpression', { body })
+    condition = window.bpmnInstances.moddle.create('bpmn:FormalExpression', { body })
   } else {
     if (scriptType === 'inlineScript') {
-      condition = bpmnInstances().moddle.create('bpmn:FormalExpression', { body, language })
+      condition = window.bpmnInstances.moddle.create('bpmn:FormalExpression', { body, language })
       // this.$set(this.flowConditionForm, "resource", "");
       flowConditionForm.value['resource'] = ''
     } else {
       // this.$set(this.flowConditionForm, "body", "");
       flowConditionForm.value['body'] = ''
-      condition = bpmnInstances().moddle.create('bpmn:FormalExpression', {
+      condition = window.bpmnInstances.moddle.create('bpmn:FormalExpression', {
         resource,
         language
       })
     }
   }
-  bpmnInstances().modeling.updateProperties(toRaw(bpmnElement.value), {
+  window.bpmnInstances.modeling.updateProperties(toRaw(bpmnElement.value), {
     conditionExpression: condition
   })
 }

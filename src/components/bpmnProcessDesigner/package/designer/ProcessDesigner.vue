@@ -1,6 +1,6 @@
 <template>
   <div class="my-process-designer">
-    <div class="my-process-designer__header" style="display: table-row-group; z-index: 999">
+    <div class="my-process-designer__header">
       <slot name="control-header"></slot>
       <template v-if="!$slots['control-header']">
         <ElButtonGroup key="file-control">
@@ -190,12 +190,12 @@
     </div>
     <XModal title="预览" width="80%" height="90%" v-model="previewModelVisible" destroy-on-close>
       <!-- append-to-body -->
-      <div v-highlight>
-        <code class="hljs">
-          <!-- 高亮代码块 -->
-          {{ previewResult }}
-        </code>
-      </div>
+      <pre v-highlight>
+            <code class="hljs">
+            <!-- 高亮代码块 -->
+            {{ previewResult }}
+            </code>
+        </pre>
       <!-- <pre>
         <code class="hljs" v-html="highlightedCode(previewType, previewResult)"></code>
       </pre> -->
@@ -331,7 +331,7 @@ const additionalModules = computed(() => {
 
   // 插入用户自定义扩展模块
   if (Object.prototype.toString.call(props.additionalModel) == '[object Array]') {
-    Modules.push(...(props.additionalModel as any[]))
+    Modules.push(...props.additionalModel)
   } else {
     props.additionalModel && Modules.push(props.additionalModel)
   }

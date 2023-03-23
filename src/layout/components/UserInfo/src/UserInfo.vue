@@ -43,9 +43,9 @@ const loginOut = () => {
 const toProfile = async () => {
   push('/user/profile')
 }
-const toDocument = () => {
-  window.open('https://doc.iocoder.cn/')
-}
+// const toDocument = () => {
+//   window.open('https://doc.iocoder.cn/')
+// }
 </script>
 
 <template>
@@ -62,10 +62,10 @@ const toDocument = () => {
           <Icon icon="ep:tools" />
           <div @click="toProfile">{{ t('common.profile') }}</div>
         </ElDropdownItem>
-        <ElDropdownItem>
-          <Icon icon="ep:menu" />
-          <div @click="toDocument">{{ t('common.document') }}</div>
-        </ElDropdownItem>
+        <!--        <ElDropdownItem>-->
+        <!--          <Icon icon="ep:menu" />-->
+        <!--          <div @click="toDocument">{{ t('common.document') }}</div>-->
+        <!--        </ElDropdownItem>-->
         <ElDropdownItem divided @click="loginOut">
           <Icon icon="ep:switch-button" />
           <div>{{ t('common.loginOut') }}</div>

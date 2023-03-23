@@ -12,9 +12,13 @@ import {
   ElTabs,
   ElTable,
   ElTableColumn,
-  ElTabPane
+  ElTabPane,
+  ElRow,
+  ElCol
 } from 'element-plus'
-
+import UploadImg from '@/components/UploadFile/src/UploadImg.vue'
+import UploadImgs from '@/components/UploadFile/src/UploadImgs.vue'
+import UploadFile from '@/components/UploadFile/src/UploadFile.vue'
 import formCreate from '@form-create/element-ui'
 import install from '@form-create/element-ui/auto-import'
 import FcDesigner from '@form-create/designer'
@@ -31,7 +35,12 @@ const components = [
   ElTabs,
   ElTable,
   ElTableColumn,
-  ElTabPane
+  ElTabPane,
+  UploadImg,
+  UploadImgs,
+  UploadFile,
+  ElRow,
+  ElCol
 ]
 
 export const setupFormCreate = (app: App<Element>) => {
@@ -40,7 +49,8 @@ export const setupFormCreate = (app: App<Element>) => {
   })
 
   formCreate.use(install)
-
+  formCreate.component(UploadFile.name, UploadFile)
+  formCreate.component(UploadImgs.name, UploadImgs)
   app.use(formCreate)
 
   app.use(FcDesigner)

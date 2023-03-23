@@ -136,7 +136,7 @@ const handleUpdate = async (rowId: number) => {
   unref(formRef)?.setValues(res)
   // 设置选中
   res.menuIds?.forEach((item: any) => {
-    unref(treeRef)?.setChecked(item, true,false);
+    unref(treeRef)?.setChecked(item, true, false)
   })
 }
 

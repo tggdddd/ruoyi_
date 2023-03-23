@@ -393,7 +393,6 @@ const getDetail = () => {
         return
       }
       processInstance.value = data
-
       // 设置表单信息
       const processDefinition = data.processDefinition
       if (processDefinition.formType === 10) {

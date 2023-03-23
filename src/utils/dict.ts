@@ -63,14 +63,11 @@ export const getBoolDictOptions = (dictType: string) => {
 
 export const getDictObj = (dictType: string, value: any) => {
   const dictOptions: DictDataType[] = getDictOptions(dictType)
-  let result: DictDataType | undefined
   dictOptions.forEach((dict: DictDataType) => {
     if (dict.value === value.toString()) {
-      result = dict
-      return result
+      return dict
     }
   })
-  return result
 }
 
 export enum DICT_TYPE {

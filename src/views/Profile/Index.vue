@@ -32,9 +32,23 @@
 </template>
 <script setup lang="ts" name="Profile">
 import { BasicInfo, ProfileUser, ResetPwd, UserSocial } from './components/'
-const { t } = useI18n()
+import { socialAuthRedirectToAdminApi } from '@/api/login'
+import * as authUtil from '@/utils/auth'
+import { socialBind } from '@/api/system/user/socialUser'
 
+const { t } = useI18n()
+const router = useRouter()
 const activeName = ref('basicInfo')
+onMounted(() => {
+  if (router.currentRoute.value.query !== undefined) {
+    const params = router.currentRoute.value.query
+    if (params.state && params.type && params.code)
+      socialBind(params.type, params.code, params.state).then(() => {
+        useMessage().success('绑定成功')
+        router.replace({})
+      })
+  }
+})
 </script>
 <style scoped>
 .user {

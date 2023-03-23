@@ -62,7 +62,9 @@ const submit = (formEl: FormInstance | undefined) => {
   })
 }
 const reset = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
+  formEl?.resetFields()
+  password.confirmPassword = ''
+  password.newPassword = ''
+  password.oldPassword = ''
 }
 </script>

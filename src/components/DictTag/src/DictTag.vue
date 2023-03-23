@@ -37,7 +37,7 @@ export default defineComponent({
       if (props.value === undefined) {
         return null
       }
-      getDictObj(props.type, props.value.toString())
+      getDictObj(props.type, props.value + '')
       // 添加标签的文字颜色为白色，解决自定义背景颜色时标签文字看不清的问题
       return (
         <ElTag

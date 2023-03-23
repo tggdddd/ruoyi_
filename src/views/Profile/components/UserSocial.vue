@@ -50,7 +50,7 @@ const bind = (row) => {
   const redirectUri = location.origin + '/user/profile?type=' + row.type
   // 进行跳转
   socialAuthRedirect(row.type, encodeURIComponent(redirectUri)).then((res) => {
-    window.location.href = res.data
+    window.location.href = res
   })
 }
 const unbind = async (row) => {

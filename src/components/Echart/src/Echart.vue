@@ -43,7 +43,6 @@ const elRef = ref<ElRef>()
 let echartRef: Nullable<echarts.ECharts> = null
 
 const contentEl = ref<Element>()
-
 const styles = computed(() => {
   const width = isString(props.width) ? props.width : `${props.width}px`
   const height = isString(props.height) ? props.height : `${props.height}px`

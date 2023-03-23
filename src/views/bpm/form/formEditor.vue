@@ -61,6 +61,10 @@ import { CommonStatusEnum } from '@/utils/constants'
 import * as FormApi from '@/api/bpm/form'
 import { encodeConf, encodeFields, setConfAndFields } from '@/utils/formCreate'
 import { useClipboard } from '@vueuse/core'
+import { uploadFileByFormUrl } from '@/api/infra/fileList'
+import { getAccessToken } from '@/utils/auth'
+import { uploadFile } from '@/views/bpm/form/formComponentRule/uploadFile'
+import { uploadImage } from '@/views/bpm/form/formComponentRule/uploadImage'
 
 const { t } = useI18n() // 国际化
 const message = useMessage() // 消息
@@ -83,7 +87,6 @@ const formValues = ref({
   status: CommonStatusEnum.ENABLE,
   remark: ''
 })
-
 // 处理保存按钮
 const handleSave = () => {
   dialogVisible.value = true
@@ -141,8 +144,28 @@ const copy = async (text: string) => {
     }
   }
 }
+const insertComponent = (rule) => {
+  //插入组件规则
+  designer.value.addComponent(rule)
+  //插入拖拽按钮到`main`分类下
+  designer.value.appendMenuItem('main', {
+    icon: rule.icon,
+    name: rule.name,
+    label: rule.label
+  })
+}
+const removeComponent = (name) => {
+  //删除拖拽组件
+  designer.value.removeMenuItem(name)
+}
 // ========== 初始化 ==========
 onMounted(() => {
+  // 插入组件
+  insertComponent(uploadFile)
+  insertComponent(uploadImage)
+  // 去除默认上传组件
+  removeComponent('upload')
+  console.log(designer.value)
   // 场景一：新增表单
   const id = query.id as unknown as number
   if (!id) {

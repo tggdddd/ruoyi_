@@ -4,7 +4,6 @@
       ref="uploadRef"
       :multiple="props.limit > 1"
       name="file"
-      v-model="valueRef"
       v-model:file-list="fileList"
       :show-file-list="true"
       :auto-upload="autoUpload"
@@ -43,11 +42,7 @@ const message = useMessage() // 消息弹窗
 const emit = defineEmits(['update:modelValue'])
 
 const props = defineProps({
-  modelValue: {
-    type: Array as PropType<UploadUserFile[]>,
-    required: true
-  },
-  title: propTypes.string.def('文件上传'),
+  fileList: propTypes.array.def([]),
   updateUrl: propTypes.string.def(import.meta.env.VITE_UPLOAD_URL),
   fileType: propTypes.array.def(['doc', 'xls', 'ppt', 'txt', 'pdf']), // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileSize: propTypes.number.def(5), // 大小限制(MB)
@@ -57,17 +52,17 @@ const props = defineProps({
   isShowTip: propTypes.bool.def(true) // 是否显示提示
 })
 // ========== 上传相关 ==========
-const valueRef = ref(props.modelValue)
 const uploadRef = ref<UploadInstance>()
 const uploadList = ref<UploadUserFile[]>([])
-const fileList = ref<UploadUserFile[]>(props.modelValue)
 const uploadNumber = ref<number>(0)
 const uploadHeaders = ref({
   Authorization: 'Bearer ' + getAccessToken(),
   'tenant-id': getTenantId()
 })
+const fileList = ref(props.fileList)
 // 文件上传之前判断
 const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
+  console.log('看不见到上传前', fileList)
   if (fileList.value.length >= props.limit) {
     message.error(`上传文件数量不能超过${props.limit}个!`)
     return false
@@ -97,17 +92,19 @@ const beforeUpload: UploadProps['beforeUpload'] = (file: UploadRawFile) => {
 //   uploadRef.value.data.path = uploadFile.name
 // }
 // 文件上传成功
-const handleFileSuccess: UploadProps['onSuccess'] = (res: any): void => {
+const handleFileSuccess: UploadProps['onSuccess'] = (res: any, file: UploadUserFile): void => {
+  console.log('看不见到成功', fileList)
   message.success('上传成功')
   const fileListNew = fileList.value
   fileListNew.pop()
   fileList.value = fileListNew
-  uploadList.value.push({ name: res.data, url: res.data })
+  uploadList.value.push({ name: file.name, url: res.data })
   if (uploadList.value.length == uploadNumber.value) {
     fileList.value = fileList.value.concat(uploadList.value)
     uploadList.value = []
     uploadNumber.value = 0
-    emit('update:modelValue', listToString(fileList.value))
+    // emit('update:modelValue', listToString(fileList.value))
+    emit('update:modelValue', fileList.value)
   }
 }
 // 文件数超出提示
@@ -116,18 +113,24 @@ const handleExceed: UploadProps['onExceed'] = (): void => {
 }
 // 上传错误提示
 const excelUploadError: UploadProps['onError'] = (): void => {
+  console.log('看不见到错误', fileList)
+
   message.error('导入数据失败，请您重新上传！')
 }
 // 删除上传文件
 const handleRemove = (file) => {
+  if (fileList.value === undefined) {
+    console.log('看不见到')
+  }
   const findex = fileList.value.map((f) => f.name).indexOf(file.name)
   if (findex > -1) {
     fileList.value.splice(findex, 1)
-    emit('update:modelValue', listToString(fileList.value))
+    // emit('update:modelValue', listToString(fileList.value))
+    emit('update:modelValue', fileList.value)
   }
 }
 const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
-  console.log(uploadFile)
+  window.open(uploadFile.url)
 }
 // 对象转成指定字符串分隔
 const listToString = (list: UploadUserFile[], separator?: string) => {

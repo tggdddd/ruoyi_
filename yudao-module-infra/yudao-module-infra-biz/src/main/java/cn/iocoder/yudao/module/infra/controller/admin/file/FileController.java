@@ -28,6 +28,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static cn.iocoder.yudao.framework.common.pojo.CommonResult.success;
 
 @Tag(name = "管理后台 - 文件存储")
@@ -43,12 +48,20 @@ public class FileController {
     @PostMapping("/upload")
     @Operation(summary = "上传文件")
     @OperateLog(logArgs = false) // 上传文件，没有记录操作日志的必要
+    @PermitAll
     public CommonResult<String> uploadFile(FileUploadReqVO uploadReqVO) throws Exception {
         MultipartFile file = uploadReqVO.getFile();
         String path = uploadReqVO.getPath();
         return success(fileService.createFile(file.getOriginalFilename(), path, IoUtil.readBytes(file.getInputStream())));
     }
 
+    @PostMapping("/uploadByForm")
+    @Operation(summary = "上传文件(供表单设计的文件上传使用)")
+    @OperateLog(logArgs = false) // 上传文件，没有记录操作日志的必要
+    public Object uploadFileByForm(MultipartFile file) throws Exception {
+        Map result = new HashMap<String,Object>(){{put("url",fileService.createFile(file.getOriginalFilename(), null, IoUtil.readBytes(file.getInputStream())));}};
+        return result;
+    }
     @DeleteMapping("/delete")
     @Operation(summary = "删除文件")
     @Parameter(name = "id", description = "编号", required = true)
@@ -78,7 +91,9 @@ public class FileController {
             response.setStatus(HttpStatus.NOT_FOUND.value());
             return;
         }
-        ServletUtils.writeAttachment(response, path, content);
+        // 获得文件名
+        String fileName = fileService.getFileName(configId, path);
+        ServletUtils.writeAttachment(response, fileName, content);
     }
 
     @GetMapping("/page")

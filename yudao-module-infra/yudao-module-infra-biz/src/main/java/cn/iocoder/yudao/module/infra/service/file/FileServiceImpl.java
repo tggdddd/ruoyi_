@@ -6,9 +6,12 @@ import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.common.util.io.FileUtils;
 import cn.iocoder.yudao.framework.file.core.client.FileClient;
 import cn.iocoder.yudao.framework.file.core.utils.FileTypeUtils;
+import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.module.infra.controller.admin.file.vo.file.FilePageReqVO;
 import cn.iocoder.yudao.module.infra.dal.dataobject.file.FileDO;
 import cn.iocoder.yudao.module.infra.dal.mysql.file.FileMapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +43,7 @@ public class FileServiceImpl implements FileService {
     @SneakyThrows
     public String createFile(String name, String path, byte[] content) {
         // 计算默认的 path 名
-        String type = FileTypeUtils.getMineType(content, name);
+            String type = FileTypeUtils.getMineType(content, name);
         if (StrUtil.isEmpty(path)) {
             path = FileUtils.generatePath(content, name);
         }
@@ -48,7 +51,11 @@ public class FileServiceImpl implements FileService {
         if (StrUtil.isEmpty(name)) {
             name = path;
         }
-
+        // 检查文件是否已经存在
+        FileDO fileDO = fileMapper.selectOne(new LambdaQueryWrapper<FileDO>().eq(FileDO::getPath, path));
+        if(fileDO!= null){
+            return fileDO.getUrl();
+        }
         // 上传到文件存储器
         FileClient client = fileConfigService.getMasterFileClient();
         Assert.notNull(client, "客户端(master) 不能为空");
@@ -86,6 +93,17 @@ public class FileServiceImpl implements FileService {
             throw exception(FILE_NOT_EXISTS);
         }
         return fileDO;
+    }
+
+    @Override
+    public String getFileName(Long configId, String path) {
+        FileDO fileDO = null;
+        if(configId!= null && path != null) {
+            fileDO = fileMapper.selectOne(new LambdaQueryWrapper<FileDO>()
+                    .eq(FileDO::getConfigId, configId)
+                    .eq(FileDO::getPath, path));
+        }
+        return fileDO == null? null: fileDO.getName();
     }
 
     @Override

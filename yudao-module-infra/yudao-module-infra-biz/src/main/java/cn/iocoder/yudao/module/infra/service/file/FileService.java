@@ -45,4 +45,10 @@ public interface FileService {
      */
     byte[] getFileContent(Long configId, String path) throws Exception;
 
+    /** 获得文件名
+     * @param configId -配置编号
+     * @param path -文件路径
+     * @return 文件名*/
+    String getFileName(Long configId, String path);
+
 }

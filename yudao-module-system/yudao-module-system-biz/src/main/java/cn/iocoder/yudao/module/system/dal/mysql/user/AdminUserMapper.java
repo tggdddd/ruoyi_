@@ -3,11 +3,13 @@ package cn.iocoder.yudao.module.system.dal.mysql.user;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
 import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
+import cn.iocoder.yudao.module.system.controller.admin.home.vo.UserInfoRespVO;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserExportReqVO;
 import cn.iocoder.yudao.module.system.controller.admin.user.vo.user.UserPageReqVO;
 import cn.iocoder.yudao.module.system.dal.dataobject.user.AdminUserDO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -56,5 +58,9 @@ public interface AdminUserMapper extends BaseMapperX<AdminUserDO> {
     default List<AdminUserDO> selectListByDeptIds(Collection<Long> deptIds) {
         return selectList(AdminUserDO::getDeptId, deptIds);
     }
+    /** 获得创建时间小于 指定的 百分比  无%  */
+    Integer getOverRankPercentage(Long userId);
+    String getNickName(Long id);
+    LocalDateTime getRegisterTime(Long id);
 
 }

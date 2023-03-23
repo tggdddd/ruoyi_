@@ -64,3 +64,11 @@ export const exportPerformReportApi = async (params: PerformReportExcelReqVO) =>
 export const createProcessInstanceApi = async (data) => {
   return await request.post({ url: '/c/perform-report/process-instance', data: data })
 }
+// 获得个人业绩报告统计数据
+export const getReportStatisticsApi = async () => {
+  return await request.get({ url: '/c/perform-report/getStatistics' })
+}
+// 获得所有业绩报告统计数据
+export const getReportAllStatisticsApi = async () => {
+  return await request.get({ url: '/c/perform-report/getAllStatistics' })
+}

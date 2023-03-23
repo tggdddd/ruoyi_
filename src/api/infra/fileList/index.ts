@@ -26,3 +26,13 @@ export const getFilePageApi = (params: FilePageReqVO) => {
 export const deleteFileApi = (id: number) => {
   return request.delete({ url: '/infra/file/delete?id=' + id })
 }
+
+//表单的上传文件
+export const uploadFileByFormApi = (param) => {
+  return request.upload({
+    url: '/infra/file/uploadByForm',
+    param
+  })
+}
+export const uploadFileByFormUrl =
+  import.meta.env.VITE_BASE_URL + import.meta.env.VITE_API_URL + '/infra/file/uploadByForm'

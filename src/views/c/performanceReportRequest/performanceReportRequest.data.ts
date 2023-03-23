@@ -74,6 +74,13 @@ const crudSchemas = reactive<VxeCrudSchema>({
       }
     },
     {
+      title: '部门',
+      field: 'deptId',
+      isSearch: false,
+      isTable: false,
+      isForm: false
+    },
+    {
       title: '提交开始开始时间',
       field: 'startTime',
       form: {

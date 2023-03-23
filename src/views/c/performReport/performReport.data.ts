@@ -40,6 +40,13 @@ const crudSchemas = reactive<VxeCrudSchema>({
       isSearch: true
     },
     {
+      title: '部门',
+      field: 'deptId',
+      isSearch: false,
+      isTable: false,
+      isForm: false
+    },
+    {
       title: '合同',
       field: 'contractId',
       form: {

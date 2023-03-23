@@ -62,6 +62,13 @@ export const socialAuthRedirectApi = (type: number, redirectUri: string) => {
     url: '/system/auth/social-auth-redirect?type=' + type + '&redirectUri=' + redirectUri
   })
 }
+// 社交授权后发送返回给后端
+export const socialAuthRedirectToAdminApi = (data: Object) => {
+  return request.post({
+    url: '/system/auth/social-login',
+    data
+  })
+}
 // 获取验证图片  以及token
 export const getCodeApi = (data) => {
   return request.postOriginal({ url: 'system/captcha/get', data })

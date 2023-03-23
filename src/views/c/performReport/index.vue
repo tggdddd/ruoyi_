@@ -43,6 +43,7 @@
               v-if="row.processInstanceId"
               text
               type="primary"
+              v-hasPermi="['c:perform-report:query']"
               @click="processInstanceDetail(row.processInstanceId)"
               >查看详情</el-button
             >
@@ -154,7 +155,7 @@ const { t } = useI18n() // 国际化
 const message = useMessage() // 消息弹窗
 // 列表相关的变量
 const queryParams = reactive({
-  postId: null
+  deptId: null
 })
 // 列表相关的变量
 const [registerTable, { reload, deleteData, exportList }] = useXTable({
@@ -177,7 +178,7 @@ const filterNode = (value: string, data: Tree) => {
   return data.name.includes(value)
 }
 const handleDeptNodeClick = async (row: { [key: string]: any }) => {
-  queryParams.postId = row.id
+  queryParams.deptId = row.id
   await reload()
 }
 const { push } = useRouter()

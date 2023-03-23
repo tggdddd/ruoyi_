@@ -41,7 +41,19 @@ const getUserIdOptions = async () => {
   return userIdOption
 }
 getUserIdOptions()
-
+// 获得岗位数据
+// export const deptOption: ComponentOptions[] = []
+// const getDeptOptions = async () => {
+//   const res = await listSimpleDeptApi()
+//   res.forEach((postPackage: SimpleUserVO) => {
+//     deptOption.push({
+//       key: postPackage.id,
+//       label: postPackage.nickname,
+//       value: postPackage.id
+//     })
+//   })
+// }
+// getDeptOptions()
 // CrudSchema
 const crudSchemas = reactive<VxeCrudSchema>({
   primaryKey: 'id', // 默认的主键ID
@@ -93,6 +105,13 @@ const crudSchemas = reactive<VxeCrudSchema>({
           autocomplete: true
         }
       }
+    },
+    {
+      title: '部门',
+      field: 'deptId',
+      isSearch: false,
+      isTable: false,
+      isForm: false
     },
     {
       title: '薪资',

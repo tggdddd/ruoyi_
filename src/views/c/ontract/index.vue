@@ -212,7 +212,7 @@ import { ElMessageBox } from 'element-plus'
 // ========== 列表相关 ==========
 const tableTitle = ref('用户列表')
 const queryParams = reactive({
-  postId: null
+  deptId: null
 })
 
 // ========== 创建部门树结构 ==========
@@ -228,7 +228,7 @@ const filterNode = (value: string, data: Tree) => {
   return data.name.includes(value)
 }
 const handleDeptNodeClick = async (row: { [key: string]: any }) => {
-  queryParams.postId = row.id
+  queryParams.deptId = row.id
   await reload()
 }
 const { push } = useRouter()

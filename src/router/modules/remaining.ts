@@ -161,6 +161,25 @@ const remainingRouter: AppRouteRecordRaw[] = [
     }
   },
   {
+    path: '/toTest',
+    component: () => import('@/views/test/Test.vue'),
+    name: 'toTest',
+    meta: {
+      hidden: true,
+      title: '测试',
+      noTagsView: true
+    }
+  },
+  {
+    path: '/social-login',
+    name: 'SocialLoginRedirect',
+    component: () => import('@/views/Login/components/SocialLoginRedirect.vue'),
+    meta: {
+      hidden: true,
+      noTagsView: true
+    }
+  },
+  {
     path: '/403',
     component: () => import('@/views/Error/403.vue'),
     name: 'NoAccess',

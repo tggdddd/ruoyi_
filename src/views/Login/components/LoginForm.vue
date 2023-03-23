@@ -111,7 +111,7 @@
       <el-divider content-position="center">{{ t('login.otherLogin') }}</el-divider>
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item>
-          <div class="flex justify-between w-[100%]">
+          <div class="flex w-[100%] spaceEvenly">
             <Icon
               v-for="(item, key) in socialList"
               :key="key"
@@ -168,17 +168,18 @@ const loginData = reactive({
   loginForm: {
     tenantName: '芋道源码',
     username: 'admin',
-    password: 'admin123',
+    password: '123456',
     captchaVerification: '',
     rememberMe: false
   }
 })
 
 const socialList = [
-  { icon: 'ant-design:github-filled', type: 0 },
+  // { icon: 'ant-design:github-filled', type: 0 },
   { icon: 'ant-design:wechat-filled', type: 30 },
-  { icon: 'ant-design:alipay-circle-filled', type: 0 },
-  { icon: 'ant-design:dingtalk-circle-filled', type: 20 }
+  // { icon: 'ant-design:alipay-circle-filled', type: 0 },
+  { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
+  { icon: 'ant-design:wechat-filled', type: 10 }
 ]
 
 // 获取验证码
@@ -303,5 +304,8 @@ onMounted(() => {
     height: auto;
     vertical-align: middle;
   }
+}
+.spaceEvenly {
+  justify-content: space-evenly;
 }
 </style>

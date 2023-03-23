@@ -16,6 +16,7 @@ const { loadStart, loadDone } = usePageLoading()
 const whiteList = [
   '/login',
   '/social-login',
+  '/toTest',
   '/auth-redirect',
   '/bind',
   '/register',

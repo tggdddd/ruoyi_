@@ -10,7 +10,7 @@ export function updateUserPwd(oldPassword, newPassword) {
   return request({
     url: '/system/user/profile/update-password',
     method: 'PUT',
-    params: data
+    data: data
   })
 }
 

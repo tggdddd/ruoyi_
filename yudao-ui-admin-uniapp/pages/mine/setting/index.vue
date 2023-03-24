@@ -34,7 +34,8 @@
   export default {
     data() {
       return {
-        windowHeight: uni.getSystemInfoSync().windowHeight
+        windowHeight: uni.getSystemInfoSync().windowHeight,
+		cacheData: 1
       }
     },
     methods: {
@@ -42,10 +43,11 @@
         this.$tab.navigateTo('/pages/mine/pwd/index')
       },
       handleToUpgrade() {
-        this.$modal.showToast('模块建设中~')
+        this.$modal.showToast('当前已是最新版本')
       },
       handleCleanTmp() {
-        this.$modal.showToast('模块建设中~')
+        this.$modal.showToast('成功清理'+this.cacheData+'kb内容')
+		this.cacheData = 0
       },
       handleLogout() {
         this.$modal.confirm('确定注销并退出系统吗？').then(() => {

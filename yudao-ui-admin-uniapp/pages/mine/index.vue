@@ -29,20 +29,20 @@
       <view class="mine-actions grid col-4 text-center">
         <view class="action-item" @click="handleJiaoLiuQun">
           <view class="iconfont icon-friendfill text-pink icon"></view>
-          <text class="text">交流群</text>
-        </view>
-        <view class="action-item" @click="handleBuilding">
-          <view class="iconfont icon-service text-blue icon"></view>
-          <text class="text">在线客服</text>
+          <text class="text">我的流程</text>
         </view>
         <view class="action-item" @click="handleBuilding">
           <view class="iconfont icon-community text-mauve icon"></view>
-          <text class="text">反馈社区</text>
+          <text class="text">我的消息</text>
         </view>
         <view class="action-item" @click="handleBuilding">
           <view class="iconfont icon-dianzan text-green icon"></view>
-          <text class="text">点赞我们</text>
+          <text class="text">合同信息</text>
         </view>
+		<view class="action-item" @click="handleBuilding">
+		  <view class="iconfont icon-service text-blue icon"></view>
+		  <text class="text">在线客服</text>
+		</view>
       </view>
 
       <view class="menu-list">
@@ -127,7 +127,7 @@
         this.$modal.showToast('微信搜索 naidaguo 后，添加好友后拉你进技术交流群')
       },
       handleBuilding() {
-        this.$modal.showToast('模块建设中~')
+        this.$modal.showToast('客服没有上线~')
       }
     }
   }

@@ -117,6 +117,7 @@
 				}
 			},
 			success(e) {
+				this.clickShow = false;
 				this.$emit('success', e)
 			},
 			/**

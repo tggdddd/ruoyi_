@@ -21,19 +21,19 @@
       return {
         list: [{
             icon: 'iconfont icon-github',
-            title: '芋道问题',
+            title: '常见问题',
             childList: [{
-              title: '芋道开源吗？',
-              content: '开源'
+              title: '我能否我的修改密码？',
+              content: '当然，只需要在修改密码页面修改密码就好。'
             }, {
-              title: '芋道可以商用吗？',
-              content: '可以'
+              title: '忘记密码了怎么办？',
+              content: '可以由管理员直接修改密码，当然通过手机号修改也是一个途径。'
             }, {
-              title: '芋道官网地址多少？',
-              content: 'https://www.iocoder.cn'
+              title: '为什么别人能看到我的数据？',
+              content: '管理员当然能够看到你的数据，必须你的数据由他进行管理'
             }, {
-              title: '芋道文档地址多少？',
-              content: 'https://doc.iocoder.cn'
+              title: '账号是手机电脑都通用的吗？',
+              content: '当然，我想你一定无法忍受记住那么多的账号和密码。'
             }]
           },
           {

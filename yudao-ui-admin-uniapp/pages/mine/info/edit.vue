@@ -13,7 +13,7 @@
         </uni-forms-item>
         <!-- TODO 芋艿：uni-data-checkbox 存在问题 -->
         <uni-forms-item label="性别" name="sex" required>
-<!--          <uni-data-checkbox v-model="user.sex" :localdata="sexs" />-->
+         <uni-data-checkbox v-model="user.sex" :localdata="sexs" />
         </uni-forms-item>
       </uni-forms>
       <button type="primary" @click="submit">提交</button>
@@ -36,10 +36,10 @@
         },
         sexs: [{
           text: '男',
-          value: "1"
+          value: 1
         }, {
           text: '女',
-          value: "2"
+          value: 2
         }],
         rules: {
           nickname: {

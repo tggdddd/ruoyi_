@@ -1,7 +1,9 @@
 import tab from './tab'
 import auth from './auth'
 import modal from './modal'
-
+import useDirect from './dictTranslate'
+import useStatus from './commonStatus.js'
+import useName from './nickName.js'
 export default {
   install(Vue) {
     // 页签操作
@@ -10,5 +12,8 @@ export default {
     Vue.prototype.$auth = auth
     // 模态框对象
     Vue.prototype.$modal = modal
+	useDirect(Vue)
+	useStatus(Vue)
+	useName(Vue)
   }
 }

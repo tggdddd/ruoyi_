@@ -106,6 +106,8 @@
 				this.$store.dispatch('GetInfo').then(res => {
 					this.$tab.reLaunch('/pages/index')
 				})
+				// 获得字典数据
+				this.$store.dispatch('Init')
 			}
 		}
 	}

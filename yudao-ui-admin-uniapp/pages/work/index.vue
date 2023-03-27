@@ -1,70 +1,82 @@
 <template>
   <view class="work-container">
-    <!-- 轮播图 -->
-    <uni-swiper-dot class="uni-swiper-dot-box" :info="data" :current="current" field="content">
-      <swiper class="swiper-box" :current="swiperDotIndex" @change="changeSwiper">
-        <swiper-item v-for="(item, index) in data" :key="index">
-          <view class="swiper-item" @click="clickBannerItem(item)">
-            <image :src="item.image" mode="aspectFill" :draggable="false" />
-          </view>
-        </swiper-item>
-      </swiper>
-    </uni-swiper-dot>
-
+	  <uni-section title="合同业绩" type="line"></uni-section>
+	  <view class="grid-body">
+	    <uni-grid :column="4" :showBorder="false">
+	      <uni-grid-item>
+	        <view class="grid-item-box"  @click="clickModule('/pages/work/log/index')">
+	          <uni-icons type="wallet-filled" size="30"></uni-icons>
+	          <text class="text">合同管理</text>
+	        </view>
+	      </uni-grid-item>
+		  <uni-grid-item>
+		    <view class="grid-item-box"  @click="clickModule('/pages/work/log/index')">
+		      <uni-icons type="notification" size="30"></uni-icons>
+		      <text class="text">业绩管理</text>
+		    </view>
+		  </uni-grid-item>
+		  <uni-grid-item>
+		    <view class="grid-item-box"  @click="clickModule('/pages/work/log/index')">
+		      <uni-icons type="calendar-filled" size="30"></uni-icons>
+		      <text class="text">报告管理</text>
+		    </view>
+		  </uni-grid-item>
+	    </uni-grid>
+		</view>
     <!-- 宫格组件 -->
     <uni-section title="系统管理" type="line"></uni-section>
     <view class="grid-body">
-      <uni-grid :column="4" :showBorder="false" @change="changeGrid">
+      <uni-grid :column="4" :showBorder="false">
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/user/index')">
             <uni-icons type="person-filled" size="30"></uni-icons>
             <text class="text">用户管理</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/role/index')">
             <uni-icons type="staff-filled" size="30"></uni-icons>
             <text class="text">角色管理</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/menu/index')">
             <uni-icons type="color" size="30"></uni-icons>
             <text class="text">菜单管理</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/dept/index')">
             <uni-icons type="settings-filled" size="30"></uni-icons>
             <text class="text">部门管理</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/post/index')">
             <uni-icons type="heart-filled" size="30"></uni-icons>
             <text class="text">岗位管理</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/dict/index')">
             <uni-icons type="bars" size="30"></uni-icons>
             <text class="text">字典管理</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/setting/index')">
             <uni-icons type="gear-filled" size="30"></uni-icons>
             <text class="text">参数设置</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/notice/index')">
             <uni-icons type="chat-filled" size="30"></uni-icons>
             <text class="text">通知公告</text>
           </view>
         </uni-grid-item>
         <uni-grid-item>
-          <view class="grid-item-box">
+          <view class="grid-item-box"  @click="clickModule('/pages/work/log/index')">
             <uni-icons type="wallet-filled" size="30"></uni-icons>
             <text class="text">日志管理</text>
           </view>
@@ -75,6 +87,7 @@
 </template>
 
 <script>
+	
   export default {
     data() {
       return {
@@ -101,7 +114,10 @@
       },
       changeGrid(e) {
         this.$modal.showToast('模块建设中~')
-      }
+      },
+	  clickModule(path){
+	  		  this.$tab.navigateTo(path)
+	  }
     }
   }
 </script>

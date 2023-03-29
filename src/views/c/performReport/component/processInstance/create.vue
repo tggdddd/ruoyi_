@@ -86,7 +86,6 @@ const detailForm = ref({
 const selectProcessInstance = ref() // 选择的流程实例
 /** 处理选择流程的按钮操作 **/
 const handleSelect = async (row) => {
-  console.log('啊啊啊', row)
   // 设置选择的流程
   selectProcessInstance.value = row
 
@@ -142,8 +141,15 @@ const bpmnControlForm = ref({
 // ========== 初始化 ==========
 onMounted(async () => {
   // 当为指定时，直接填写表单
-  const key = router.currentRoute.value.query.key
-  const reportIdTemp = router.currentRoute.value.query.reportId
+  let key = router.currentRoute.value.query.key
+  let reportIdTemp = router.currentRoute.value.query.reportId
+  if (key && reportIdTemp == undefined) {
+    if (key.indexOf('reportId') != -1) {
+      let spliceIndex = key.indexOf('reportId') - 1
+      reportIdTemp = key.slice(spliceIndex + 'reportId'.length + 2)
+      key = key.slice(0, spliceIndex)
+    }
+  }
   if (key !== undefined && reportIdTemp != undefined) {
     // selectProcessInstance.value =
     reportId.value = reportIdTemp

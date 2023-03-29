@@ -108,7 +108,7 @@ const crudSchemas = reactive<VxeCrudSchema>({
     },
     {
       title: '流程实例的名称',
-      field: 'processInstanceName',
+      field: 'processDefinedName',
       isForm: false,
       isTable: false,
       isSearch: false

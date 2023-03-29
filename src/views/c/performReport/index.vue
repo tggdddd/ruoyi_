@@ -81,7 +81,7 @@
               preIcon="ep:view"
               :title="t('action.detail')"
               v-hasPermi="['c:perform-report:query']"
-              @click="handleUpdate(row)"
+              @click="processInstanceDetail(row.processInstanceId)"
             />
             <!-- 操作：详情 -->
             <!-- <XTextButton

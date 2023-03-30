@@ -55,7 +55,7 @@ public class ContractExcelVO {
     private String defaultClause;
 
     @ExcelProperty(value = "合同状态", converter = DictConvert.class)
-    @DictFormat(DictTypeConstants.CONTRACT_STATUS) // TODO 代码优化：建议设置到对应的 XXXDictTypeConstants 枚举类中
+    @DictFormat(DictTypeConstants.CONTRACT_STATUS)
     private Integer status;
 
     @ExcelProperty("甲方")

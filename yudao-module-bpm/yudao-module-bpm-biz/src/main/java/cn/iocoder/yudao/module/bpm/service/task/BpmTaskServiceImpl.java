@@ -69,6 +69,16 @@ public class BpmTaskServiceImpl implements BpmTaskService {
     private BpmTaskExtMapper taskExtMapper;
     @Resource
     private BpmMessageService messageService;
+
+    @Override
+    public Long getTodoTaskCount(Long userId) {
+        // 查询待办任务
+        TaskQuery taskQuery = taskService.createTaskQuery().taskAssignee(String.valueOf(userId)) // 分配给自己
+                .orderByTaskCreateTime().desc(); // 创建时间倒序
+        // 执行查询
+        return taskQuery.count();
+    }
+
     @Override
     public PageResult<BpmTaskTodoPageItemRespVO> getTodoTaskPage(Long userId, BpmTaskTodoPageReqVO pageVO) {
         // 查询待办任务

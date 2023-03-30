@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.bpm.api.task;
 
 import cn.iocoder.yudao.module.bpm.api.task.dto.BpmProcessInstanceCreateReqDTO;
 import cn.iocoder.yudao.module.bpm.service.task.BpmProcessInstanceService;
+import cn.iocoder.yudao.module.bpm.service.task.BpmTaskService;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -20,10 +21,16 @@ public class BpmProcessInstanceApiImpl implements BpmProcessInstanceApi {
 
     @Resource
     private BpmProcessInstanceService processInstanceService;
-
+@Resource
+private BpmTaskService bpmTaskService;
     @Override
     public String createProcessInstance(Long userId, @Valid BpmProcessInstanceCreateReqDTO reqDTO) {
         return processInstanceService.createProcessInstance(userId, reqDTO);
+    }
+
+    @Override
+    public Long getTodoTaskCount(Long userId){
+        return bpmTaskService.getTodoTaskCount(userId);
     }
     @Override
     public void cancelProcessInstance(String id,String reason){

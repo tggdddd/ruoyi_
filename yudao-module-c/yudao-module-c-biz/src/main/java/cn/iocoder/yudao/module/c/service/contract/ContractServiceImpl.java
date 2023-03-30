@@ -2,6 +2,7 @@ package cn.iocoder.yudao.module.c.service.contract;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.iocoder.yudao.framework.common.util.collection.MapUtils;
+import cn.iocoder.yudao.framework.security.core.LoginUser;
 import cn.iocoder.yudao.module.bpm.api.task.BpmProcessInstanceApi;
 import cn.iocoder.yudao.module.bpm.api.task.dto.BpmProcessInstanceCreateReqDTO;
 import cn.iocoder.yudao.module.bpm.enums.task.BpmProcessInstanceResultEnum;
@@ -72,6 +73,7 @@ public class ContractServiceImpl implements ContractService {
         BpmProcessInstanceCreateReqDTO bpmProcessInstanceCreateReqDTO = new BpmProcessInstanceCreateReqDTO().setProcessDefinitionKey(PROCESS_KEY)
                 .setVariables(new HashMap<String,Object>(){{
                                   put("userId",createReqVO.getUserId());
+                                  put("createUserId", getLoginUserId());
                                   put("contractStartTime",parseToZoneDateTimeString(createReqVO.getStartTime()));
                                   put("contractEndTime",parseToZoneDateTimeString(createReqVO.getEndTime()));
                                   put("contractSignedTime",parseToZoneDateTimeString(createReqVO.getSignedTime()));
@@ -110,6 +112,7 @@ public class ContractServiceImpl implements ContractService {
                 new BpmProcessInstanceCreateReqDTO().setProcessDefinitionKey(PROCESS_KEY)
                         .setVariables(new HashMap(){{
                             put("userId",updateReqVO.getUserId());
+                            put("createUserId", getLoginUserId());
                             put("contractStartTime",parseToZoneDateTimeString(updateReqVO.getStartTime()));
                             put("contractEndTime",parseToZoneDateTimeString(updateReqVO.getEndTime()));
                             put("contractSignedTime",parseToZoneDateTimeString(updateReqVO.getSignedTime()));

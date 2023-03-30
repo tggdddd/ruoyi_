@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Operation;
 import org.flowable.engine.repository.Deployment;
+import org.flowable.engine.repository.ProcessDefinition;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,6 +73,13 @@ public class BpmProcessDefinitionController {
     @PreAuthorize("@ss.hasPermission('c:bpm:process-definition:list')")
     public String getProcessDefinedName(String id) {
         Deployment deployment = bpmDefinitionService.getDeployment(id);
-        return deployment.getName() == null ?deployment.getName():"";
+        return deployment.getName() == null ?"":deployment.getName();
+    }
+    @GetMapping("/getName2")
+    @Operation(summary = "获得流程定义的名字")
+    @PreAuthorize("@ss.hasPermission('c:bpm:process-definition:list')")
+    public CommonResult<String> getProcessDefinedNameById(String id) {
+        ProcessDefinition processDefinition = bpmDefinitionService.getProcessDefinition(id);
+        return success(processDefinition.getName() == null ?"":processDefinition.getName());
     }
 }

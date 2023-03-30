@@ -21,4 +21,8 @@ public interface BpmProcessInstanceApi {
     String createProcessInstance(Long userId, @Valid BpmProcessInstanceCreateReqDTO reqDTO);
     /** 删除流程实例(内部用） */
     void cancelProcessInstance(String id,String reason);
+    /**获得待完成任务数量
+* @param userId 用户编号
+     * @retun 数量*/
+     Long getTodoTaskCount(Long userId);
 }

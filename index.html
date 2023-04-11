@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="keywords"
-      content="芋道管理系统 基于 vue3 + CompositionAPI + typescript + vite3 + element plus 的后台开源免费管理系统！"
+      content="合同管理系统 基于 vue3 + CompositionAPI + typescript + vite3 + element plus 的后台管理系统！"
     />
     <meta
       name="description"
-      content="芋道管理系统 基于 vue3 + CompositionAPI + typescript + vite3 + element plus 的后台开源免费管理系统！"
+      content="合同管理系统 基于 vue3 + CompositionAPI + typescript + vite3 + element plus 的后台管理系统！"
     />
     <title><%= title %></title>
   </head>
@@ -45,13 +45,41 @@
           font-size: 20px;
           font-weight: bold;
           text-align: center;
+            color: #6acbcb;
+            animation: title 1.4s infinite cubic-bezier(1, 0.17, 0, 1.97);
         }
-
+        @keyframes title {
+            0%{
+                transform: rotateZ(0deg);
+            }
+            25%{
+                transform: rotateZ(5deg);
+            }
+            50%{
+                transform: rotateZ(0deg);
+            }
+            75%{
+                transform: rotateZ(-5deg);
+            }
+            100%{
+                transform: rotateZ(0deg);
+            }
+        }
         .app-loading .app-loading-logo {
-          width: 100px;
-          margin: 0 auto 15px auto;
+            width: 200px;
+            margin: 0 auto 15px auto;
+            animation: loading 8s infinite linear;
+            z-index: -1;
+            position: relative;
         }
-
+        @keyframes loading {
+            from{
+                transform: rotateZ(0deg);
+            }
+            to{
+                transform: rotateZ(-360deg);
+            }
+        }
         .app-loading .app-loading-item {
           position: relative;
           display: inline-block;
@@ -135,10 +163,8 @@
       </style>
       <div class="app-loading">
         <div class="app-loading-wrap">
-          <div class="app-loading-title">
-            <img src="/logo.gif" class="app-loading-logo" alt="Logo" />
+              <img src="/loading.gif" class="app-loading-logo" alt="Logo" />
             <div class="app-loading-title"><%= title %></div>
-          </div>
           <div class="app-loading-item">
             <div class="app-loading-outter"></div>
             <div class="app-loading-inner"></div>

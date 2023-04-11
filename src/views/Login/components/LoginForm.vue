@@ -65,13 +65,25 @@
       </el-col>
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item>
-          <XButton
-            :loading="loginLoading"
-            type="primary"
-            class="w-[100%]"
-            :title="t('login.login')"
-            @click="getCode()"
-          />
+          <el-row justify="space-between" style="width: 100%" :gutter="5">
+            <el-col :span="12">
+              <XButton
+                :loading="loginLoading"
+                type="primary"
+                class="w-[100%]"
+                :title="t('login.login')"
+                @click="getCode()"
+              />
+            </el-col>
+            <el-col :span="12">
+              <XButton
+                type="primary"
+                class="w-[100%]"
+                :title="t('login.btnMobile')"
+                @click="setLoginState(LoginStateEnum.MOBILE)"
+              />
+            </el-col>
+          </el-row>
         </el-form-item>
       </el-col>
       <Verify
@@ -81,33 +93,7 @@
         :imgSize="{ width: '400px', height: '200px' }"
         @success="handleLogin"
       />
-      <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
-        <el-form-item>
-          <el-row justify="space-between" style="width: 100%" :gutter="5">
-            <el-col :span="8">
-              <XButton
-                class="w-[100%]"
-                :title="t('login.btnMobile')"
-                @click="setLoginState(LoginStateEnum.MOBILE)"
-              />
-            </el-col>
-            <el-col :span="8">
-              <XButton
-                class="w-[100%]"
-                :title="t('login.btnQRCode')"
-                @click="setLoginState(LoginStateEnum.QR_CODE)"
-              />
-            </el-col>
-            <el-col :span="8">
-              <XButton
-                class="w-[100%]"
-                :title="t('login.btnRegister')"
-                @click="setLoginState(LoginStateEnum.REGISTER)"
-              />
-            </el-col>
-          </el-row>
-        </el-form-item>
-      </el-col>
+
       <el-divider content-position="center">{{ t('login.otherLogin') }}</el-divider>
       <el-col :span="24" style="padding-left: 10px; padding-right: 10px">
         <el-form-item>
@@ -178,8 +164,8 @@ const socialList = [
   // { icon: 'ant-design:github-filled', type: 0 },
   { icon: 'ant-design:wechat-filled', type: 30 },
   // { icon: 'ant-design:alipay-circle-filled', type: 0 },
-  { icon: 'ant-design:dingtalk-circle-filled', type: 20 },
-  { icon: 'ant-design:wechat-filled', type: 10 }
+  { icon: 'ant-design:dingtalk-circle-filled', type: 20 }
+  // { icon: 'ant-design:wechat-filled', type: 10 }
 ]
 
 // 获取验证码

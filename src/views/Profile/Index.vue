@@ -42,6 +42,9 @@ const activeName = ref('basicInfo')
 onMounted(() => {
   if (router.currentRoute.value.query !== undefined) {
     const params = router.currentRoute.value.query
+    if (params.type == null) {
+      params.type = '20'
+    }
     if (params.state && params.type && params.code)
       socialBind(params.type, params.code, params.state).then(() => {
         useMessage().success('绑定成功')

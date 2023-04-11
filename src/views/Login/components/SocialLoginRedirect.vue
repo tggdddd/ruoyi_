@@ -34,6 +34,10 @@ const setCloudFlow = (event) => {
   event.target.style.animationPlayState = 'running' // 播放
 }
 onMounted(() => {
+  const params = router.currentRoute.value.query
+  if (params.type == null || params.type == undefined) {
+    params.type = '20'
+  }
   socialAuthRedirectToAdminApi(router.currentRoute.value.query)
     .then((res) => {
       if (!res) {
@@ -45,7 +49,11 @@ onMounted(() => {
         background: 'rgba(0, 0, 0, 0.7)'
       })
       authUtil.setToken(res)
-      router.push({ path: String(router?.currentRoute?.value?.query?.redirect) || '/' })
+      let redirectUrl = String(router?.currentRoute?.value?.query?.redirect)
+      if (redirectUrl == undefined || redirectUrl == '' || redirectUrl == 'undefined') {
+        redirectUrl = '/'
+      }
+      router.push({ path: redirectUrl })
       setTimeout(() => {
         const loadingInstance = ElLoading.service()
         loadingInstance.close()

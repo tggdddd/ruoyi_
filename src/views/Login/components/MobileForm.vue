@@ -187,7 +187,7 @@ const signIn = async () => {
   smsVO.loginSms.code = loginData.loginForm.code
   await smsLoginApi(smsVO.loginSms)
     .then(async (res) => {
-      setToken(res?.token)
+      setToken(res)
       if (!redirect.value) {
         redirect.value = '/'
       }

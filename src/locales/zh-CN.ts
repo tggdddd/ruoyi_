@@ -105,7 +105,7 @@ export default {
   },
   login: {
     welcome: '欢迎使用本系统',
-    message: '开箱即用的中后台管理系统',
+    message: '简单方便，轻松管理，高效率的不二选择',
     tenantname: '租户名称',
     username: '用户名',
     password: '密码',

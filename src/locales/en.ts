@@ -104,7 +104,7 @@ export default {
   },
   login: {
     welcome: 'Welcome to the system',
-    message: 'Backstage management system',
+    message: 'Simple and convenient, easy to manage.The best choice for high efficiency',
     tenantname: 'TenantName',
     username: 'Username',
     password: 'Password',

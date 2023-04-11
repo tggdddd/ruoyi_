@@ -9,7 +9,7 @@
       >
         <!-- 左上角的 logo + 系统标题 -->
         <div class="flex items-center relative text-white">
-          <img src="@/assets/imgs/logo.png" alt="" class="w-48px h-48px mr-10px" />
+          <img src="@/assets/imgs/logo.jpg" alt="" class="w-48px h-48px mr-10px" />
           <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
         </div>
         <!-- 左边的背景图 + 欢迎语 -->
@@ -31,7 +31,7 @@
         <!-- 右上角的主题、语言选择 -->
         <div class="flex justify-between items-center text-white @2xl:justify-end @xl:justify-end">
           <div class="flex items-center @2xl:hidden @xl:hidden">
-            <img src="@/assets/imgs/logo.png" alt="" class="w-48px h-48px mr-10px" />
+            <img src="@/assets/imgs/logo.jpg" alt="" class="w-48px h-48px mr-10px" />
             <span class="text-20px font-bold">{{ underlineToHump(appStore.getTitle) }}</span>
           </div>
           <div class="flex justify-end items-center space-x-10px">
@@ -49,9 +49,9 @@
             <!-- 手机登录 -->
             <MobileForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
             <!-- 二维码登录 -->
-            <QrCodeForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
+            <!--            <QrCodeForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />-->
             <!-- 注册 -->
-            <RegisterForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />
+            <!--                        <RegisterForm class="p-20px h-auto m-auto <xl:(rounded-3xl light:bg-white)" />-->
           </div>
         </Transition>
       </div>

@@ -1,3 +1,5 @@
+
+import { getAccessToken } from '@/utils/auth'
 export default {
   // 关闭所有页面，打开到应用内的某个页面
   reLaunch(url) {
@@ -26,5 +28,13 @@ export default {
   // 关闭当前页面，返回上一页面或多级页面
   navigateBack() {
     return uni.navigateBack()
+  },
+  // 查看网页
+  view(url,title){
+	  if(title === undefined || title ===""){
+		  title = "Web Browser"
+	  }
+	  var s = ""
+	  return uni.navigateTo({url:"/pages/common/webview/index?url="+url+"&token="+getAccessToken()+"&title="+title})
   }
 }

@@ -27,15 +27,15 @@
 
     <view class="content-section">
       <view class="mine-actions grid col-4 text-center">
-        <view class="action-item" @click="handleJiaoLiuQun">
+        <view class="action-item" @click="handleView('/pages/work/bpm/processInstance/processInstance')">
           <view class="iconfont icon-friendfill text-pink icon"></view>
           <text class="text">我的流程</text>
         </view>
-        <view class="action-item" @click="handleBuilding">
+        <view class="action-item" @click="handleView('/pages/work/report/index')">
           <view class="iconfont icon-community text-mauve icon"></view>
-          <text class="text">我的消息</text>
+          <text class="text">我的报告</text>
         </view>
-        <view class="action-item" @click="handleBuilding">
+        <view class="action-item" @click="handleView('/pages/work/contract/index')">
           <view class="iconfont icon-dianzan text-green icon"></view>
           <text class="text">合同信息</text>
         </view>
@@ -95,6 +95,9 @@
       }
     },
     methods: {
+		handleView(path){
+				  this.$tab.navigateTo(path)
+		},
       handleToInfo() {
         this.$tab.navigateTo('/pages/mine/info/index')
       },

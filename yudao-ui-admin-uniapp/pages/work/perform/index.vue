@@ -6,25 +6,37 @@
 
 			<!-- 表格显示内容 -->
 			<uni-table ref="table" :loading="loading" border stripe emptyText="暂无更多数据"
-				@selection-change="selectionChange">
+				>
 				<uni-tr>
 					<uni-th v-for="(item,index) in columns" :key="index">
 						{{item.text}}
 					</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(row, index) in tableData" :key="index">
-					<uni-td>{{row.name}}</uni-td>
 					<uni-td>
-						<view v-name="row.leaderUserId"></view>
+							<view v-name="row.userId"></view>
 					</uni-td>
-					<uni-td>{{row.phone}}</uni-td>
-					<uni-td>{{row.email}}</uni-td>
+						<uni-td><view v-dept="row.deptId"></view></uni-td>
+						<uni-td>
+							<view v-processDefiend="row.processDefitionId"></view>
+						</uni-td>
 					<uni-td>
-						<view v-status="row.stauts"></view>
+						{{row.startTime}}
+					</uni-td>
+					<uni-td>
+						{{row.endTime?row.endTime:'不限时'}}
+					</uni-td>
+					<uni-td>
+						{{row.notifyTime?row.notifyTime:'不限时'}}
+					</uni-td>
+					<uni-td>
+						{{row.urgeTime?row.urgeTime:'不限时'}}
 					</uni-td>
 					<uni-td>
 						<uni-dateformat :date="row.createTime"></uni-dateformat>
 					</uni-td>
+					<uni-td><button size="mini" @click="viewContract(row.contractId)">查看</button></uni-td>
+
 				</uni-tr>
 			</uni-table>
 			<!-- 滚动到底提示 -->
@@ -35,8 +47,8 @@
 
 <script>
 	import {
-		getDeptPageApi
-	} from '@/api/work/dept.js'
+		getPerformanceReportRequestPageApi
+	} from '@/api/work/perform.js'
 	import queryComponent from '@/components/queryComponent.vue'
 	export default {
 		components: {
@@ -63,41 +75,52 @@
 				},
 				// 列信息
 				columns: [
-					    // {
-					    //   text: '上级部门',
-					    //   value: 'parentId',
-					    //   isTable: false
-					    // },
-					    {
-					      text: '部门名称',
-					      value: 'name',
-					      isSearch: true
-					    },
-					    {
-					      text: '负责人',
-					      value: 'leaderUserId'
-					    },
-					    {
-					      text: '联系电话',
-					      value: 'phone'
-					    },
-					    {
-					      text: '邮箱',
-					      value: 'email'
-					    },
-					    {
-					      text: '状态',
-					      value: 'status'
-					    },
-					    {
-					      text: '创建时间',
-					      value: 'createTime'
-					    }
+					     {
+					         text: '用户',
+					         value: 'userId'
+					       },
+					       {
+					         text: '部门',
+					         value: 'deptId',
+							 },{
+					         text: '流程定义',
+					         value: 'processDefitionId'
+					       },
+					       {
+					         text: '提交开始开始时间',
+					         value: 'startTime'
+					       },
+					       {
+					         text: '提交终止时间',
+					         value: 'endTime'
+					       },
+					       {
+					         text: '业绩提交通知时间',
+					         value: 'notifyTime'
+					       },
+					       {
+					         text: '未交提醒时间',
+					         value: 'urgeTime'
+					       },
+					       {
+					         text: '创建时间',
+					         value: 'createTime'
+					       },
+						   {
+						     text: '合同',
+						     value: 'contractId'
+						   }
 				],
 				tableData: []
 			};
 		},
 		methods: {
+			viewProcessDefined(id){
+				// todo
+			},
+			viewContract(id){
+				this.$tab.navigateTo('/pages/work/contract/detail?id='+id)
+			},
 			loadMore() {
 				if (this.loadingData.status === 1 || this.loadingData.status === 2) {
 					// 如果正在加载中或已经没有更多数据了，直接返回
@@ -108,14 +131,14 @@
 				// 加载数据
 				this.loading = true;
 				this.queryParams.pageNo += 1;
-				getDeptPageApi(this.queryParams).then(response => {
+				getPerformanceReportRequestPageApi(this.queryParams).then(response => {
 					// 如果没有数据了，设置加载状态为没有更多数据
-					if (response.data.length === 0) {
+					if (response.data.list.length === 0) {
 						this.loadingData.status = 2;
 					}else{
 						this.loadingData.status = 0;
 					}
-					this.tableData = [...this.tableData,...response.data];
+					this.tableData = [...this.tableData,...response.data.list];
 					this.loading = false;
 				}).catch(error => {
 					this.loading = false;
@@ -127,11 +150,11 @@
 			// 获得表格信息
 			 getData() {
 				this.loading = true;
-				getDeptPageApi(this.queryParams).then(response => {
-					this.tableData = response.data;
+				getPerformanceReportRequestPageApi(this.queryParams).then(response => {
+					this.tableData = response.data.list;
 					this.loading = false;
 					// 没有更多了
-					if(response.data.length == response.data.total){
+					if(response.data.list.length == response.data.total){
 						this.loadingData.status = 2;
 					}
 				}).finally(() => {

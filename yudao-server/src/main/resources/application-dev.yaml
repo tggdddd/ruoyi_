@@ -37,7 +37,7 @@ spring:
         time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位：毫秒
         min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位：毫秒
         max-evictable-idle-time-millis: 900000 # 配置一个连接在池中最大生存的时间，单位：毫秒
-        validation-query: SELECT 1 # 配置检测连接是否有效
+        validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效
         test-while-idle: true
         test-on-borrow: false
         test-on-return: false
@@ -45,22 +45,32 @@ spring:
       datasource:
         master:
           name: ruoyi-vue-pro
-          url: jdbc:mysql://400-infra.server.iocoder.cn:3306/${spring.datasource.dynamic.datasource.master.name}?useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
-          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dynamic.datasource.master.name}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
+          #          url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dynamic.datasource.master.name}?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT # MySQL Connector/J 5.X 连接的示例
+          #          url: jdbc:postgresql://127.0.0.1:5432/${spring.datasource.dynamic.datasource.slave.name} # PostgreSQL 连接的示例
+          #          url: jdbc:oracle:thin:@127.0.0.1:1521:xe # Oracle 连接的示例
+          #          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=${spring.datasource.dynamic.datasource.master.name} # SQLServer 连接的示例
           username: root
-          password: 3WLiVUBEwTbvAfsh
-        slave: # 模拟从库，可根据自己需要修改 # 模拟从库，可根据自己需要修改
+          password: root
+        #          username: sa
+        #          password: JSm:g(*%lU4ZAkz06cd52KqT3)i1?H7W
+        slave: # 模拟从库，可根据自己需要修改
           name: ruoyi-vue-pro
-          url: jdbc:mysql://400-infra.server.iocoder.cn:3306/${spring.datasource.dynamic.datasource.slave.name}?useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
-          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dynamic.datasource.slave.name}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
+          #          url: jdbc:mysql://127.0.0.1:3306/${spring.datasource.dynamic.datasource.slave.name}?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT # MySQL Connector/J 5.X 连接的示例
+          #          url: jdbc:postgresql://127.0.0.1:5432/${spring.datasource.dynamic.datasource.slave.name} # PostgreSQL 连接的示例
+          #          url: jdbc:oracle:thin:@127.0.0.1:1521:xe # Oracle 连接的示例
+          #          url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=${spring.datasource.dynamic.datasource.slave.name} # SQLServer 连接的示例
           username: root
-          password: 3WLiVUBEwTbvAfsh
+          password: root
+  #          username: sa
+  #          password: JSm:g(*%lU4ZAkz06cd52KqT3)i1?H7W
 
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
   redis:
-    host: 400-infra.server.iocoder.cn # 地址
+    host: 127.0.0.1 # 地址
     port: 6379 # 端口
-    database: 1 # 数据库索引
+    database: 0 # 数据库索引
 #    password: 123456 # 密码，建议生产环境开启
 
 --- #################### 定时任务相关配置 ####################
@@ -68,7 +78,7 @@ spring:
 # Quartz 配置项，对应 QuartzProperties 配置类
 spring:
   quartz:
-    auto-startup: true # 测试环境，需要开启 Job
+    auto-startup: true # 本地开发环境，尽量不要开启 Job
     scheduler-name: schedulerName # Scheduler 名字。默认为 schedulerName
     job-store-type: jdbc # Job 存储器类型。默认为 memory 表示内存，可选 jdbc 使用数据库。
     wait-for-jobs-to-complete-on-shutdown: true # 应用关闭时，是否等待定时任务执行完成。默认为 false ，建议设置为 true
@@ -83,7 +93,7 @@ spring:
           jobStore:
             # JobStore 实现类。可见博客：https://blog.csdn.net/weixin_42458219/article/details/122247162
             class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
-            isClustered: true # 是集群模式
+            isClustered: false # 是集群模式
             clusterCheckinInterval: 15000 # 集群检查频率，单位：毫秒。默认为 15000，即 15 秒
             misfireThreshold: 60000 # misfire 阀值，单位：毫秒。
           # 线程池相关配置
@@ -137,11 +147,23 @@ spring:
 logging:
   file:
     name: ${user.home}/logs/${spring.application.name}.log # 日志文件名，全路径
+  level:
+    # 配置自己写的 MyBatis Mapper 打印日志
+    cn.iocoder.yudao.module.bpm.dal.mysql: debug
+    cn.iocoder.yudao.module.infra.dal.mysql: debug
+    cn.iocoder.yudao.module.infra.dal.mysql.job.JobLogMapper: INFO # 配置 JobLogMapper 的日志级别为 info
+    cn.iocoder.yudao.module.pay.dal.mysql: debug
+    cn.iocoder.yudao.module.system.dal.mysql: debug
+    cn.iocoder.yudao.module.tool.dal.mysql: debug
+    cn.iocoder.yudao.module.member.dal.mysql: debug
+    cn.iocoder.yudao.module.trade.dal.mysql: debug
+    cn.iocoder.yudao.module.promotion.dal.mysql: debug
 
---- #################### 微信公众号相关配置 ####################
-wx: # 参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-starters/wx-java-mp-spring-boot-starter/README.md 文档
-  mp:
-    # 公众号配置(必填)
+debug: false
+
+--- #################### 微信公众号、小程序相关配置 ####################
+wx:
+  mp: # 公众号配置（必填），参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-starters/wx-java-mp-spring-boot-starter/README.md 文档
     app-id: wx041349c6f39b268b
     secret: 5abee519483bc9f8cb37ce280e814bd0
     # 存储配置，解决 AccessToken 的跨节点的共享
@@ -150,8 +172,8 @@ wx: # 参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-sta
       key-prefix: wx # Redis Key 的前缀 TODO 芋艿：解决下 Redis key 管理的配置
       http-client-type: HttpClient # 采用 HttpClient 请求微信公众号平台
   miniapp: # 小程序配置（必填），参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-starters/wx-java-miniapp-spring-boot-starter/README.md 文档
-    appid: wx6339984661ad7091
-    secret: 83ad30e663671e76c64a65312796e90c
+    appid: wx63c280fe3248a3e7
+    secret: 6f270509224a7ae1296bbf1c8cb97aed
     config-storage:
       type: RedisTemplate # 采用 RedisTemplate 操作 Redis，会自动从 Spring 中获取
       key-prefix: wa # Redis Key 的前缀 TODO 芋艿：解决下 Redis key 管理的配置
@@ -161,6 +183,10 @@ wx: # 参见 https://github.com/Wechat-Group/WxJava/blob/develop/spring-boot-sta
 
 # 芋道配置项，设置当前项目所有自定义的配置
 yudao:
+  captcha:
+    enable: false # 本地环境，暂时关闭图片验证码，方便登录等接口的测试；
+  security:
+    mock-enable: true
   xss:
     enable: false
     exclude-urls: # 如下两个 url，仅仅是为了演示，去掉配置也没关系
@@ -169,29 +195,33 @@ yudao:
   pay:
     callback-url: http://yunai.natapp1.cc/admin-api/pay/notify/callback
     return-url: http://yunai.natapp1.cc/admin-api/pay/notify/return
-  demo: true # 开启演示模式
+  access-log: # 访问日志的配置项
+    enable: false
+  error-code: # 错误码相关配置项
+    enable: false
+  demo: false # 关闭演示模式
 
 justauth:
   enabled: true
   type:
     DINGTALK: # 钉钉
-      client-id: dingvrnreaje3yqvzhxg
-      client-secret: i8E6iZyDvZj51JIb0tYsYfVQYOks9Cq1lgryEjFRqC79P3iJcrxEwT6Qk2QvLrLI
+      client-id: dingvkyto922de2ruy7r
+      client-secret: IkOCJd6a1evrtLJO7EuoVY57xqkCuPJ4jNuww3ezu7Hrcqb9XFK-dt32ccWnvQuq
+      redirect-uri: zhebushilocalhost.com
       ignore-check-redirect-uri: true
     WECHAT_ENTERPRISE: # 企业微信
-      client-id: wwd411c69a39ad2e54
-      client-secret: 1wTb7hYxnpT2TUbIeHGXGo7T0odav1ic10mLdyyATOw
-      agent-id: 1000004
+      client-id: ww821682fa503f7d0c
+      client-secret: RbZso6uqQ8PcTZz1ZSzqgmLVNan3tGVbgTN77FSaTPg
+      agent-id: 1000002
+      redirect-uri: zhebushilocalhost.com
       ignore-check-redirect-uri: true
+    WECHAT_MINI_APP: # 微信小程序
+      client-id: ${wx.miniapp.appid}
+      client-secret: ${wx.miniapp.secret}
+      ignore-check-redirect-uri: true
+      ignore-check-state: true # 微信小程序，不会使用到 state，所以不进行校验
   cache:
     type: REDIS
     prefix: 'social_auth_state:' # 缓存前缀，目前只对 Redis 缓存生效，默认 JUSTAUTH::STATE::
     timeout: 24h # 超时时长，目前只对 Redis 缓存生效，默认 3 分钟
-wx:
-  mp:
-    useRedis: false
-    defaultContent: \u60A8\u597D\uFF0C\u6709\u4EC0\u4E48\u95EE\u9898\uFF1F
-    redisConfig:
-      host: 127.0.0.1
-      port: 6379
-      password:
+

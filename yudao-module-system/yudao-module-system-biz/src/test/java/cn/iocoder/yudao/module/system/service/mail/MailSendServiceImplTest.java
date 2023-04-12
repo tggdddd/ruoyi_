@@ -59,10 +59,10 @@ class MailSendServiceImplTest extends BaseMockitoUnitTest {
     public void testDemo() {
         MailAccount mailAccount = new MailAccount()
 //                .setFrom("奥特曼 <ydym_test@163.com>")
-                .setFrom("ydym_test@163.com") // 邮箱地址
-                .setHost("smtp.163.com").setPort(465).setSslEnable(true) // SMTP 服务器
-                .setAuth(true).setUser("ydym_test@163.com").setPass("WBZTEINMIFVRYSOE"); // 登录账号密码
-        String messageId = MailUtil.send(mailAccount, "7685413@qq.com", "主题", "内容", false);
+                .setFrom("15014586591@139.com") // 邮箱地址
+                .setHost("smtp.10086.com").setPort(465).setSslEnable(true) // SMTP 服务器
+                .setAuth(true).setUser("15014586591@139.com").setPass("Qq1425187931"); // 登录账号密码
+        String messageId = MailUtil.send(mailAccount, "1425187931@qq.com", "主题", "内容", false);
         System.out.println("发送结果：" + messageId);
     }
 

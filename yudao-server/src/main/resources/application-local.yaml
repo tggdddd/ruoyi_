@@ -205,9 +205,9 @@ justauth:
   enabled: true
   type:
     DINGTALK: # 钉钉
-      client-id: dingras9xnbv2ojuw1wi
+      client-id: dingvkyto922de2ruy7r
       client-secret: IkOCJd6a1evrtLJO7EuoVY57xqkCuPJ4jNuww3ezu7Hrcqb9XFK-dt32ccWnvQuq
-      redirect-uri: woshibendidizhinizenmekenengbuzhidao.com
+      redirect-uri: zhebushilocalhost.com
       ignore-check-redirect-uri: true
     WECHAT_ENTERPRISE: # 企业微信
       client-id: ww821682fa503f7d0c

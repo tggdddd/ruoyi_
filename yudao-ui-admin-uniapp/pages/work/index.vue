@@ -1,22 +1,45 @@
 <template>
   <view class="work-container">
+	  <uni-section title="任务管理" type="line"></uni-section>
+	  <view class="grid-body">
+	    <uni-grid :column="4" :showBorder="false">
+	      <uni-grid-item>
+	        <view class="grid-item-box"  @click="clickModule('/pages/work/bpm/processInstance/processInstance')">
+	          <uni-icons type="compose" size="30"></uni-icons>
+	          <text class="text">我的流程</text>
+	        </view>
+	      </uni-grid-item>
+	  		  <uni-grid-item>
+	  		    <view class="grid-item-box"  @click="clickModule('/pages/work/bpm/task/todo')">
+	  		      <uni-icons type="calendar" size="30"></uni-icons>
+	  		      <text class="text">待办任务</text>
+	  		    </view>
+	  		  </uni-grid-item>
+	  		  <uni-grid-item>
+	  		    <view class="grid-item-box"  @click="clickModule('/pages/work/bpm/task/done')">
+	  		      <uni-icons type="calendar-filled" size="30"></uni-icons>
+	  		      <text class="text">已办任务</text>
+	  		    </view>
+	  		  </uni-grid-item>
+	    </uni-grid>
+	  		</view>
 	  <uni-section title="合同业绩" type="line"></uni-section>
 	  <view class="grid-body">
 	    <uni-grid :column="4" :showBorder="false">
 	      <uni-grid-item>
-	        <view class="grid-item-box"  @click="clickModule('/pages/work/log/index')">
+	        <view class="grid-item-box"  @click="clickModule('/pages/work/contract/index')">
 	          <uni-icons type="wallet-filled" size="30"></uni-icons>
 	          <text class="text">合同管理</text>
 	        </view>
 	      </uni-grid-item>
 		  <uni-grid-item>
-		    <view class="grid-item-box"  @click="clickModule('/pages/work/log/index')">
+		    <view class="grid-item-box"  @click="clickModule('/pages/work/perform/index')">
 		      <uni-icons type="notification" size="30"></uni-icons>
 		      <text class="text">业绩管理</text>
 		    </view>
 		  </uni-grid-item>
 		  <uni-grid-item>
-		    <view class="grid-item-box"  @click="clickModule('/pages/work/log/index')">
+		    <view class="grid-item-box"  @click="clickModule('/pages/work/report/index')">
 		      <uni-icons type="calendar-filled" size="30"></uni-icons>
 		      <text class="text">报告管理</text>
 		    </view>

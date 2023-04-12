@@ -4,6 +4,10 @@ import modal from './modal'
 import useDirect from './dictTranslate'
 import useStatus from './commonStatus.js'
 import useName from './nickName.js'
+import dept from './dept.js'
+import post from './post.js'
+
+import processDefiend from './processDefiend.js'
 export default {
   install(Vue) {
     // 页签操作
@@ -15,5 +19,8 @@ export default {
 	useDirect(Vue)
 	useStatus(Vue)
 	useName(Vue)
+	dept(Vue)
+	post(Vue)
+	processDefiend(Vue)
   }
 }

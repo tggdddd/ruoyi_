@@ -144,6 +144,12 @@
 			}
 		},
 		{
+			"path": "pages/work/contract/detail",
+			"style": {
+				"navigationBarTitleText": "合同详情"
+			}
+		},
+		{
 			"path": "pages/work/perform/index",
 			"style": {
 				"navigationBarTitleText": "业绩",
@@ -157,6 +163,28 @@
 				"enablePullDownRefresh": true
 			}
 		}
+        ,{
+            "path" : "pages/work/bpm/processInstance/processInstance",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的流程",
+                "enablePullDownRefresh": true
+            }
+        }  ,{
+            "path" : "pages/work/bpm/task/todo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "待办任务",
+                "enablePullDownRefresh": true
+            }
+        },{
+            "path" : "pages/work/bpm/task/done",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "已办任务",
+                "enablePullDownRefresh": true
+            }
+        }
     ],
 	"tabBar": {
 		"color": "#000000",

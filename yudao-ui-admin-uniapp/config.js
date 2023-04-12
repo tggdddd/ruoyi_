@@ -1,8 +1,9 @@
 // 应用全局配置
 module.exports = {
   // baseUrl: 'http://api-dashboard.yudao.iocoder.cn',
-  baseUrl: 'http://localhost:48080',
+  baseUrl: 'http://zhebushilocalhost.com:48080',
   baseApi: '/admin-api',
+  webUrl: 'http://zhebushilocalhost.com:901',
   // 应用信息
   appInfo: {
     // 应用名称

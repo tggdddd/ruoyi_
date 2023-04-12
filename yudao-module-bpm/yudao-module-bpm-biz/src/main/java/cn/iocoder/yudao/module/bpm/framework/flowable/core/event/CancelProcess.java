@@ -10,6 +10,7 @@ import org.flowable.engine.ProcessEngines;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.delegate.DelegateExecution;
 import org.flowable.engine.delegate.JavaDelegate;
+import org.flowable.task.api.Task;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -55,7 +56,15 @@ public class CancelProcess  implements JavaDelegate {
                     .setTemplateCode(BpmMessageEnum.CONTRACT_CANCEL_ADMIN.getSmsTemplateCode())  //执行模板
                     .setTemplateParams(templateParams));//参数
         }else {
-            execution.setActive(false);
+            Task task = processEngine.getTaskService().createTaskQuery()
+                    .executionId(execution.getId())
+                    .singleResult();
+            processEngine.getTaskService().complete(task.getId());
+            // 发送通知给用户
+            sendMessage(new SmsSendSingleToUserReqDTO()
+                    .setUserId(1L)
+                    .setTemplateCode(BpmMessageEnum.CONTRACT_CANCEL.getSmsTemplateCode())  //执行模板
+                    .setTemplateParams(new HashMap<>()));//参数
         }
     }
     private String getDetail(String processInstanceId) {

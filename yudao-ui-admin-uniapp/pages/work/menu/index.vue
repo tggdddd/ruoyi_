@@ -7,7 +7,7 @@
 
 			<!-- 表格显示内容 -->
 			<uni-table ref="table" :loading="loading" border stripe emptyText="暂无更多数据"
-				@selection-change="selectionChange">
+				>
 				<uni-tr>
 					<uni-th v-for="(item,index) in columns" :key="index">
 						{{item.text}}

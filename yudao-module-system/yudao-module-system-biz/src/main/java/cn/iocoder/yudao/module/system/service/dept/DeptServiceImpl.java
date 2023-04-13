@@ -10,6 +10,7 @@ import cn.iocoder.yudao.module.system.dal.dataobject.dept.DeptDO;
 import cn.iocoder.yudao.module.system.dal.mysql.dept.DeptMapper;
 import cn.iocoder.yudao.module.system.enums.dept.DeptIdEnum;
 import cn.iocoder.yudao.module.system.mq.producer.dept.DeptProducer;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -25,6 +26,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static cn.iocoder.yudao.framework.common.exception.util.ServiceExceptionUtil.exception;
 import static cn.iocoder.yudao.module.system.enums.ErrorCodeConstants.DEPT_EXITS_CHILDREN;
@@ -244,6 +246,18 @@ public class DeptServiceImpl implements DeptService {
     @Override
     public DeptDO getDept(Long id) {
         return deptMapper.selectById(id);
+    }
+
+    @Override
+    public List<Long> getSubDeptIds(Long id) {
+        List<DeptDO> deptDOS = deptMapper.selectList(new LambdaQueryWrapper<>(DeptDO.class)
+                .select(DeptDO::getId)
+                .eq(DeptDO::getParentId, id));
+        List<Long> result = new ArrayList<>(deptDOS.stream().map(DeptDO::getId).collect(Collectors.toList()));
+        for (DeptDO deptDO : deptDOS) {
+            result.addAll(getSubDeptIds(deptDO.getId()));
+        }
+        return result;
     }
 
     @Override

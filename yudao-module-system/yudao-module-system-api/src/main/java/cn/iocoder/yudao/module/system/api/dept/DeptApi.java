@@ -50,5 +50,11 @@ public interface DeptApi {
         List<DeptRespDTO> list = getDeptList(ids);
         return CollectionUtils.convertMap(list, DeptRespDTO::getId);
     }
-
+    /**
+     * 获得指定编号的部门所有子部门
+     *
+     * @param id 部门编号
+     * @return 部门 List
+     */
+     List<Long> getSubDeptIds(Long id);
 }

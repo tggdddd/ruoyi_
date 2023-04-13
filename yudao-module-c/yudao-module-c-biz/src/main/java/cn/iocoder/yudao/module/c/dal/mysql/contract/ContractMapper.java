@@ -1,13 +1,15 @@
 package cn.iocoder.yudao.module.c.dal.mysql.contract;
 
-import java.util.*;
-
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
-import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
 import cn.iocoder.yudao.framework.mybatis.core.mapper.BaseMapperX;
+import cn.iocoder.yudao.framework.mybatis.core.query.LambdaQueryWrapperX;
+import cn.iocoder.yudao.module.c.Util.UserDeptUtils;
+import cn.iocoder.yudao.module.c.controller.admin.contract.vo.ContractExportReqVO;
+import cn.iocoder.yudao.module.c.controller.admin.contract.vo.ContractPageReqVO;
 import cn.iocoder.yudao.module.c.dal.dataobject.contract.ContractDO;
 import org.apache.ibatis.annotations.Mapper;
-import cn.iocoder.yudao.module.c.controller.admin.contract.vo.*;
+
+import java.util.List;
 
 /**
  * 合同表单 Mapper
@@ -33,7 +35,7 @@ public interface ContractMapper extends BaseMapperX<ContractDO> {
                 .betweenIfPresent(ContractDO::getStartTime, reqVO.getStartTime())
                 .betweenIfPresent(ContractDO::getEndTime, reqVO.getEndTime())
                 .betweenIfPresent(ContractDO::getCreateTime, reqVO.getCreateTime())
-                .eqIfPresent(ContractDO::getDeptId,reqVO.getDeptId())
+                .inIfPresent(ContractDO::getUserId, UserDeptUtils.getUserByDeptIds(UserDeptUtils.getSubDeptIdsAnd(reqVO.getDeptId())))
                 .orderByDesc(ContractDO::getId));
     }
 
@@ -53,7 +55,7 @@ public interface ContractMapper extends BaseMapperX<ContractDO> {
                 .betweenIfPresent(ContractDO::getStartTime, reqVO.getStartTime())
                 .betweenIfPresent(ContractDO::getEndTime, reqVO.getEndTime())
                 .betweenIfPresent(ContractDO::getCreateTime, reqVO.getCreateTime())
-                .eqIfPresent(ContractDO::getDeptId,reqVO.getDeptId())
+                .inIfPresent(ContractDO::getUserId, UserDeptUtils.getUserByDeptIds(UserDeptUtils.getSubDeptIdsAnd(reqVO.getDeptId())))
                 .orderByDesc(ContractDO::getId));
     }
 

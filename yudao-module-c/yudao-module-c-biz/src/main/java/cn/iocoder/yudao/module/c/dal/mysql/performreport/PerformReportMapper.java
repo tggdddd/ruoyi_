@@ -23,6 +23,9 @@ import java.util.List;
 public interface PerformReportMapper extends BaseMapperX<PerformReportDO> {
 
     default PageResult<PerformReportDO> selectPage(PerformReportPageReqVO reqVO) {
+        return selectPage1(reqVO, null);
+    }
+    default PageResult<PerformReportDO> selectPage1(PerformReportPageReqVO reqVO,List userIds) {
         return selectPage(reqVO, new LambdaQueryWrapperX<PerformReportDO>()
                 .eqIfPresent(PerformReportDO::getUserId, reqVO.getUserId())
                 .eqIfPresent(PerformReportDO::getContractId, reqVO.getContractId())
@@ -33,11 +36,16 @@ public interface PerformReportMapper extends BaseMapperX<PerformReportDO> {
                 .betweenIfPresent(PerformReportDO::getExpireTime, reqVO.getExpireTime())
                 .eqIfPresent(PerformReportDO::getProcessInstanceId, reqVO.getProcessInstanceId())
                 .eqIfPresent(PerformReportDO::getStatus, reqVO.getStatus())
-                .eqIfPresent(PerformReportDO::getDeptId, reqVO.getDeptId())
+                .in(userIds!=null,PerformReportDO::getUserId,
+                        userIds)
                 .orderByDesc(PerformReportDO::getId));
     }
 
+
     default List<PerformReportDO> selectList(PerformReportExportReqVO reqVO) {
+        return selectList(reqVO, null);
+    }
+    default List<PerformReportDO> selectList(PerformReportExportReqVO reqVO, List userIds) {
         return selectList(new LambdaQueryWrapperX<PerformReportDO>()
                 .eqIfPresent(PerformReportDO::getUserId, reqVO.getUserId())
                 .eqIfPresent(PerformReportDO::getContractId, reqVO.getContractId())
@@ -48,7 +56,8 @@ public interface PerformReportMapper extends BaseMapperX<PerformReportDO> {
                 .betweenIfPresent(PerformReportDO::getExpireTime, reqVO.getExpireTime())
                 .eqIfPresent(PerformReportDO::getProcessInstanceId, reqVO.getProcessInstanceId())
                 .eqIfPresent(PerformReportDO::getStatus, reqVO.getStatus())
-                .eqIfPresent(PerformReportDO::getDeptId, reqVO.getDeptId())
+                .in(userIds!=null,PerformReportDO::getUserId,
+                        userIds)
                 .orderByDesc(PerformReportDO::getId));
     }
 

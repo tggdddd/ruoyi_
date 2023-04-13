@@ -72,7 +72,7 @@ public class ContractGenerator {
             case "身份证号":
                 return attachBean.getIdentityCard()==null?"<font color='red'>{"+param+"}</font>":attachBean.getIdentityCard();
             case "薪资":
-                return attachBean.getSalary().toString()==null?"<font color='red'>{"+param+"}</font>":attachBean.getSalary().toString();
+                return attachBean.getSalary()==null?"<font color='red'>{"+param+"}</font>":attachBean.getSalary().toString();
             case "甲方":
                 return attachBean.getFirstParty()==null?"<font color='red'>{"+param+"}</font>":attachBean.getFirstParty();
             case "岗位":

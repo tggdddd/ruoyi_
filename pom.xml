@@ -24,6 +24,17 @@
         <!-- 示例项目 -->
 <!--        <module>yudao-example</module>-->
     </modules>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <env>local</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

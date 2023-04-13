@@ -37,7 +37,13 @@ public interface AdminUserApi {
      * @return 用户数组
      */
     List<AdminUserRespDTO> getUserListByDeptIds(Collection<Long> deptIds);
-
+    /**
+     * 获得指定部门的用户数组id
+     *
+     * @param deptIds 部门数组
+     * @return 用户数组ids
+     */
+    List<Long> getUserIdListByDeptIds(Collection<Long> deptIds);
     /**
      * 获得指定岗位的用户数组
      *

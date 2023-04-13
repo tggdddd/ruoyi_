@@ -214,4 +214,6 @@ public interface AdminUserService {
    * @param userId 用户id
    * @return 信息*/
     UserInfoRespVO getHomeUserInfo(Long userId);
+
+    List<Long> getUserListIdByDeptIds(Collection<Long> deptIds);
 }

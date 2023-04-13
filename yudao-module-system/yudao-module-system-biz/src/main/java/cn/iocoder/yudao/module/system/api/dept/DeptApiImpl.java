@@ -34,6 +34,11 @@ public class DeptApiImpl implements DeptApi {
     }
 
     @Override
+    public List<Long> getSubDeptIds(Long id) {
+        return deptService.getSubDeptIds(id);
+    }
+
+    @Override
     public void validateDeptList(Collection<Long> ids) {
         deptService.validateDeptList(ids);
     }

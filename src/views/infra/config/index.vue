@@ -93,7 +93,7 @@ const message = useMessage() // 消息弹窗
 // 列表相关的变量
 const [registerTable, { reload, deleteData, exportList }] = useXTable({
   allSchemas: allSchemas,
-  getListApi: ConfigApi.getConfigPageApi,
+  getListApi: ConfigApi.getConfigPage,
   deleteApi: ConfigApi.deleteConfigApi,
   exportListApi: ConfigApi.exportConfigApi
 })

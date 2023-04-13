@@ -31,14 +31,10 @@ import { FormExpose } from '@/components/Form'
 // 业务相关的 import
 import { allSchemas, postPackageOption } from './template.data'
 import * as ontractTemplateApi from '@/api/c/ontractTemplate'
-import { ontractVO } from '@/api/c/ontract'
-import XButton from '@/components/XButton/src/XButton.vue'
 
 const { t } = useI18n() // 国际化
-const message = useMessage() // 消息弹窗
-const attachModalRef = ref()
 // 列表相关的变量
-const [registerTable, { reload, deleteData, exportList }] = useXTable({
+const [registerTable] = useXTable({
   allSchemas: allSchemas,
   getListApi: ontractTemplateApi.getAcceptContractTemplatePageApi
 })

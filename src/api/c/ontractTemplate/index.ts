@@ -27,6 +27,7 @@ export interface ontractTemplatePageReqVO extends PageParam {
   startTime?: Date[]
   endTime?: Date[]
   createTime?: Date[]
+  result?: number
 }
 
 export interface ontractTemplateExcelReqVO {
@@ -76,4 +77,10 @@ export const exportontractTemplateApi = async (params: ontractTemplateExcelReqVO
 //根据ID获得合同页面
 export const getAttachByIdApi = async (id: number) => {
   return await request.get({ url: '/c/ontract-template/getAttach?id=' + id })
+}
+
+// 获得已经审批好的合同
+export const getAcceptContractTemplatePageApi = async (params: ontractTemplatePageReqVO) => {
+  params.result = 2
+  return await request.get({ url: '/c/ontract-template/page', params })
 }

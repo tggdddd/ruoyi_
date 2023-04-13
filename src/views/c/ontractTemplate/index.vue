@@ -21,7 +21,7 @@
         />
       </template>
       <template #post_default="{ row }">
-        <el-tag type="success"> {{ getPostName(row.post) }} </el-tag>
+        <el-tag type="success"> {{ getPostName(row.postId) }} </el-tag>
       </template>
       <template #attach_default="{ row }">
         <vxe-button content="查看" @click="previewAttachById(row.id)" />
@@ -58,6 +58,7 @@
     v-model="modelVisible"
     :title="modelTitle"
     :height="800"
+    :fullscreen="true"
   >
     <!-- 表单：添加/修改 -->
     <Form
@@ -107,7 +108,7 @@
     :height="800"
     @show="setShadow"
   >
-    <div v-html="attachRef" id="attachContent"></div>
+    <div v-html="attachRef" ref="attachContent"></div>
   </XModal>
 </template>
 <style lang="scss">
@@ -150,6 +151,7 @@ const attachModelTitle = ref('edit') // 弹出层标题
 const attachModelLoading = ref(false) // 弹出层loading
 const attachActionLoading = ref(false) // 按钮 Loading
 const attachRef = ref<string>() // 表单 Ref
+const attachContent = ref(null)
 // 设置标题
 const setDialogTile = (type: string) => {
   modelLoading.value = true
@@ -191,6 +193,7 @@ const submitForm = async () => {
       // 提交请求
       try {
         const data = unref(formRef)?.formModel as ontractTemplateApi.ontractTemplateVO
+        console.log(data)
         if (actionType.value === 'create') {
           await ontractTemplateApi.createontractTemplateApi(data)
           message.success(t('common.createSuccess'))
@@ -219,7 +222,6 @@ const previewForm = async () => {
         const data = unref(formRef)?.formModel as ontractVO
         const res = await getAttachApi(data)
         attachRef.value = res
-        document.getElementById('attachId').innerText = res
         attachModelVisible.value = true
       } finally {
         actionLoading.value = false
@@ -260,7 +262,7 @@ const getPostName = (id: number) => {
       return item.label
     }
   }
-  return '错误'
+  return '无'
 }
 const setShadow = (e: ModalOptions) => {
   // e.target.attachShadow({ mode: 'open' })

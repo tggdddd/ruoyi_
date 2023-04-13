@@ -5,19 +5,19 @@
       <template #toolbar_buttons>
         <!-- 操作：新增 -->
         <XButton
-            type="primary"
-            preIcon="ep:zoom-in"
-            :title="t('action.add')"
-            v-hasPermi="['infra:config:create']"
-            @click="handleCreate()"
+          type="primary"
+          preIcon="ep:zoom-in"
+          :title="t('action.add')"
+          v-hasPermi="['infra:config:create']"
+          @click="handleCreate()"
         />
         <!-- 操作：导出 -->
         <XButton
-            type="warning"
-            preIcon="ep:download"
-            :title="t('action.export')"
-            v-hasPermi="['infra:config:export']"
-            @click="exportList('配置.xls')"
+          type="warning"
+          preIcon="ep:download"
+          :title="t('action.export')"
+          v-hasPermi="['infra:config:export']"
+          @click="exportList('配置.xls')"
         />
       </template>
       <template #visible_default="{ row }">
@@ -26,24 +26,24 @@
       <template #actionbtns_default="{ row }">
         <!-- 操作：修改 -->
         <XTextButton
-            preIcon="ep:edit"
-            :title="t('action.edit')"
-            v-hasPermi="['infra:config:update']"
-            @click="handleUpdate(row.id)"
+          preIcon="ep:edit"
+          :title="t('action.edit')"
+          v-hasPermi="['infra:config:update']"
+          @click="handleUpdate(row.id)"
         />
         <!-- 操作：详情 -->
         <XTextButton
-            preIcon="ep:view"
-            :title="t('action.detail')"
-            v-hasPermi="['infra:config:query']"
-            @click="handleDetail(row.id)"
+          preIcon="ep:view"
+          :title="t('action.detail')"
+          v-hasPermi="['infra:config:query']"
+          @click="handleDetail(row.id)"
         />
         <!-- 操作：删除 -->
         <XTextButton
-            preIcon="ep:delete"
-            :title="t('action.del')"
-            v-hasPermi="['infra:config:delete']"
-            @click="deleteData(row.id)"
+          preIcon="ep:delete"
+          :title="t('action.del')"
+          v-hasPermi="['infra:config:delete']"
+          @click="deleteData(row.id)"
         />
       </template>
     </XTable>
@@ -52,16 +52,16 @@
   <XModal v-model="dialogVisible" :title="dialogTitle">
     <!-- 对话框(添加 / 修改) -->
     <Form
-        v-if="['create', 'update'].includes(actionType)"
-        :schema="allSchemas.formSchema"
-        :rules="rules"
-        ref="formRef"
+      v-if="['create', 'update'].includes(actionType)"
+      :schema="allSchemas.formSchema"
+      :rules="rules"
+      ref="formRef"
     />
     <!-- 对话框(详情) -->
     <Descriptions
-        v-if="actionType === 'detail'"
-        :schema="allSchemas.detailSchema"
-        :data="detailData"
+      v-if="actionType === 'detail'"
+      :schema="allSchemas.detailSchema"
+      :data="detailData"
     >
       <template #visible="{ row }">
         <span>{{ row.visible ? '是' : '否' }} </span>
@@ -71,11 +71,11 @@
     <template #footer>
       <!-- 按钮：保存 -->
       <XButton
-          v-if="['create', 'update'].includes(actionType)"
-          type="primary"
-          :title="t('action.save')"
-          :loading="actionLoading"
-          @click="submitForm()"
+        v-if="['create', 'update'].includes(actionType)"
+        type="primary"
+        :title="t('action.save')"
+        :loading="actionLoading"
+        @click="submitForm()"
       />
       <!-- 按钮：关闭 -->
       <XButton :loading="actionLoading" :title="t('dialog.close')" @click="dialogVisible = false" />

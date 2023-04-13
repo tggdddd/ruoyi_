@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace=".dao.CPerformReportDao">
+
+    <resultMap id="BaseResultMap" type=".entity.CPerformReport">
+        <!--@Table c_perform_report-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="contractId" column="contract_id" jdbcType="INTEGER"/>
+        <result property="postId" column="post_id" jdbcType="INTEGER"/>
+        <result property="bpmProcessInstanceExtId" column="bpm_process_instance_ext_id" jdbcType="VARCHAR"/>
+        <result property="bpmProcessDefinitionId" column="bpm_process_definition_id" jdbcType="VARCHAR"/>
+        <result property="creator" column="creator" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updater" column="updater" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="tenant_id" jdbcType="INTEGER"/>
+        <result property="processInstanceId" column="process_instance_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, user_id, contract_id, post_id, bpm_process_instance_ext_id, bpm_process_definition_id, creator, create_time, updater, update_time, deleted, tenant_id, process_instance_id
+        from c_perform_report
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, user_id, contract_id, post_id, bpm_process_instance_ext_id, bpm_process_definition_id, creator, create_time, updater, update_time, deleted, tenant_id, process_instance_id
+        from c_perform_report
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="contractId != null">
+                and contract_id = #{contractId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="bpmProcessInstanceExtId != null and bpmProcessInstanceExtId != ''">
+                and bpm_process_instance_ext_id = #{bpmProcessInstanceExtId}
+            </if>
+            <if test="bpmProcessDefinitionId != null and bpmProcessDefinitionId != ''">
+                and bpm_process_definition_id = #{bpmProcessDefinitionId}
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator = #{creator}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updater != null and updater != ''">
+                and updater = #{updater}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="deleted != null">
+                and deleted = #{deleted}
+            </if>
+            <if test="tenantId != null">
+                and tenant_id = #{tenantId}
+            </if>
+            <if test="processInstanceId != null and processInstanceId != ''">
+                and process_instance_id = #{processInstanceId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, user_id, contract_id, post_id, bpm_process_instance_ext_id, bpm_process_definition_id, creator, create_time, updater, update_time, deleted, tenant_id, process_instance_id
+        from ruoyi-vue-pro.c_perform_report
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from c_perform_report
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="contractId != null">
+                and contract_id = #{contractId}
+            </if>
+            <if test="postId != null">
+                and post_id = #{postId}
+            </if>
+            <if test="bpmProcessInstanceExtId != null and bpmProcessInstanceExtId != ''">
+                and bpm_process_instance_ext_id = #{bpmProcessInstanceExtId}
+            </if>
+            <if test="bpmProcessDefinitionId != null and bpmProcessDefinitionId != ''">
+                and bpm_process_definition_id = #{bpmProcessDefinitionId}
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator = #{creator}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="updater != null and updater != ''">
+                and updater = #{updater}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="deleted != null">
+                and deleted = #{deleted}
+            </if>
+            <if test="tenantId != null">
+                and tenant_id = #{tenantId}
+            </if>
+            <if test="processInstanceId != null and processInstanceId != ''">
+                and process_instance_id = #{processInstanceId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into c_perform_report(user_id, contract_id, post_id, bpm_process_instance_ext_id, bpm_process_definition_id, creator, create_time, updater, update_time, deleted, tenant_id, process_instance_id)
+        values (#{userId}, #{contractId}, #{postId}, #{bpmProcessInstanceExtId}, #{bpmProcessDefinitionId}, #{creator}, #{createTime}, #{updater}, #{updateTime}, #{deleted}, #{tenantId}, #{processInstanceId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into c_perform_report(user_id, contract_id, post_id, bpm_process_instance_ext_id, bpm_process_definition_id, creator, create_time, updater, update_time, deleted, tenant_id, process_instance_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userId}, #{entity.contractId}, #{entity.postId}, #{entity.bpmProcessInstanceExtId}, #{entity.bpmProcessDefinitionId}, #{entity.creator}, #{entity.createTime}, #{entity.updater}, #{entity.updateTime}, #{entity.deleted}, #{entity.tenantId}, #{entity.processInstanceId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into c_perform_report(user_id, contract_id, post_id, bpm_process_instance_ext_id, bpm_process_definition_id, creator, create_time, updater, update_time, deleted, tenant_id, process_instance_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.contractId}, #{entity.postId}, #{entity.bpmProcessInstanceExtId}, #{entity.bpmProcessDefinitionId}, #{entity.creator}, #{entity.createTime}, #{entity.updater}, #{entity.updateTime}, #{entity.deleted}, #{entity.tenantId}, #{entity.processInstanceId})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id),
+        contract_id = values(contract_id),
+        post_id = values(post_id),
+        bpm_process_instance_ext_id = values(bpm_process_instance_ext_id),
+        bpm_process_definition_id = values(bpm_process_definition_id),
+        creator = values(creator),
+        create_time = values(create_time),
+        updater = values(updater),
+        update_time = values(update_time),
+        deleted = values(deleted),
+        tenant_id = values(tenant_id),
+        process_instance_id = values(process_instance_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update c_perform_report
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="contractId != null">
+                contract_id = #{contractId},
+            </if>
+            <if test="postId != null">
+                post_id = #{postId},
+            </if>
+            <if test="bpmProcessInstanceExtId != null and bpmProcessInstanceExtId != ''">
+                bpm_process_instance_ext_id = #{bpmProcessInstanceExtId},
+            </if>
+            <if test="bpmProcessDefinitionId != null and bpmProcessDefinitionId != ''">
+                bpm_process_definition_id = #{bpmProcessDefinitionId},
+            </if>
+            <if test="creator != null and creator != ''">
+                creator = #{creator},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updater != null and updater != ''">
+                updater = #{updater},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="tenantId != null">
+                tenant_id = #{tenantId},
+            </if>
+            <if test="processInstanceId != null and processInstanceId != ''">
+                process_instance_id = #{processInstanceId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from c_perform_report where id = #{id}
+    </delete>
+
+</mapper>
+
